@@ -5,21 +5,9 @@ namespace RINGS.Models
 {
     public class ChatLogsModel
     {
-        #region Singleton
-
-        private static ChatLogsModel instance;
-
-        public static ChatLogsModel Instance => instance ?? (instance = new ChatLogsModel());
-
-        private ChatLogsModel()
-        {
-        }
-
-        #endregion Singleton
-
         private readonly List<ChatLogModel> buffer = WPFHelper.IsDesignMode ?
             CreateDesigntimeChatLogs() :
-            new List<ChatLogModel>(10240);
+            new List<ChatLogModel>(5120 + 512);
 
         public IReadOnlyList<ChatLogModel> Buffer => this.buffer;
 
