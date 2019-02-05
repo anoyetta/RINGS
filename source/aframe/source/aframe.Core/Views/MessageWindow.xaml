@@ -1,0 +1,84 @@
+<metro:MetroWindow
+  x:Class="aframe.Views.MessageWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:local="clr-namespace:aframe.Views"
+  mc:Ignorable="d"
+  xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+  TextElement.FontWeight="Regular"
+  TextOptions.TextFormattingMode="Ideal"
+  TextOptions.TextRenderingMode="Auto"
+  Background="{DynamicResource MaterialDesignPaper}"
+  FontFamily="{DynamicResource MaterialDesignFont}"
+  FontSize="{Binding Config.FontSize, Mode=OneWay}"
+  GlowBrush="{DynamicResource AccentColorBrush}"
+  DataContext="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}"
+  d:DataContext="{d:DesignInstance {x:Type local:MessageWindow}, IsDesignTimeCreatable=True}"
+  ShowMinButton="False"
+  ShowMaxRestoreButton="False"
+  ShowIconOnTitleBar="False"
+  Title="MessageWindow"
+  MinWidth="640"
+  MinHeight="360"
+  MaxWidth="1280"
+  MaxHeight="720">
+
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <!-- MahApps -->
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
+        <!-- Material Design -->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+
+        <!-- Accent Color -->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Indigo.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.LightBlue.xaml" />
+
+        <!-- Material Design: MahApps Compatibility -->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Defaults.xaml " />
+      </ResourceDictionary.MergedDictionaries>
+
+      <!-- MahApps Brushes -->
+      <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource Primary700}" />
+      <SolidColorBrush x:Key="AccentColorBrush" Color="{DynamicResource Primary500}" />
+      <SolidColorBrush x:Key="AccentColorBrush2" Color="{DynamicResource Primary400}" />
+      <SolidColorBrush x:Key="AccentColorBrush3" Color="{DynamicResource Primary300}" />
+      <SolidColorBrush x:Key="AccentColorBrush4" Color="{DynamicResource Primary200}" />
+      <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{DynamicResource Primary700}" />
+      <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="{DynamicResource Primary500Foreground}" />
+      <LinearGradientBrush x:Key="ProgressBrush" EndPoint="0.001,0.5" StartPoint="1.002,0.5">
+        <GradientStop Color="{DynamicResource Primary700}" Offset="0" />
+        <GradientStop Color="{DynamicResource Primary300}" Offset="1" />
+      </LinearGradientBrush>
+      <SolidColorBrush x:Key="CheckmarkFill" Color="{DynamicResource Primary500}" />
+      <SolidColorBrush x:Key="RightArrowFill" Color="{DynamicResource Primary500}" />
+      <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource Primary500Foreground}" />
+      <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{DynamicResource Primary500}" Opacity="0.4" />
+    </ResourceDictionary>
+  </Window.Resources>
+
+  <Grid Margin="15 15 15 0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+
+    <Label Grid.Row="0" x:Name="TitleLabel" FontWeight="Bold" Content="メッセージタイトル">
+      <Label.LayoutTransform>
+        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+      </Label.LayoutTransform>
+    </Label>
+
+    <local:MessageView x:Name="MessageContent" Grid.Row="1" Margin="0 15 0 0" />
+  </Grid>
+</metro:MetroWindow>

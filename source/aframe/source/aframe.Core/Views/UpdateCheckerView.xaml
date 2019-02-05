@@ -1,0 +1,93 @@
+<metro:MetroWindow
+  x:Class="aframe.Views.UpdateCheckerView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:materialConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+  xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:prism="http://prismlibrary.com/"
+  xmlns:local="clr-namespace:aframe.Views"
+  xmlns:vm="clr-namespace:aframe.ViewModels"
+  mc:Ignorable="d"
+  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+  TextElement.FontWeight="Regular"
+  TextOptions.TextFormattingMode="Ideal"
+  TextOptions.TextRenderingMode="Auto"
+  Background="{DynamicResource MaterialDesignPaper}"
+  FontFamily="{DynamicResource MaterialDesignFont}"
+  FontSize="16"
+  GlowBrush="{DynamicResource AccentColorBrush}"
+  prism:ViewModelLocator.AutoWireViewModel="True"
+  d:DataContext="{d:DesignInstance Type={x:Type vm:UpdateCheckerViewModel}, IsDesignTimeCreatable=True}"
+  Icon="/aframe.Core;component/Updater.ico"
+  Title="Application Updater"
+  WindowStartupLocation="CenterScreen"
+  Height="450"
+  Width="800">
+
+  <Grid Margin="15">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <StackPanel Grid.Row="0">
+        <Label
+          Content="{Binding Message.Value, Mode=OneWay}"
+          Foreground="{DynamicResource AccentColorBrush}"
+          FontSize="24" />
+
+        <Label Margin="0 15 0 0" Content="{Binding AppName.Value, Mode=OneWay}" FontSize="22" />
+        <StackPanel Margin="8 0 0 0">
+          <StackPanel Orientation="Horizontal">
+            <Label Content="{Binding Version.Value, Mode=OneWay}" FontSize="18" ContentStringFormat="v{0}" VerticalAlignment="Center" />
+            <Label Content="{Binding Channel.Value, Mode=OneWay}" FontSize="18" VerticalAlignment="Center" />
+          </StackPanel>
+          <Label Padding="8 0" Content="{Binding Timestamp.Value, Mode=OneWay}" FontSize="14" ContentStringFormat="{}{0:MMMM dd, yyyy}" />
+        </StackPanel>
+      </StackPanel>
+
+      <TextBox
+        Grid.Row="1"
+        Margin="10 20 0 15"
+        VerticalAlignment="Top"
+        BorderThickness="0"
+        AcceptsReturn="True"
+        IsReadOnly="True"
+        Focusable="False"
+        IsTabStop="False"
+        VerticalScrollBarVisibility="Auto"
+        FontSize="14"
+        Text="{Binding Description.Value, Mode=OneWay}" />
+
+      <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+        <Button Margin="0 0 15 0" Content="Update" Width="100" Click="UpdateButton_Click" Command="{Binding UpdateCommand, Mode=OneWay}" IsDefault="True" />
+        <Button Margin="15 0 0 0" Content="Cancel" Width="100" Click="CancelButton_Click" IsCancel="True" />
+      </StackPanel>
+    </Grid>
+
+    <Border
+      HorizontalAlignment="Center"
+      VerticalAlignment="Center"
+      Padding="20 30"
+      CornerRadius="10"
+      Background="#A0FFFFFF"
+      Visibility="{Binding InProgress.Value, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+      <StackPanel>
+        <TextBlock Text="{Binding CurrentProgressMessage.Value, Mode=OneWay}" />
+        <ProgressBar
+          Margin="0 10 0 0"
+          Width="400"
+          Height="10"
+          Minimum="0"
+          Maximum="{Binding Maximum.Value, Mode=OneWay}"
+          Value="{Binding CurrentValue.Value, Mode=OneWay}" />
+      </StackPanel>
+    </Border>
+  </Grid>
+</metro:MetroWindow>
