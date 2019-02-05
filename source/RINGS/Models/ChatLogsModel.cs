@@ -5,9 +5,11 @@ namespace RINGS.Models
 {
     public class ChatLogsModel
     {
+        private static readonly int BufferSize = 5120;
+
         private readonly List<ChatLogModel> buffer = WPFHelper.IsDesignMode ?
             CreateDesigntimeChatLogs() :
-            new List<ChatLogModel>(5120 + 512);
+            new List<ChatLogModel>(BufferSize + (BufferSize / 10));
 
         public IReadOnlyList<ChatLogModel> Buffer => this.buffer;
 
@@ -34,6 +36,22 @@ namespace RINGS.Models
             lock (this.buffer)
             {
                 this.buffer.Clear();
+            }
+        }
+
+        public void Garbage()
+        {
+            lock (this.buffer)
+            {
+                if (this.buffer.Count <= BufferSize)
+                {
+                    return;
+                }
+
+                for (int i = 0; i < BufferSize; i++)
+                {
+                    this.buffer.RemoveAt(0);
+                }
             }
         }
 
