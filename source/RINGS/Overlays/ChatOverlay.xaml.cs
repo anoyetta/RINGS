@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interactivity;
-using aframe;
 using RINGS.Models;
 
 namespace RINGS.Overlays
@@ -81,11 +81,11 @@ namespace RINGS.Overlays
         #endregion IOverlay
     }
 
-    public class ScrollToBottomAction : TriggerAction<BindableRichTextBox>
+    public class ScrollToBottomAction : TriggerAction<RichTextBox>
     {
         protected override void Invoke(object parameter)
         {
-            this.AssociatedObject.ScrollToEnd();
+            this.AssociatedObject?.ScrollToEnd();
         }
     }
 }

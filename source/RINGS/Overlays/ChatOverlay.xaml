@@ -146,30 +146,34 @@
 
         <TabControl.ContentTemplate>
           <DataTemplate>
-            <fw:BindableRichTextBox
+            <RichTextBox
               Margin="0 5 0 0"
               BorderThickness="0"
               Background="Transparent"
               HorizontalScrollBarVisibility="Disabled"
               VerticalScrollBarVisibility="Visible"
-              IsReadOnly="False">
+              VerticalContentAlignment="Bottom"
+              IsReadOnly="True">
 
+              <!--
               <i:Interaction.Triggers>
                 <i:EventTrigger EventName="TextChanged">
                   <local:ScrollToBottomAction />
                 </i:EventTrigger>
               </i:Interaction.Triggers>
+              -->
 
-              <fw:BindableRichTextBox.Resources>
+              <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                   <Setter Property="Margin" Value="3" />
                 </Style>
-              </fw:BindableRichTextBox.Resources>
+              </RichTextBox.Resources>
 
               <FlowDocument>
-                <Paragraph>AAAAAAAAAAAAAAAAAA</Paragraph>
+                <Paragraph>aaaaaaaaaaaaaaa</Paragraph>
+                <Paragraph>bbbbbbbbbbbbbbb</Paragraph>
               </FlowDocument>
-            </fw:BindableRichTextBox>
+            </RichTextBox>
           </DataTemplate>
         </TabControl.ContentTemplate>
       </TabControl>
