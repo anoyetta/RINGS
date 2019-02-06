@@ -23,8 +23,8 @@ namespace RINGS.Models
             switch (e.PropertyName)
             {
                 case nameof(this.ChatCode):
-                case nameof(this.ParentOverlaySettings):
-                    this.LogColorBrush = this.ParentOverlaySettings?
+                case nameof(this.ParentPageSettings):
+                    this.LogColorBrush = this.ParentPageSettings?
                         .GetChatChannelSettings(this.chatCode)?
                         .ColorBrush
                         ?? Brushes.White;
@@ -84,12 +84,12 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.xivLog, value);
         }
 
-        private ChatOverlaySettingsModel parentOverlaySettings;
+        private ChatPageSettingsModel parentPageSettings;
 
-        public ChatOverlaySettingsModel ParentOverlaySettings
+        public ChatPageSettingsModel ParentPageSettings
         {
-            get => this.parentOverlaySettings;
-            set => this.SetProperty(ref this.parentOverlaySettings, value);
+            get => this.parentPageSettings;
+            set => this.SetProperty(ref this.parentPageSettings, value);
         }
 
         private SolidColorBrush logColorBrush = Brushes.White;

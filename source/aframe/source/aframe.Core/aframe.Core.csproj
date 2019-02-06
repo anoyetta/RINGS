@@ -76,6 +76,7 @@
     <Compile Include="Bases\JsonConfigBase.cs" />
     <Compile Include="Bases\RestClientBase.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controls\BindableRichTextBox.cs" />
     <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Converters\BooleanToIntConverter.cs" />
     <Compile Include="Converters\DayOfWeekToBrushConverter.cs" />
@@ -145,7 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Attributes\" />
-    <Folder Include="Controls\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\HelpView.xaml">

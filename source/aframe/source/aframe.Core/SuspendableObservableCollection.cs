@@ -7,6 +7,18 @@ namespace aframe
 {
     public class SuspendableObservableCollection<T> : ObservableCollection<T>
     {
+        public SuspendableObservableCollection()
+        {
+        }
+
+        public SuspendableObservableCollection(IEnumerable<T> collection) : base(collection)
+        {
+        }
+
+        public SuspendableObservableCollection(List<T> list) : base(list)
+        {
+        }
+
         private bool _suppressNotification = false;
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)

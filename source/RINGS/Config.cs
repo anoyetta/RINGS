@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -135,13 +136,33 @@ namespace RINGS
             set => this.SetProperty(ref this.isMinimizeStartup, value);
         }
 
-        private ChatOverlaySettingsModel chatOverlaySettings = new ChatOverlaySettingsModel();
+        private readonly Dictionary<string, ChatOverlaySettingsModel> chatOverlaySettings = new Dictionary<string, ChatOverlaySettingsModel>();
 
-        [JsonProperty(PropertyName = "chat_overlay")]
-        public ChatOverlaySettingsModel ChatOverlaySettings
+        [JsonProperty(PropertyName = "chat_overlays")]
+        public IEnumerable<ChatOverlaySettingsModel> ChatOverlaySettings
         {
-            get => this.chatOverlaySettings;
-            set => this.SetProperty(ref this.chatOverlaySettings, value);
+            get => this.chatOverlaySettings.Values;
+            set
+            {
+                this.chatOverlaySettings.Clear();
+                foreach (var item in value)
+                {
+                    this.chatOverlaySettings[item.Name] = item;
+                }
+
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public ChatOverlaySettingsModel GetChatOverlaySettings(
+            string name)
+        {
+            if (this.chatOverlaySettings.ContainsKey(name))
+            {
+                return this.chatOverlaySettings[name];
+            }
+
+            return null;
         }
 
         #endregion Data

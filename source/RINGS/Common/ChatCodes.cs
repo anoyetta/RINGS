@@ -12,8 +12,8 @@ namespace RINGS.Common
 
         public static readonly string Party = "000E";
         public static readonly string Alliance = "000F";
-        public static readonly string Beginners = "UNKNOWN";
-        public static readonly string PvP = "UNKNOWN";
+        public static readonly string Beginners = "UNKNOWN-1";
+        public static readonly string PvP = "UNKNOWN-2";
 
         public static readonly string Linkshell1 = "0010";
         public static readonly string Linkshell2 = "0011";
@@ -51,13 +51,13 @@ namespace RINGS.Common
             { Beginners, ("Beginners", "") },
             { PvP, ("PvP Team", "") },
             { Linkshell1, ("Linkshell 1", "LS1") },
-            { Linkshell1, ("Linkshell 2", "LS2") },
-            { Linkshell1, ("Linkshell 3", "LS3") },
-            { Linkshell1, ("Linkshell 4", "LS4") },
-            { Linkshell1, ("Linkshell 5", "LS5") },
-            { Linkshell1, ("Linkshell 6", "LS6") },
-            { Linkshell1, ("Linkshell 7", "LS7") },
-            { Linkshell1, ("Linkshell 8", "LS8") },
+            { Linkshell2, ("Linkshell 2", "LS2") },
+            { Linkshell3, ("Linkshell 3", "LS3") },
+            { Linkshell4, ("Linkshell 4", "LS4") },
+            { Linkshell5, ("Linkshell 5", "LS5") },
+            { Linkshell6, ("Linkshell 6", "LS6") },
+            { Linkshell7, ("Linkshell 7", "LS7") },
+            { Linkshell8, ("Linkshell 8", "LS8") },
             { CrossWorldLinkshell, ("Cross World Linkshell", "CWLS") },
             { FreeCompany, ("Free Company", "FC") },
             { FreeCompanyAnnounce, ("Free Company - Announce", "FC") },

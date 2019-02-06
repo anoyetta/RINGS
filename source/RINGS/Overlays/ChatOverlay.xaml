@@ -6,6 +6,13 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:local="clr-namespace:RINGS.Overlays"
   xmlns:system="clr-namespace:System;assembly=mscorlib"
+  xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
+  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+  xmlns:fw="clr-namespace:aframe;assembly=aframe.Core"
+  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
   mc:Ignorable="d"
   RenderOptions.BitmapScalingMode="Fant"
   RenderOptions.ClearTypeHint="Enabled"
@@ -19,20 +26,32 @@
   ResizeMode="CanResizeWithGrip"
   Background="#01000000"
   d:DataContext="{d:DesignInstance {x:Type local:ChatOverlayViewModel}, IsDesignTimeCreatable=True}"
-  Title="RINGS - Chat"
+  Title="{Binding Title, Mode=OneWay}"
   Top="{Binding ChatOverlaySettings.Y, Mode=TwoWay}"
   Left="{Binding ChatOverlaySettings.X, Mode=TwoWay}"
   Width="{Binding ChatOverlaySettings.W, Mode=TwoWay}"
   Height="{Binding ChatOverlaySettings.H, Mode=TwoWay}">
+
+  <Window.LayoutTransform>
+    <ScaleTransform
+      ScaleX="{Binding ChatOverlaySettings.Scale, Mode=OneWay}"
+      ScaleY="{Binding ChatOverlaySettings.Scale, Mode=OneWay}" />
+  </Window.LayoutTransform>
 
   <Window.DataContext>
     <local:ChatOverlayViewModel />
   </Window.DataContext>
 
   <Window.Resources>
+    <Style TargetType="TabControl">
+    </Style>
+    <Style TargetType="TabItem">
+    </Style>
   </Window.Resources>
 
-  <Grid Margin="9">
+  <Grid
+    Margin="9">
+
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition />
@@ -41,7 +60,7 @@
     <Label
       x:Name="TitleLabel"
       Grid.Row="0"
-      Content="RINGS - Chat"
+      Content="{Binding Title, Mode=OneWay}"
       Background="#F0FFFFFF"
       Foreground="Black"
       Padding="15 3"
@@ -77,6 +96,83 @@
             BlurRadius="8" />
         </Border.Effect>
       </Border>
+
+      <!-- Pages -->
+      <TabControl
+        BorderThickness="0"
+        Background="Transparent"
+        Focusable="False"
+        TabStripPlacement="Bottom"
+        ItemsSource="{Binding ChatOverlaySettings.ChatPages, Mode=OneWay}">
+
+        <TabControl.Resources>
+          <Style TargetType="{x:Type TabItem}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                  <Grid MinWidth="60">
+                    <Border
+                      Name="Border"
+                      Background="Transparent">
+                      <ContentPresenter
+                        x:Name="ContentSite"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        ContentSource="Header"
+                        Margin="12 2 12 2"
+                        RecognizesAccessKey="True" />
+                    </Border>
+                  </Grid>
+                  <ControlTemplate.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                      <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource GrayBrush4}" />
+                    </Trigger>
+                    <Trigger Property="IsSelected" Value="False">
+                      <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource GrayBrush8}" />
+                    </Trigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+          </Style>
+        </TabControl.Resources>
+
+        <TabControl.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Name, Mode=OneWay}" />
+          </DataTemplate>
+        </TabControl.ItemTemplate>
+
+        <TabControl.ContentTemplate>
+          <DataTemplate>
+            <fw:BindableRichTextBox
+              Margin="0 5 0 0"
+              BorderThickness="0"
+              Background="Transparent"
+              HorizontalScrollBarVisibility="Disabled"
+              VerticalScrollBarVisibility="Visible"
+              IsReadOnly="False">
+
+              <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                  <local:ScrollToBottomAction />
+                </i:EventTrigger>
+              </i:Interaction.Triggers>
+
+              <fw:BindableRichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                  <Setter Property="Margin" Value="3" />
+                </Style>
+              </fw:BindableRichTextBox.Resources>
+
+              <FlowDocument>
+                <Paragraph>AAAAAAAAAAAAAAAAAA</Paragraph>
+              </FlowDocument>
+            </fw:BindableRichTextBox>
+          </DataTemplate>
+        </TabControl.ContentTemplate>
+      </TabControl>
     </Grid>
   </Grid>
 </Window>

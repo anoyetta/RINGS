@@ -1,5 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Interactivity;
+using aframe;
 using RINGS.Models;
 
 namespace RINGS.Overlays
@@ -11,12 +13,18 @@ namespace RINGS.Overlays
         Window,
         IOverlay
     {
-        public ChatOverlay()
+        public ChatOverlay() : this(Config.DefaultChatOverlayName)
+        {
+        }
+
+        public ChatOverlay(
+            string name)
         {
             this.InitializeComponent();
             this.ToNonActive();
-
             this.Opacity = 0;
+
+            this.ViewModel.Name = name;
             this.ViewModel.ChatOverlaySettings.PropertyChanged += this.ChatOverlaySettings_PropertyChanged;
             this.ResizeMode = this.ViewModel.ChatOverlaySettings.IsLock ?
                 ResizeMode.NoResize :
@@ -71,5 +79,13 @@ namespace RINGS.Overlays
         }
 
         #endregion IOverlay
+    }
+
+    public class ScrollToBottomAction : TriggerAction<BindableRichTextBox>
+    {
+        protected override void Invoke(object parameter)
+        {
+            this.AssociatedObject.ScrollToEnd();
+        }
     }
 }

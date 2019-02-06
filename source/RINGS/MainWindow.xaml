@@ -28,8 +28,7 @@
   d:DataContext="{d:DesignInstance {x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=True}"
   Top="{Binding Config.Y, Mode=TwoWay}"
   Left="{Binding Config.X, Mode=TwoWay}"
-  Width="{Binding Config.W, Mode=TwoWay}"
-  Height="{Binding Config.H, Mode=TwoWay}">
+  SizeToContent="WidthAndHeight">
 
   <metro:MetroWindow.DataContext>
     <vm:MainWindowViewModel />
@@ -197,7 +196,9 @@
     </ResourceDictionary>
   </metro:MetroWindow.Resources>
 
-  <Grid>
+  <Grid
+    Width="{Binding Config.W, Mode=TwoWay}"
+    Height="{Binding Config.H, Mode=TwoWay}">
     <metro:HamburgerMenu
       x:Name="HamburgerMenuControl"
       IsPaneOpen="True"

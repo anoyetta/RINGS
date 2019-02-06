@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using aframe;
 using Newtonsoft.Json;
@@ -11,9 +12,19 @@ namespace RINGS.Models
     public class ChatOverlaySettingsModel :
         BindableBase
     {
+        private string name;
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name
+
+        {
+            get => this.name;
+            set => this.SetProperty(ref this.name, value);
+        }
+
         private bool isEnabled = true;
 
-        [JsonProperty(PropertyName = "enabled")]
+        [JsonProperty(PropertyName = "enabled", DefaultValueHandling = DefaultValueHandling.Include)]
         public bool IsEnabled
         {
             get => this.isEnabled;
@@ -65,7 +76,7 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.isLock, value);
         }
 
-        private double scale;
+        private double scale = 1.0d;
 
         [JsonProperty(PropertyName = "scale")]
         public double Scale
@@ -131,9 +142,70 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.pcNameStyle, value);
         }
 
-        private readonly Dictionary<string, ChatChannelSettingsModel> channelSettings = new Dictionary<string, ChatChannelSettingsModel>();
+        private readonly Dictionary<string, ChatPageSettingsModel> chatPages = new Dictionary<string, ChatPageSettingsModel>();
 
-        [JsonProperty(PropertyName = "channel_settings")]
+        [JsonProperty(PropertyName = "chat_pages")]
+        public IEnumerable<ChatPageSettingsModel> ChatPages
+        {
+            get => this.chatPages.Values;
+            set
+            {
+                this.chatPages.Clear();
+                foreach (var item in value)
+                {
+                    this.chatPages[item.Name] = item;
+                }
+
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public ChatPageSettingsModel GetChatPages(
+            string name)
+        {
+            if (this.chatPages.ContainsKey(name))
+            {
+                return null;
+            }
+
+            return this.chatPages[name];
+        }
+
+        public void AddChatPages(
+            ChatPageSettingsModel page)
+        {
+            this.chatPages[page.Name] = page;
+            this.RaisePropertyChanged(nameof(this.ChatPages));
+        }
+
+        public void RemoveChatPages(
+            string name)
+        {
+            if (this.chatPages.ContainsKey(name))
+            {
+                this.chatPages.Remove(name);
+                this.RaisePropertyChanged(nameof(this.ChatPages));
+            }
+        }
+    }
+
+    public class ChatPageSettingsModel :
+        BindableBase
+    {
+        private string name;
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name
+        {
+            get => this.name;
+            set => this.SetProperty(ref this.name, value);
+        }
+
+        private readonly Dictionary<string, ChatChannelSettingsModel> channelSettings =
+            ChatChannelSettingsModel.CreateDefaultChannels(false)
+            .ToDictionary(x => x.ChatCode);
+
+        [JsonProperty(PropertyName = "channels")]
         public IEnumerable<ChatChannelSettingsModel> ChannelSettings
         {
             get => this.channelSettings.Values;
@@ -144,6 +216,8 @@ namespace RINGS.Models
                 {
                     this.channelSettings[item.ChatCode] = item;
                 }
+
+                this.RaisePropertyChanged();
             }
         }
 
@@ -162,6 +236,14 @@ namespace RINGS.Models
     public class ChatChannelSettingsModel :
         BindableBase
     {
+        public static IEnumerable<ChatChannelSettingsModel> CreateDefaultChannels(
+            bool defaultVisibility = false)
+            => ChatCodes.All.Select(code => new ChatChannelSettingsModel()
+            {
+                ChatCode = code,
+                IsVisible = defaultVisibility,
+            });
+
         private string chatCode;
 
         [JsonProperty(PropertyName = "chat_code")]
