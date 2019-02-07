@@ -1,0 +1,127 @@
+<UserControl
+  x:Class="aframe.ColorDialogContent"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:aframe"
+  xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
+  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+  mc:Ignorable="d"
+  d:DesignHeight="768" d:DesignWidth="1320"
+  SnapsToDevicePixels="True">
+
+  <UserControl.Resources>
+    <ResourceDictionary>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <UserControl.DataContext>
+    <local:ColorDialogViewModel />
+  </UserControl.DataContext>
+
+  <Grid>
+    <Grid.Resources>
+      <Style TargetType="ListBoxItem" BasedOn="{StaticResource MetroListBoxItem}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+      </Style>
+
+      <DataTemplate x:Key="ColorDataTemplate" DataType="{x:Type local:PredefinedColor}">
+        <StackPanel Orientation="Horizontal">
+          <Rectangle Fill="{Binding Brush, Mode=OneWay}" Width="100" Height="40" Margin="8" />
+
+          <StackPanel Orientation="Vertical" MinWidth="180" VerticalAlignment="Center" Margin="0,0,8,0">
+            <TextBlock Text="{Binding Name, Mode=OneWay}" FontWeight="Bold" />
+            <TextBlock Text="{Binding Color, Mode=OneWay}" FontSize="14" />
+          </StackPanel>
+        </StackPanel>
+      </DataTemplate>
+    </Grid.Resources>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+
+    <ListBox
+      Grid.Column="0"
+      x:Name="PredefinedColorsListBox"
+      VirtualizingPanel.IsVirtualizing="True"
+      VirtualizingPanel.VirtualizationMode="Recycling"
+      ItemsSource="{Binding Path=PredefinedColors, Mode=OneWay}"
+      ItemTemplate="{StaticResource ColorDataTemplate}">
+
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel Width="955" />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+    </ListBox>
+
+    <Grid Grid.Column="1" Margin="10, 8, 8, 8">
+      <Grid.Resources>
+        <Style TargetType="{x:Type metro:NumericUpDown}">
+          <Setter Property="Minimum" Value="0" />
+          <Setter Property="Maximum" Value="255" />
+          <Setter Property="HideUpDownButtons" Value="True" />
+          <Setter Property="Width" Value="30" />
+          <Setter Property="FontSize" Value="16" />
+          <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+      </Grid.Resources>
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <metro:MetroHeader Grid.Row="0" Header="ARGB">
+        <StackPanel>
+          <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+            <Label Content="R" Width="90" VerticalAlignment="Center" />
+            <metro:NumericUpDown x:Name="RTextBox" />
+            <Slider x:Name="RSlider" Margin="8,0,0,0" Width="160" Minimum="0" Maximum="255" Value="{Binding ElementName=RTextBox, Path=Value, Mode=TwoWay}" VerticalAlignment="Center" />
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+            <Label Content="G" Width="90" VerticalAlignment="Center" />
+            <metro:NumericUpDown x:Name="GTextBox" />
+            <Slider x:Name="GSlider" Margin="8,0,0,0" Width="160" Minimum="0" Maximum="255" Value="{Binding ElementName=GTextBox, Path=Value, Mode=TwoWay}" VerticalAlignment="Center" />
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+            <Label Content="B" Width="90" VerticalAlignment="Center" />
+            <metro:NumericUpDown x:Name="BTextBox" />
+            <Slider x:Name="BSlider" Margin="8,0,0,0" Width="160" Minimum="0" Maximum="255"  Value="{Binding ElementName=BTextBox, Path=Value, Mode=TwoWay}" VerticalAlignment="Center" />
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Margin="0,4,0,0" x:Name="APanel">
+            <Label Content="Opacity" Width="90" VerticalAlignment="Center" />
+            <metro:NumericUpDown x:Name="ATextBox" />
+            <Slider x:Name="ASlider" Margin="8,0,0,0" Width="160" Minimum="0" Maximum="255" Value="{Binding ElementName=ATextBox, Path=Value, Mode=TwoWay}" VerticalAlignment="Center" />
+          </StackPanel>
+
+          <StackPanel Grid.Row="2" Margin="0 15 0 0" Orientation="Horizontal">
+            <Label Content="Hex" Width="90" VerticalAlignment="Center" />
+            <TextBox
+              x:Name="HexTextBox"
+              FontFamily="Consolas"
+              FontSize="16"
+              Width="100"
+              MaxLength="9"
+              VerticalContentAlignment="Center" />
+          </StackPanel>
+        </StackPanel>
+      </metro:MetroHeader>
+
+      <metro:MetroHeader Grid.Row="3" Header="Preview" Margin="0 20 0 0">
+        <Rectangle x:Name="PreviewRectangle"  Height="80" Margin="6,12,3,0" RadiusX="3" RadiusY="3" />
+      </metro:MetroHeader>
+    </Grid>
+  </Grid>
+</UserControl>

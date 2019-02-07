@@ -54,7 +54,7 @@ namespace RINGS.Models
 
         private static List<ChatLogModel> InnerList => new List<ChatLogModel>(BufferSize + (BufferSize / 10));
 
-        public SuspendableObservableCollection<ChatLogModel> Buffer { get; private set; } = WPFHelper.IsDesignMode ?
+        public SuspendableObservableCollection<ChatLogModel> Buffer { get; private set; } = WPFHelper.IsDesignMode || WPFHelper.IsDebugMode ?
             CreateDesigntimeChatLogs() :
             new SuspendableObservableCollection<ChatLogModel>(InnerList);
 
@@ -119,6 +119,24 @@ namespace RINGS.Models
         private static SuspendableObservableCollection<ChatLogModel> CreateDesigntimeChatLogs()
         {
             var logs = new SuspendableObservableCollection<ChatLogModel>();
+
+            logs.Add(new ChatLogModel()
+            {
+                Speaker = "Naoki Y.",
+                Message = "本日は晴天なり。"
+            });
+
+            logs.Add(new ChatLogModel()
+            {
+                Speaker = "Naoki Y.",
+                Message = "明日も晴天かな？"
+            });
+
+            logs.Add(new ChatLogModel()
+            {
+                Speaker = "Naoki Y.",
+                Message = "あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。"
+            });
 
             return logs;
         }

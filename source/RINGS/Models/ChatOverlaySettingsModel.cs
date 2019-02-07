@@ -105,7 +105,8 @@ namespace RINGS.Models
         {
             get
             {
-                var brush = new SolidColorBrush(Color.FromScRgb((float)this.opacity, this.backgroundColor.ScR, this.backgroundColor.ScG, this.backgroundColor.ScB));
+                var brush = new SolidColorBrush(this.backgroundColor);
+                brush.Opacity = this.opacity;
                 brush.Freeze();
                 return brush;
             }
@@ -118,9 +119,9 @@ namespace RINGS.Models
             set => this.BackgroundColor = (Color)ColorConverter.ConvertFromString(value);
         }
 
-        private double opacity = 0.95d;
+        private double opacity = 0.60d;
 
-        [JsonProperty(PropertyName = "opacity")]
+        [JsonProperty(PropertyName = "opacity", DefaultValueHandling = DefaultValueHandling.Include)]
         public double Opacity
         {
             get => this.opacity;
@@ -135,7 +136,7 @@ namespace RINGS.Models
 
         private PCNameStyles pcNameStyle = PCNameStyles.FullName;
 
-        [JsonProperty(PropertyName = "pcname_style")]
+        [JsonProperty(PropertyName = "pcname_style", DefaultValueHandling = DefaultValueHandling.Include)]
         public PCNameStyles PCNameStyle
         {
             get => this.pcNameStyle;
@@ -144,10 +145,10 @@ namespace RINGS.Models
 
         private readonly Dictionary<string, ChatPageSettingsModel> chatPages = new Dictionary<string, ChatPageSettingsModel>();
 
-        [JsonProperty(PropertyName = "chat_pages")]
-        public IEnumerable<ChatPageSettingsModel> ChatPages
+        [JsonProperty(PropertyName = "chat_pages", DefaultValueHandling = DefaultValueHandling.Include)]
+        public ChatPageSettingsModel[] ChatPages
         {
-            get => this.chatPages.Values;
+            get => this.chatPages.Values.ToArray();
             set
             {
                 this.chatPages.Clear();
@@ -205,10 +206,10 @@ namespace RINGS.Models
             ChatChannelSettingsModel.CreateDefaultChannels(false)
             .ToDictionary(x => x.ChatCode);
 
-        [JsonProperty(PropertyName = "channels")]
-        public IEnumerable<ChatChannelSettingsModel> ChannelSettings
+        [JsonProperty(PropertyName = "channels", DefaultValueHandling = DefaultValueHandling.Include)]
+        public ChatChannelSettingsModel[] ChannelSettings
         {
-            get => this.channelSettings.Values;
+            get => this.channelSettings.Values.ToArray();
             set
             {
                 this.channelSettings.Clear();
@@ -220,6 +221,13 @@ namespace RINGS.Models
                 this.RaisePropertyChanged();
             }
         }
+
+        [JsonIgnore]
+        public ChatLogsModel LogBuffer
+        {
+            get;
+            private set;
+        } = new ChatLogsModel();
 
         public ChatChannelSettingsModel GetChatChannelSettings(
             string chatCode)
@@ -236,13 +244,13 @@ namespace RINGS.Models
     public class ChatChannelSettingsModel :
         BindableBase
     {
-        public static IEnumerable<ChatChannelSettingsModel> CreateDefaultChannels(
+        public static ChatChannelSettingsModel[] CreateDefaultChannels(
             bool defaultVisibility = false)
             => ChatCodes.All.Select(code => new ChatChannelSettingsModel()
             {
                 ChatCode = code,
                 IsVisible = defaultVisibility,
-            });
+            }).ToArray();
 
         private string chatCode;
 

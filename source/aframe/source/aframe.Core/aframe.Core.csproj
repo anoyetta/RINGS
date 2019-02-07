@@ -69,6 +69,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppLogger.Server.cs" />
@@ -89,6 +90,21 @@
     <Compile Include="Converters\CompanyNameOmitConverter.cs" />
     <Compile Include="Converters\CompanyNameToShortConverter.cs" />
     <Compile Include="Converters\EnumToDisplayNameConverter.cs" />
+    <Compile Include="Dialogs\Views\ColorDialog.cs" />
+    <Compile Include="Dialogs\Views\ColorDialogContent.xaml.cs">
+      <DependentUpon>ColorDialogContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\Views\ColorDialogViewModel.cs" />
+    <Compile Include="Dialogs\Views\Dialog.xaml.cs">
+      <DependentUpon>Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\Views\FontDialog.cs" />
+    <Compile Include="Dialogs\Views\FontDialogContent.xaml.cs">
+      <DependentUpon>FontDialogContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\FontFamilyToNameConverter.cs" />
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\StringToDoubleConverter.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
@@ -98,6 +114,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TreeViewExtensions.cs" />
+    <Compile Include="FontInfo.cs" />
     <Compile Include="Helpers\MessageBoxHelper.cs" />
     <Compile Include="Helpers\WPFHelper.cs" />
     <Compile Include="AppLogger.cs" />
@@ -135,6 +152,7 @@
     <Compile Include="Views\UpdateCheckerView.xaml.cs">
       <DependentUpon>UpdateCheckerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WaColors.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -148,6 +166,18 @@
     <Folder Include="Attributes\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Dialogs\Views\ColorDialogContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\Views\Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\Views\FontDialogContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\HelpView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

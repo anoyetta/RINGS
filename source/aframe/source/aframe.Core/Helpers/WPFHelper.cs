@@ -23,8 +23,13 @@ namespace aframe
         public static Dispatcher Dispatcher => Application.Current?.Dispatcher;
 
 #if DEBUG
-        private static bool isDebugMode = false;
+        private readonly static bool isDebugMode = true;
+        private static bool isDesignMode = false;
+#else
+        private readonly static bool isDebugMode = false;
 #endif
+
+        public static bool IsDebugMode => isDebugMode;
 
         public static bool IsDesignMode
         {
@@ -36,20 +41,20 @@ namespace aframe
                     if (System.ComponentModel.LicenseManager.UsageMode ==
                         System.ComponentModel.LicenseUsageMode.Designtime)
                     {
-                        isDebugMode = true;
+                        isDesignMode = true;
                     }
                     else
                     {
                         using (var p = System.Diagnostics.Process.GetCurrentProcess())
                         {
-                            isDebugMode =
+                            isDesignMode =
                                 p.ProcessName.Equals("DEVENV", System.StringComparison.OrdinalIgnoreCase) ||
                                 p.ProcessName.Equals("XDesProc", System.StringComparison.OrdinalIgnoreCase);
                         }
                     }
                 }
 
-                return isDebugMode;
+                return isDesignMode;
 #else
                 return false;
 #endif

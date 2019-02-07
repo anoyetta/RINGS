@@ -13,6 +13,7 @@
   xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
   xmlns:fw="clr-namespace:aframe;assembly=aframe.Core"
   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  xmlns:model="clr-namespace:RINGS.Models"
   mc:Ignorable="d"
   RenderOptions.BitmapScalingMode="Fant"
   RenderOptions.ClearTypeHint="Enabled"
@@ -85,7 +86,6 @@
       <Border
         Panel.ZIndex="-1"
         Background="{Binding ChatOverlaySettings.BackgroundBrush, Mode=OneWay}"
-        Opacity="{Binding ChatOberlaySettings.Opacity, Mode=OneWay}"
         CornerRadius="6">
         <Border.Effect>
           <DropShadowEffect
@@ -146,34 +146,67 @@
 
         <TabControl.ContentTemplate>
           <DataTemplate>
-            <RichTextBox
-              Margin="0 5 0 0"
+            <ItemsControl
+              Focusable="False"
+              IsTabStop="False"
+              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+              ScrollViewer.VerticalScrollBarVisibility="Auto"
               BorderThickness="0"
               Background="Transparent"
-              HorizontalScrollBarVisibility="Disabled"
-              VerticalScrollBarVisibility="Visible"
-              VerticalContentAlignment="Bottom"
-              IsReadOnly="True">
+              ItemsSource="{Binding LogBuffer.Buffer, Mode=OneWay}">
 
-              <!--
-              <i:Interaction.Triggers>
-                <i:EventTrigger EventName="TextChanged">
-                  <local:ScrollToBottomAction />
-                </i:EventTrigger>
-              </i:Interaction.Triggers>
-              -->
-
-              <RichTextBox.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                  <Setter Property="Margin" Value="3" />
+              <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                  <Setter Property="VerticalAlignment" Value="Stretch" />
+                  <Setter Property="HorizontalAlignment" Value="Stretch" />
+                  <Setter Property="Margin" Value="0" />
                 </Style>
-              </RichTextBox.Resources>
+              </ItemsControl.ItemContainerStyle>
 
-              <FlowDocument>
-                <Paragraph>aaaaaaaaaaaaaaa</Paragraph>
-                <Paragraph>bbbbbbbbbbbbbbb</Paragraph>
-              </FlowDocument>
-            </RichTextBox>
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <VirtualizingStackPanel VerticalAlignment="Bottom"  Orientation="Vertical" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+
+              <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type model:ChatLogModel}">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                      <Style TargetType="TextBox">
+                        <Setter Property="TextOptions.TextRenderingMode" Value="Aliased" />
+                        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+                        <Setter Property="TextOptions.TextHintingMode" Value="Auto" />
+                        <Setter Property="Opacity" Value="0.95" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="IsReadOnly" Value="True" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="{Binding LogColorBrush, Mode=OneWay}" />
+                      </Style>
+                    </Grid.Resources>
+                    <TextBox
+                      Grid.Column="1"
+                      BorderThickness="0"
+                      Background="Transparent"
+                      IsReadOnly="True"
+                      Text="{Binding Speaker, Mode=OneWay, StringFormat={}{0} :}" />
+                    <TextBox
+                      Grid.Column="2"
+                      BorderThickness="0"
+                      Background="Transparent"
+                      AcceptsReturn="True"
+                      TextWrapping="Wrap"
+                      IsReadOnly="True"
+                      Text="{Binding Message, Mode=OneWay}" />
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
           </DataTemplate>
         </TabControl.ContentTemplate>
       </TabControl>

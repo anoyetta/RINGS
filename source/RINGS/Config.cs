@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using aframe;
@@ -138,10 +139,10 @@ namespace RINGS
 
         private readonly Dictionary<string, ChatOverlaySettingsModel> chatOverlaySettings = new Dictionary<string, ChatOverlaySettingsModel>();
 
-        [JsonProperty(PropertyName = "chat_overlays")]
-        public IEnumerable<ChatOverlaySettingsModel> ChatOverlaySettings
+        [JsonProperty(PropertyName = "chat_overlays", DefaultValueHandling = DefaultValueHandling.Include)]
+        public ChatOverlaySettingsModel[] ChatOverlaySettings
         {
-            get => this.chatOverlaySettings.Values;
+            get => this.chatOverlaySettings.Values.ToArray();
             set
             {
                 this.chatOverlaySettings.Clear();
