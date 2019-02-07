@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace aframe
 {
@@ -28,7 +29,7 @@ namespace aframe
         [XmlIgnore]
         public static readonly FontInfo DefaultFont = new FontInfo(
             new FontFamily(DefaultFontFamilyName),
-            11,
+            16,
             FontStyles.Normal,
             FontWeights.Normal,
             FontStretches.Normal);
@@ -130,6 +131,7 @@ namespace aframe
 
         [XmlAttribute("FontFamily")]
         [DataMember(Name = "FontFamily")]
+        [JsonProperty("font_family")]
         public string FontFamilyText
         {
             get => this.FontFamily?.Source;
@@ -139,6 +141,7 @@ namespace aframe
         /// <summary>Font Size</summary>
         [XmlAttribute]
         [DataMember]
+        [JsonProperty("size")]
         public double Size
         {
             get => this.size;
@@ -156,6 +159,7 @@ namespace aframe
         /// <summary>Font Stretch (シリアル化向け)</summary>
         [XmlAttribute(AttributeName = "Stretch")]
         [DataMember(Name = "Stretch")]
+        [JsonProperty("stretch")]
         public string StretchText
         {
             get => stretchConverter.ConvertToString(this.Stretch);
@@ -173,6 +177,7 @@ namespace aframe
         /// <summary>Font Style (シリアル化向け)</summary>
         [XmlAttribute(AttributeName = "Style")]
         [DataMember(Name = "Style")]
+        [JsonProperty("style")]
         public string StyleText
         {
             get => styleConverter.ConvertToString(this.Style);
@@ -198,6 +203,7 @@ namespace aframe
         /// <summary>Font Weight (シリアル化向け)</summary>
         [XmlAttribute(AttributeName = "Weight")]
         [DataMember(Name = "Weight")]
+        [JsonProperty("weight")]
         public string WeightText
         {
             get => weightConverter.ConvertToString(this.Weight);

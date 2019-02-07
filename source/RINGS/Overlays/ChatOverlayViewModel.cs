@@ -1,10 +1,12 @@
+using System;
 using Prism.Mvvm;
 using RINGS.Models;
 
 namespace RINGS.Overlays
 {
     public class ChatOverlayViewModel :
-        BindableBase
+        BindableBase,
+        IDisposable
     {
         public ChatOverlayViewModel() : this(Config.DefaultChatOverlayName)
         {
@@ -14,6 +16,19 @@ namespace RINGS.Overlays
             string name)
         {
             this.Name = name;
+
+            foreach (var page in this.ChatOverlaySettings.ChatPages)
+            {
+                page.CreateLogBuffer();
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (var page in this.ChatOverlaySettings.ChatPages)
+            {
+                page.DisposeLogBuffer();
+            }
         }
 
         private string name;

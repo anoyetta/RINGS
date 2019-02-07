@@ -47,6 +47,7 @@ namespace RINGS.Overlays
             this.Closed += (_, __) =>
             {
                 this.ViewModel.ChatOverlaySettings.PropertyChanged -= this.ChatOverlaySettings_PropertyChanged;
+                this.ViewModel.Dispose();
             };
         }
 

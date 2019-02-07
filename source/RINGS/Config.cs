@@ -146,9 +146,35 @@ namespace RINGS
             set
             {
                 this.chatOverlaySettings.Clear();
-                foreach (var item in value)
+
+                if (value != null)
                 {
-                    this.chatOverlaySettings[item.Name] = item;
+                    foreach (var item in value)
+                    {
+                        this.chatOverlaySettings[item.Name] = item;
+                    }
+                }
+
+                this.RaisePropertyChanged();
+            }
+        }
+
+        private readonly Dictionary<string, ChatChannelSettingsModel> chatChannelsSettings = new Dictionary<string, ChatChannelSettingsModel>();
+
+        [JsonProperty(PropertyName = "chat_channels", DefaultValueHandling = DefaultValueHandling.Include)]
+        public ChatChannelSettingsModel[] ChatChannelsSettings
+        {
+            get => this.chatChannelsSettings.Values.ToArray();
+            set
+            {
+                this.chatChannelsSettings.Clear();
+
+                if (value != null)
+                {
+                    foreach (var item in value)
+                    {
+                        this.chatChannelsSettings[item.ChatCode] = item;
+                    }
                 }
 
                 this.RaisePropertyChanged();
@@ -158,9 +184,22 @@ namespace RINGS
         public ChatOverlaySettingsModel GetChatOverlaySettings(
             string name)
         {
-            if (this.chatOverlaySettings.ContainsKey(name))
+            if (!string.IsNullOrEmpty(name) &&
+                this.chatOverlaySettings.ContainsKey(name))
             {
                 return this.chatOverlaySettings[name];
+            }
+
+            return null;
+        }
+
+        public ChatChannelSettingsModel GetChatChannelsSettings(
+            string chatCode)
+        {
+            if (!string.IsNullOrEmpty(chatCode) &&
+                this.chatChannelsSettings.ContainsKey(chatCode))
+            {
+                return this.chatChannelsSettings[chatCode];
             }
 
             return null;

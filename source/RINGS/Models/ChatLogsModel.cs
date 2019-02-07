@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using aframe;
 using Prism.Mvvm;
+using RINGS.Common;
 
 namespace RINGS.Models
 {
@@ -39,6 +40,18 @@ namespace RINGS.Models
             {
                 ActiveBuffers.Add(this);
             }
+
+            this.buffer = new Lazy<SuspendableObservableCollection<ChatLogModel>>(() =>
+            {
+                var b = new SuspendableObservableCollection<ChatLogModel>(InnerList);
+
+                if (WPFHelper.IsDesignMode || WPFHelper.IsDebugMode)
+                {
+                    this.CreateDesigntimeChatLogs(b);
+                }
+
+                return b;
+            });
         }
 
         public void Dispose()
@@ -50,15 +63,23 @@ namespace RINGS.Models
             }
         }
 
+        public SuspendableObservableCollection<ChatLogModel> Buffer => this.buffer.Value;
+
+        public Predicate<ChatLogModel> FilterCallback { get; set; }
+
         private static readonly int BufferSize = 5120;
 
         private static List<ChatLogModel> InnerList => new List<ChatLogModel>(BufferSize + (BufferSize / 10));
 
-        public SuspendableObservableCollection<ChatLogModel> Buffer { get; private set; } = WPFHelper.IsDesignMode || WPFHelper.IsDebugMode ?
-            CreateDesigntimeChatLogs() :
-            new SuspendableObservableCollection<ChatLogModel>(InnerList);
+        private Lazy<SuspendableObservableCollection<ChatLogModel>> buffer;
 
-        public Predicate<ChatLogModel> FilterCallback { get; set; }
+        private ChatOverlaySettingsModel parentOverlaySettings;
+
+        public ChatOverlaySettingsModel ParentOverlaySettings
+        {
+            get => this.parentOverlaySettings;
+            set => this.SetProperty(ref this.parentOverlaySettings, value);
+        }
 
         private ChatPageSettingsModel parentPageSettings;
 
@@ -73,7 +94,8 @@ namespace RINGS.Models
         {
             lock (this.Buffer)
             {
-                log.ParentPageSettings = ParentPageSettings;
+                log.ParentOverlaySettings = this.ParentOverlaySettings;
+                log.ParentPageSettings = this.ParentPageSettings;
                 this.Buffer.Add(log);
             }
         }
@@ -83,7 +105,8 @@ namespace RINGS.Models
         {
             foreach (var log in logs)
             {
-                log.ParentPageSettings = ParentPageSettings;
+                log.ParentOverlaySettings = this.ParentOverlaySettings;
+                log.ParentPageSettings = this.ParentPageSettings;
             }
 
             lock (this.Buffer)
@@ -116,29 +139,143 @@ namespace RINGS.Models
             }
         }
 
-        private static SuspendableObservableCollection<ChatLogModel> CreateDesigntimeChatLogs()
+        private void CreateDesigntimeChatLogs(
+            SuspendableObservableCollection<ChatLogModel> buffer)
         {
-            var logs = new SuspendableObservableCollection<ChatLogModel>();
-
-            logs.Add(new ChatLogModel()
+            buffer.Add(new ChatLogModel()
             {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Say,
                 Speaker = "Naoki Y.",
                 Message = "本日は晴天なり。"
             });
 
-            logs.Add(new ChatLogModel()
+            buffer.Add(new ChatLogModel()
             {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Say,
                 Speaker = "Naoki Y.",
                 Message = "明日も晴天かな？"
             });
 
-            logs.Add(new ChatLogModel()
+            buffer.Add(new ChatLogModel()
             {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Say,
                 Speaker = "Naoki Y.",
                 Message = "あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。"
             });
 
-            return logs;
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Party,
+                Speaker = "Naoki Y.",
+                Message = "よろしくおねがいします～ ＞＜"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Linkshell1,
+                Speaker = "Naoki Y.",
+                Message = "リンクシェル1の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Linkshell2,
+                Speaker = "Naoki Y.",
+                Message = "リンクシェル2の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Linkshell3,
+                Speaker = "Naoki Y.",
+                Message = "リンクシェル3の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Linkshell4,
+                Speaker = "Naoki Y.",
+                Message = "リンクシェル4の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Linkshell5,
+                Speaker = "Naoki Y.",
+                Message = "リンクシェル5の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Linkshell6,
+                Speaker = "Naoki Y.",
+                Message = "リンクシェル6の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Linkshell7,
+                Speaker = "Naoki Y.",
+                Message = "リンクシェル7の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.Linkshell8,
+                Speaker = "Naoki Y.",
+                Message = "リンクシェル8の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.CrossWorldLinkshell,
+                Speaker = "Naoki Y.",
+                Message = "CWLSの皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.FreeCompany,
+                Speaker = "Naoki Y.",
+                Message = "フリーカンパニーの皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.NPCAnnounce,
+                Speaker = "ネール・デウス・ダーナス",
+                Message = "チャリオッツいくおー ^ ^"
+            });
         }
     }
 }

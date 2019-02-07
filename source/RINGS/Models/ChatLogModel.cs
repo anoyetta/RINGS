@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel;
-using System.Windows.Media;
 using Discord.WebSocket;
 using Prism.Mvvm;
+using RINGS.Common;
 using Sharlayan.Core;
 
 namespace RINGS.Models
@@ -23,11 +23,9 @@ namespace RINGS.Models
             switch (e.PropertyName)
             {
                 case nameof(this.ChatCode):
-                case nameof(this.ParentPageSettings):
-                    this.LogColorBrush = this.ParentPageSettings?
-                        .GetChatChannelSettings(this.chatCode)?
-                        .ColorBrush
-                        ?? Brushes.White;
+                    this.ChannelSettings =
+                        Config.Instance.GetChatChannelsSettings(this.chatCode)
+                        ?? ChatChannelSettingsModel.DefaultChannelSettings;
                     break;
             }
         }
@@ -36,13 +34,24 @@ namespace RINGS.Models
 
         public DateTime Timestamp { get; private set; } = DateTime.Now;
 
-        private string chatCode;
+        private string chatCode = string.Empty;
 
         public string ChatCode
         {
             get => this.chatCode;
-            set => this.SetProperty(ref this.chatCode, value);
+            set
+            {
+                if (this.SetProperty(ref this.chatCode, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.ChatCodeIndicator));
+                }
+            }
         }
+
+        public string ChatCodeIndicator =>
+            ChatCodes.DisplayNames.ContainsKey(this.chatCode) && !string.IsNullOrEmpty(ChatCodes.DisplayNames[this.chatCode].ShortName) ?
+            $"[{ChatCodes.DisplayNames[this.chatCode].ShortName}] " :
+            string.Empty;
 
         private string speaker;
 
@@ -84,6 +93,14 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.xivLog, value);
         }
 
+        private ChatOverlaySettingsModel parentOverlaySettings;
+
+        public ChatOverlaySettingsModel ParentOverlaySettings
+        {
+            get => this.parentOverlaySettings;
+            set => this.SetProperty(ref this.parentOverlaySettings, value);
+        }
+
         private ChatPageSettingsModel parentPageSettings;
 
         public ChatPageSettingsModel ParentPageSettings
@@ -92,12 +109,12 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.parentPageSettings, value);
         }
 
-        private SolidColorBrush logColorBrush = Brushes.White;
+        private ChatChannelSettingsModel channelSettings;
 
-        public SolidColorBrush LogColorBrush
+        public ChatChannelSettingsModel ChannelSettings
         {
-            get => this.logColorBrush;
-            private set => this.SetProperty(ref this.logColorBrush, value);
+            get => this.channelSettings;
+            private set => this.SetProperty(ref this.channelSettings, value);
         }
 
         public override string ToString() =>

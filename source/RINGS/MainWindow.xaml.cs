@@ -1,4 +1,3 @@
-using aframe;
 using MahApps.Metro.Controls;
 using RINGS.Overlays;
 
@@ -14,13 +13,15 @@ namespace RINGS
             this.InitializeComponent();
 
             new ChatOverlay().Show();
-
-            WPFHelper.Dispatcher.InvokeAsync(() => ColorDialog.ShowDialog());
         }
 
-        private void HamburgerMenuControl_OnItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)
+        private void HamburgerMenuControl_OnItemInvoked(
+            object sender,
+            HamburgerMenuItemInvokedEventArgs e)
         {
-            this.HamburgerMenuControl.SetCurrentValue(ContentProperty, e.InvokedItem);
+            this.HamburgerMenuControl.SetCurrentValue(
+                ContentProperty,
+                e.InvokedItem);
         }
     }
 }
