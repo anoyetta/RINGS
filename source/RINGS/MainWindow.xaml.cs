@@ -1,5 +1,4 @@
 using MahApps.Metro.Controls;
-using RINGS.Overlays;
 
 namespace RINGS
 {
@@ -11,8 +10,6 @@ namespace RINGS
         public MainWindow()
         {
             this.InitializeComponent();
-
-            new ChatOverlay().Show();
         }
 
         private void HamburgerMenuControl_OnItemInvoked(

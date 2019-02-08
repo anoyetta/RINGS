@@ -171,6 +171,33 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.pcNameStyle, value);
         }
 
+        private bool isAutoHide = false;
+
+        [JsonProperty(PropertyName = "auto_hide")]
+        public bool IsAutoHide
+        {
+            get => this.isAutoHide = false;
+            set => this.SetProperty(ref this.isAutoHide, value);
+        }
+
+        private double timeToHide = 10.0d;
+
+        [JsonProperty(PropertyName = "time_to_hide")]
+        public double TimeToHide
+        {
+            get => this.timeToHide;
+            set => this.SetProperty(ref this.timeToHide, value);
+        }
+
+        private bool isAutoActivatePage = false;
+
+        [JsonProperty(PropertyName = "auto_activate_page")]
+        public bool IsAutoActivatePage
+        {
+            get => this.isAutoActivatePage;
+            set => this.SetProperty(ref this.isAutoActivatePage, value);
+        }
+
         private readonly Dictionary<string, ChatPageSettingsModel> chatPages = new Dictionary<string, ChatPageSettingsModel>();
 
         [JsonProperty(PropertyName = "chat_pages", DefaultValueHandling = DefaultValueHandling.Include)]
@@ -289,6 +316,8 @@ namespace RINGS.Models
             };
 
             this.LogBuffer.FilterCallback = (chatLog) =>
+                this.parentOverlaySettings != null &&
+                this.parentOverlaySettings.IsEnabled &&
                 this.handledChatChannels.ContainsKey(chatLog.ChatCode ?? string.Empty) &&
                 this.handledChatChannels[chatLog.ChatCode ?? string.Empty].IsEnabled;
 

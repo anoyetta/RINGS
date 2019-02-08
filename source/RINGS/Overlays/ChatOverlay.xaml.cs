@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -30,6 +31,18 @@ namespace RINGS.Overlays
                 ResizeMode.NoResize :
                 ResizeMode.CanResizeWithGrip;
 
+            this.ViewModel.ShowCallback = () => this.OverlayVisible = true;
+            this.ViewModel.HideCallback = () => this.OverlayVisible = false;
+            this.ViewModel.ChangeActivePageCallback = (pageName) =>
+            {
+                var pages = this.ChatPagesTabControl.Items.Cast<ChatPageSettingsModel>();
+                var page = pages?.FirstOrDefault(x => x.Name == pageName);
+                if (page != null)
+                {
+                    this.ChatPagesTabControl.SelectedItem = page;
+                }
+            };
+
             this.TitleLabel.MouseLeftButtonDown += (_, __) =>
             {
                 if (!this.ViewModel.ChatOverlaySettings.IsLock)
@@ -53,7 +66,9 @@ namespace RINGS.Overlays
 
         public ChatOverlayViewModel ViewModel => this.DataContext as ChatOverlayViewModel;
 
-        private void ChatOverlaySettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ChatOverlaySettings_PropertyChanged(
+            object sender, 
+            PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {

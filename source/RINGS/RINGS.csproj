@@ -79,6 +79,7 @@
     <Compile Include="Overlays\ChatOverlay.xaml.cs">
       <DependentUpon>ChatOverlay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Overlays\ChatOverlaysController.cs" />
     <Compile Include="Overlays\ChatOverlayViewModel.cs" />
     <Compile Include="Overlays\IOverlay.cs" />
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />

@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Threading;
 using aframe;
+using RINGS.Overlays;
 
 namespace RINGS
 {
@@ -22,9 +23,10 @@ namespace RINGS
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            // Configをロードする
             var c = Config.Instance;
             c.SetStartup(c.IsStartupWithWindows);
+
+            ChatOverlaysController.Instance.Start();
 
             AppLogger.Write($"{c.AppNameWithVersion} Start.");
         }
@@ -34,6 +36,8 @@ namespace RINGS
             try
             {
                 Config.Instance.Save();
+
+                ChatOverlaysController.Instance.Stop();
             }
             finally
             {

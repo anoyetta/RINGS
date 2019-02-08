@@ -25,6 +25,134 @@
   d:DesignHeight="450" d:DesignWidth="800"
   d:DataContext="{d:DesignInstance {x:Type vm:ChatOverlaySettingsViewModel}, IsDesignTimeCreatable=True}"
   prism:ViewModelLocator.AutoWireViewModel="True">
+  
   <Grid>
+    <TabControl>
+      <TabItem Header="Overlay" Padding="15 0">
+        <Grid>
+          <Grid>
+            <ScrollViewer
+              HorizontalScrollBarVisibility="Disabled"
+              VerticalScrollBarVisibility="Auto"
+              Focusable="False"
+              IsTabStop="False">
+
+              <ItemsControl
+                Focusable="False"
+                IsTabStop="False"
+                ItemsSource="{Binding Config.ChatOverlaySettings, Mode=OneWay}">
+
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate DataType="{x:Type vm:ChatOverlaySettingsViewModel}">
+                    <Border
+                      Margin="10"
+                      Padding="10"
+                      CornerRadius="2"
+                      Background="{DynamicResource GrayBrush8}"
+                      Width="270">
+                      
+                      <Grid>
+                        <metro:MetroHeader>
+                          <metro:MetroHeader.Header>
+                            <TextBlock 
+                              Text="{Binding Name, Mode=OneWay}" 
+                              FontSize="{DynamicResource FlyoutHeaderFontSize}"
+                              TextTrimming="WordEllipsis"
+                              Margin="0 0 0 30"/>
+                          </metro:MetroHeader.Header>
+
+                          <metro:MetroHeader.Resources>
+                            <Style x:Key="LocationUpDown" TargetType="{x:Type metro:NumericUpDown}">
+                              <Setter Property="HideUpDownButtons" Value="True" />
+                              <Setter Property="StringFormat" Value="N0" />
+                              <Setter Property="Background" Value="Transparent" />
+                              <Setter Property="MinWidth" Value="10" />
+                              <Setter Property="Width" Value="48" />
+                            </Style>
+                          </metro:MetroHeader.Resources>
+
+                          <StackPanel VerticalAlignment="Bottom">
+                            <StackPanel Orientation="Horizontal">
+                              <Label Content="X" Width="21" HorizontalContentAlignment="Right" />
+                              <metro:NumericUpDown 
+                                Style="{DynamicResource LocationUpDown}"
+                                Value="{Binding X, Mode=TwoWay}" />
+                              <Label Content="Y" Width="21" HorizontalContentAlignment="Right" Margin="10 0 0 0" />
+                              <metro:NumericUpDown 
+                                Style="{DynamicResource LocationUpDown}"
+                                Value="{Binding Y, Mode=TwoWay}" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                              <Label Content="W" Width="21" HorizontalContentAlignment="Right" />
+                              <metro:NumericUpDown 
+                                Style="{DynamicResource LocationUpDown}"
+                                Value="{Binding W, Mode=TwoWay}" />
+                              <Label Content="H" Width="21"  HorizontalContentAlignment="Right" Margin="10 0 0 0" />
+                              <metro:NumericUpDown 
+                                Style="{DynamicResource LocationUpDown}"
+                                Value="{Binding H, Mode=TwoWay}" />
+                            </StackPanel>
+                          </StackPanel>
+                        </metro:MetroHeader>
+
+                        <DockPanel
+                          HorizontalAlignment="Right">
+                          <Button
+                            DockPanel.Dock="Top"
+                            HorizontalAlignment="Right"
+                            Height="20"
+                            Width="20"
+                            Style="{DynamicResource IconButtonStyle}"
+                            Command="{Binding DeleteCommand, Mode=OneWay}">
+                            <Viewbox Width="9">
+                              <iconPacks:PackIconMaterial Kind="Close" Foreground="{DynamicResource IdealForegroundColorBrush}" />
+                            </Viewbox>
+                          </Button>
+                          <metro:ToggleSwitch
+                            DockPanel.Dock="Bottom"
+                            VerticalAlignment="Bottom"
+                            Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                            Margin="0 10 0 0"
+                            Content=""
+                            IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
+                        </DockPanel>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+
+            </ScrollViewer>
+
+            <DockPanel VerticalAlignment="Bottom">
+              <Button
+                Height="40"
+                Width="40"
+                HorizontalAlignment="Right"
+                Style="{DynamicResource IconButtonStyle}"
+                Command="{Binding AddCommand, Mode=OneWay}">
+                <iconPacks:PackIconMaterial Kind="Plus"  Foreground="{DynamicResource IdealForegroundColorBrush}" />
+              </Button>
+            </DockPanel>
+          </Grid>
+          
+          <!-- Overlay サブページ -->
+          <ContentPresenter
+            x:Name="SubPagePresenter"
+            Panel.ZIndex="2" />
+        </Grid>
+      </TabItem>
+
+      <TabItem Header="Log Colors" Padding="15 0">
+
+      </TabItem>
+    </TabControl>
   </Grid>
 </UserControl>

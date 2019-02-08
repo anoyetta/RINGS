@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using aframe;
 using Prism.Mvvm;
@@ -50,6 +51,8 @@ namespace RINGS.Models
                     this.CreateDesigntimeChatLogs(b);
                 }
 
+                b.CollectionChanged += this.Buffer_CollectionChanged;
+
                 return b;
             });
         }
@@ -58,6 +61,7 @@ namespace RINGS.Models
         {
             lock (ActiveBuffers)
             {
+                this.Buffer.CollectionChanged -= this.Buffer_CollectionChanged;
                 this.Buffer.Clear();
                 ActiveBuffers.Remove(this);
             }
@@ -65,7 +69,29 @@ namespace RINGS.Models
 
         public SuspendableObservableCollection<ChatLogModel> Buffer => this.buffer.Value;
 
+        public event EventHandler<ChatLogAddedEventArgs> ChatLogAdded;
+
+        protected void OnChatLogAdded(
+            ChatLogAddedEventArgs e)
+            => this.ChatLogAdded?.Invoke(this, e);
+
         public Predicate<ChatLogModel> FilterCallback { get; set; }
+
+        private void Buffer_CollectionChanged(
+            object sender, 
+            NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null &&
+                e.NewItems.Count > 0)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    this.OnChatLogAdded(new ChatLogAddedEventArgs(
+                        this.parentPageSettings,
+                        item as ChatLogModel));
+                }
+            }
+        }
 
         private static readonly int BufferSize = 5120;
 
@@ -277,5 +303,23 @@ namespace RINGS.Models
                 Message = "チャリオッツいくおー ^ ^"
             });
         }
+    }
+
+    public class ChatLogAddedEventArgs : EventArgs
+    {
+        public ChatLogAddedEventArgs()
+        {
+        }
+        public ChatLogAddedEventArgs(
+            ChatPageSettingsModel parentPage,
+            ChatLogModel addedLog)
+        {
+            this.ParentPage = parentPage;
+            this.AddedLog = addedLog;
+        }
+
+        public ChatPageSettingsModel ParentPage { get; set; }
+
+        public ChatLogModel AddedLog { get; set; }
     }
 }

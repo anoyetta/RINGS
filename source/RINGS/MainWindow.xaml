@@ -232,7 +232,7 @@
               Focusable="False"
               HorizontalScrollBarVisibility="Disabled"
               VerticalScrollBarVisibility="Auto">
-              <ContentControl Content="{Binding Tag}" Focusable="False" />
+              <ContentControl Margin="0 5 0 10" Content="{Binding Tag}" Focusable="False" />
             </ScrollViewer>
           </Grid>
         </DataTemplate>

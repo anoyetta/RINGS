@@ -100,6 +100,7 @@
 
       <!-- Pages -->
       <TabControl
+        x:Name="ChatPagesTabControl"
         BorderThickness="0"
         Background="Transparent"
         Focusable="False"
