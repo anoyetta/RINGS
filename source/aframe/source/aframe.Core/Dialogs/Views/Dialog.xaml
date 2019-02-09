@@ -14,6 +14,7 @@
   TextOptions.TextFormattingMode="Ideal"
   TextOptions.TextHintingMode="Auto"
   TextOptions.TextRenderingMode="ClearType"
+  WindowStartupLocation="CenterOwner"
   ShowInTaskbar="True"
   ResizeMode="CanResize"
   Title="Dialog"

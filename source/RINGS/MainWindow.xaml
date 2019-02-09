@@ -28,14 +28,17 @@
   d:DataContext="{d:DesignInstance {x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=True}"
   Top="{Binding Config.Y, Mode=TwoWay}"
   Left="{Binding Config.X, Mode=TwoWay}"
-  SizeToContent="WidthAndHeight">
+  Width="{Binding Config.W, Mode=TwoWay}"
+  Height="{Binding Config.H, Mode=TwoWay}">
 
   <metro:MetroWindow.DataContext>
     <vm:MainWindowViewModel />
   </metro:MetroWindow.DataContext>
 
   <metro:MetroWindow.LayoutTransform>
-    <ScaleTransform ScaleX="{Binding Config.Scale, Mode=OneWay}" ScaleY="{Binding Config.Scale, Mode=OneWay}" />
+    <ScaleTransform
+      ScaleX="{Binding Config.Scale, Mode=OneWay}"
+      ScaleY="{Binding Config.Scale, Mode=OneWay}" />
   </metro:MetroWindow.LayoutTransform>
 
   <d:DesignerProperties.DesignStyle>
@@ -196,9 +199,7 @@
     </ResourceDictionary>
   </metro:MetroWindow.Resources>
 
-  <Grid
-    Width="{Binding Config.W, Mode=TwoWay}"
-    Height="{Binding Config.H, Mode=TwoWay}">
+  <Grid>
     <metro:HamburgerMenu
       x:Name="HamburgerMenuControl"
       IsPaneOpen="True"
@@ -227,13 +228,11 @@
               FontFamily="{DynamicResource HeaderFontFamily}"
               FontSize="{DynamicResource HeaderFontSize}"
               Text="{Binding Label}" />
-            <ScrollViewer
+            <ContentControl
               Grid.Row="1"
-              Focusable="False"
-              HorizontalScrollBarVisibility="Disabled"
-              VerticalScrollBarVisibility="Auto">
-              <ContentControl Margin="0 5 0 10" Content="{Binding Tag}" Focusable="False" />
-            </ScrollViewer>
+              Margin="0 5 0 10"
+              Content="{Binding Tag}"
+              Focusable="False" />
           </Grid>
         </DataTemplate>
       </metro:HamburgerMenu.ContentTemplate>
@@ -255,5 +254,18 @@
         </metro:HamburgerMenuItemCollection>
       </metro:HamburgerMenu.OptionsItemsSource>
     </metro:HamburgerMenu>
+
+    <materialDesign:Snackbar
+      x:Name="Snackbar"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Bottom"
+      HorizontalContentAlignment="Center"
+      VerticalContentAlignment="Center"
+      FontSize="{DynamicResource TabItemFontSize}"
+      Background="{DynamicResource GrayBrush2}"
+      Foreground="{DynamicResource WhiteBrush}"
+      Opacity="0.95"
+      Margin="0 0 0 20"
+      MessageQueue="{materialDesign:MessageQueue}" />
   </Grid>
 </metro:MetroWindow>

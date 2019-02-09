@@ -83,7 +83,7 @@ namespace RINGS.Models
         public double Scale
         {
             get => this.scale;
-            set => this.SetProperty(ref this.scale, Math.Round(value, 2));
+            set => this.SetProperty(ref this.scale, value);
         }
 
         private Color backgroundColor = Colors.Black;
@@ -176,7 +176,7 @@ namespace RINGS.Models
         [JsonProperty(PropertyName = "auto_hide")]
         public bool IsAutoHide
         {
-            get => this.isAutoHide = false;
+            get => this.isAutoHide;
             set => this.SetProperty(ref this.isAutoHide, value);
         }
 
@@ -198,53 +198,44 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.isAutoActivatePage, value);
         }
 
-        private readonly Dictionary<string, ChatPageSettingsModel> chatPages = new Dictionary<string, ChatPageSettingsModel>();
+        private readonly SuspendableObservableCollection<ChatPageSettingsModel> chatPages = new SuspendableObservableCollection<ChatPageSettingsModel>();
 
         [JsonProperty(PropertyName = "chat_pages", DefaultValueHandling = DefaultValueHandling.Include)]
-        public ChatPageSettingsModel[] ChatPages
+        public SuspendableObservableCollection<ChatPageSettingsModel> ChatPages
         {
-            get => this.chatPages.Values.ToArray();
+            get => this.chatPages;
             set
             {
-                this.chatPages.Clear();
-                foreach (var item in value)
-                {
-                    item.ParentOverlaySettings = this;
-                    this.chatPages[item.Name] = item;
-                }
-
+                this.chatPages.AddRange(value, true);
                 this.RaisePropertyChanged();
             }
         }
 
-        public ChatPageSettingsModel GetChatPages(
+        public ChatPageSettingsModel GetChatPage(
             string name)
         {
-            if (string.IsNullOrEmpty(name) ||
-                !this.chatPages.ContainsKey(name))
+            if (string.IsNullOrEmpty(name))
             {
                 return null;
             }
 
-            return this.chatPages[name];
+            return this.chatPages.FirstOrDefault(x => x.Name == name);
         }
 
-        public void AddChatPages(
+        public void AddChatPage(
             ChatPageSettingsModel page)
         {
             page.ParentOverlaySettings = this;
-            this.chatPages[page.Name] = page;
-            this.RaisePropertyChanged(nameof(this.ChatPages));
+            this.chatPages.Add(page);
         }
 
-        public void RemoveChatPages(
+        public void RemoveChatPage(
             string name)
         {
-            if (!string.IsNullOrEmpty(name) &&
-                this.chatPages.ContainsKey(name))
+            var page = this.GetChatPage(name);
+            if (page != null)
             {
-                this.chatPages.Remove(name);
-                this.RaisePropertyChanged(nameof(this.ChatPages));
+                this.chatPages.Remove(page);
             }
         }
     }

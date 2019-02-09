@@ -1,3 +1,4 @@
+using aframe;
 using MahApps.Metro.Controls;
 
 namespace RINGS
@@ -10,6 +11,9 @@ namespace RINGS
         public MainWindow()
         {
             this.InitializeComponent();
+
+            MessageBoxHelper.EnqueueSnackbarCallback = (message, neverDuplicate) =>
+                this.Snackbar.MessageQueue.Enqueue(message, neverDuplicate);
         }
 
         private void HamburgerMenuControl_OnItemInvoked(

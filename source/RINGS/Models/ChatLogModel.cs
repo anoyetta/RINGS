@@ -22,6 +22,11 @@ namespace RINGS.Models
         {
             switch (e.PropertyName)
             {
+                case nameof(this.OriginalSpeaker):
+                case nameof(this.SpeakerType):
+                    this.SetSpeaker();
+                    break;
+
                 case nameof(this.ChatCode):
                     this.ChannelSettings =
                         Config.Instance.GetChatChannelsSettings(this.chatCode)
@@ -33,6 +38,8 @@ namespace RINGS.Models
         public int ID { get; private set; }
 
         public DateTime Timestamp { get; private set; } = DateTime.Now;
+
+        public bool IsDummy { get; set; } = false;
 
         private string chatCode = string.Empty;
 
@@ -58,7 +65,42 @@ namespace RINGS.Models
         public string Speaker
         {
             get => this.speaker;
-            set => this.SetProperty(ref this.speaker, value);
+            private set => this.SetProperty(ref this.speaker, value);
+        }
+
+        private string originalSpeaker;
+
+        public string OriginalSpeaker
+        {
+            get => this.originalSpeaker;
+            set => this.SetProperty(ref this.originalSpeaker, value);
+        }
+
+        private SpeakerTypes speakerType = SpeakerTypes.XIVPlayer;
+
+        public SpeakerTypes SpeakerType
+        {
+            get => this.speakerType;
+            set => this.SetProperty(ref this.speakerType, value);
+        }
+
+        public void SetSpeaker()
+        {
+            var speaker = string.Empty;
+
+            switch (this.SpeakerType)
+            {
+                case SpeakerTypes.XIVPlayer:
+                case SpeakerTypes.DiscordBot:
+                    speaker = this.ParentOverlaySettings.PCNameStyle.FormatName(this.OriginalSpeaker);
+                    break;
+
+                case SpeakerTypes.DiscordUser:
+                    speaker = this.OriginalSpeaker;
+                    break;
+            }
+
+            this.Speaker = speaker;
         }
 
         private string message;
@@ -125,7 +167,8 @@ namespace RINGS.Models
         {
             var log = new ChatLogModel()
             {
-                XIVLog = xivLog
+                XIVLog = xivLog,
+                SpeakerType = SpeakerTypes.XIVPlayer,
             };
 
             log.ChatCode = xivLog.Code;
@@ -133,7 +176,7 @@ namespace RINGS.Models
             var i = xivLog.Line.IndexOf(":");
             if (i >= 0)
             {
-                log.Speaker = xivLog.Line.Substring(0, i);
+                log.OriginalSpeaker = xivLog.Line.Substring(0, i);
                 log.Message = xivLog.Line.Substring(i + 1);
             }
             else
@@ -152,16 +195,27 @@ namespace RINGS.Models
                 DiscordLog = dicordLog
             };
 
-            var i = dicordLog.Content.IndexOf(":");
-            if (i >= 0)
+            if (!dicordLog.Author.IsBot)
             {
-                log.Speaker = dicordLog.Content.Substring(0, i);
-                log.Message = dicordLog.Content.Substring(i + 1);
+                log.SpeakerType = SpeakerTypes.DiscordUser;
+                log.OriginalSpeaker = dicordLog.Author.Username;
+                log.Message = dicordLog.Content;
             }
             else
             {
-                log.Speaker = dicordLog.Author.Username;
-                log.Message = dicordLog.Content;
+                var i = dicordLog.Content.IndexOf(":");
+                if (i >= 0)
+                {
+                    log.SpeakerType = SpeakerTypes.DiscordBot;
+                    log.OriginalSpeaker = dicordLog.Content.Substring(0, i);
+                    log.Message = dicordLog.Content.Substring(i + 1);
+                }
+                else
+                {
+                    log.SpeakerType = SpeakerTypes.DiscordUser;
+                    log.OriginalSpeaker = dicordLog.Author.Username;
+                    log.Message = dicordLog.Content;
+                }
             }
 
             return log;

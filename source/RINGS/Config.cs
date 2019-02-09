@@ -159,6 +159,23 @@ namespace RINGS
             }
         }
 
+        public void AddChatOverlaySettings(
+            ChatOverlaySettingsModel settings)
+        {
+            this.chatOverlaySettings[settings.Name] = settings;
+            this.RaisePropertyChanged(nameof(this.ChatOverlaySettings));
+        }
+
+        public void RemoveChatOverlaySettings(
+            ChatOverlaySettingsModel settings)
+        {
+            if (this.chatOverlaySettings.ContainsKey(settings.Name))
+            {
+                this.chatOverlaySettings.Remove(settings.Name);
+                this.RaisePropertyChanged(nameof(this.ChatOverlaySettings));
+            }
+        }
+
         private readonly Dictionary<string, ChatChannelSettingsModel> chatChannelsSettings = new Dictionary<string, ChatChannelSettingsModel>();
 
         [JsonProperty(PropertyName = "chat_channels", DefaultValueHandling = DefaultValueHandling.Include)]

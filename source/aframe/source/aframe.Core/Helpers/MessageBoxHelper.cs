@@ -91,7 +91,7 @@ namespace aframe
         /// スナックバーにメッセージ表示キューを登録する
         /// </summary>
         /// <param name="message">メッセージ</param>
-        /// <param name="neverConsiderToBeDuplicate">重複するメッセージを消去しない？</param>
+        /// <param name="neverConsiderToBeDuplicate">重複するメッセージを消去しない？true:消去しない, false:消去する</param>
         public static void EnqueueSnackMessage(
             string message,
             bool neverConsiderToBeDuplicate = false)

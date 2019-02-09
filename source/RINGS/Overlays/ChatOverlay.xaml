@@ -34,12 +34,6 @@
   Width="{Binding ChatOverlaySettings.W, Mode=TwoWay}"
   Height="{Binding ChatOverlaySettings.H, Mode=TwoWay}">
 
-  <Window.LayoutTransform>
-    <ScaleTransform
-      ScaleX="{Binding ChatOverlaySettings.Scale, Mode=OneWay}"
-      ScaleY="{Binding ChatOverlaySettings.Scale, Mode=OneWay}" />
-  </Window.LayoutTransform>
-
   <Window.DataContext>
     <local:ChatOverlayViewModel />
   </Window.DataContext>
@@ -51,8 +45,12 @@
     </Style>
   </Window.Resources>
 
-  <Grid
-    Margin="9">
+  <Grid Margin="9">
+    <Grid.LayoutTransform>
+      <ScaleTransform
+        ScaleX="{Binding ChatOverlaySettings.Scale, Mode=OneWay}"
+        ScaleY="{Binding ChatOverlaySettings.Scale, Mode=OneWay}" />
+    </Grid.LayoutTransform>
 
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />

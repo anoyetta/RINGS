@@ -22,6 +22,8 @@
   RenderOptions.BitmapScalingMode="Fant"
   RenderOptions.ClearTypeHint="Enabled"
   TextElement.FontWeight="Regular"
+  Focusable="False"
+  IsTabStop="False"
   d:DesignHeight="450" d:DesignWidth="800"
   d:DataContext="{d:DesignInstance {x:Type vm:HomeViewModel}, IsDesignTimeCreatable=True}"
   prism:ViewModelLocator.AutoWireViewModel="True">

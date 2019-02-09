@@ -1,5 +1,8 @@
 using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows.Threading;
+using aframe;
 using Prism.Mvvm;
 using RINGS.Models;
 
@@ -35,6 +38,8 @@ namespace RINGS.Overlays
                 page.LogBuffer.ChatLogAdded += this.LogBuffer_ChatLogAdded;
             }
 
+            this.SubscribeOverlaySettings();
+
             this.HideTimer.Tick += this.HideTimer_Tick;
             this.HideTimer.Start();
         }
@@ -44,10 +49,55 @@ namespace RINGS.Overlays
             this.HideTimer.Stop();
             this.HideTimer.Tick -= this.HideTimer_Tick;
 
+            this.UnsubscribeOverlaySettings();
+
             foreach (var page in this.ChatOverlaySettings.ChatPages)
             {
-                page.LogBuffer.ChatLogAdded -= this.LogBuffer_ChatLogAdded;
+                if (page.LogBuffer != null)
+                {
+                    page.LogBuffer.ChatLogAdded -= this.LogBuffer_ChatLogAdded;
+                }
+
                 page.DisposeLogBuffer();
+            }
+        }
+
+        private void SubscribeOverlaySettings()
+        {
+            if (this.ChatOverlaySettings != null)
+            {
+                this.ChatOverlaySettings.PropertyChanged += this.ChatOverlaySettings_PropertyChanged;
+            }
+        }
+
+        private void UnsubscribeOverlaySettings()
+        {
+            if (this.ChatOverlaySettings != null)
+            {
+                this.ChatOverlaySettings.PropertyChanged -= this.ChatOverlaySettings_PropertyChanged;
+            }
+        }
+
+        private async void ChatOverlaySettings_PropertyChanged(
+            object sender,
+            PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ChatOverlaySettingsModel.PCNameStyle):
+                    await WPFHelper.Dispatcher.InvokeAsync(() =>
+                    {
+                        foreach (var page in this.ChatOverlaySettings.ChatPages)
+                        {
+                            var logs = page.LogBuffer.Buffer.ToArray();
+                            foreach (var log in logs)
+                            {
+                                log.SetSpeaker();
+                            }
+                        }
+                    },
+                    DispatcherPriority.ContextIdle);
+                    break;
             }
         }
 
@@ -87,9 +137,16 @@ namespace RINGS.Overlays
             get => this.name;
             set
             {
+                if (this.name != value)
+                {
+                    this.UnsubscribeOverlaySettings();
+                }
+
                 if (this.SetProperty(ref this.name, value))
                 {
+                    this.SubscribeOverlaySettings();
                     this.RaisePropertyChanged(nameof(this.Title));
+                    this.RaisePropertyChanged(nameof(this.ChatOverlaySettings));
                 }
             }
         }

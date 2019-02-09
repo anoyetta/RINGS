@@ -22,15 +22,17 @@
   RenderOptions.BitmapScalingMode="Fant"
   RenderOptions.ClearTypeHint="Enabled"
   TextElement.FontWeight="Regular"
+  Focusable="False"
+  IsTabStop="False"
   d:DesignHeight="450" d:DesignWidth="800"
   d:DataContext="{d:DesignInstance {x:Type vm:ChatOverlaySettingsViewModel}, IsDesignTimeCreatable=True}"
   prism:ViewModelLocator.AutoWireViewModel="True">
-  
+
   <Grid>
     <TabControl>
-      <TabItem Header="Overlay" Padding="15 0">
+      <TabItem Header="Overlay" Padding="15 0" metro:ControlsHelper.HeaderFontSize="24">
         <Grid>
-          <Grid>
+          <Grid x:Name="ParentContent">
             <ScrollViewer
               HorizontalScrollBarVisibility="Disabled"
               VerticalScrollBarVisibility="Auto"
@@ -49,22 +51,23 @@
                 </ItemsControl.ItemsPanel>
 
                 <ItemsControl.ItemTemplate>
-                  <DataTemplate DataType="{x:Type vm:ChatOverlaySettingsViewModel}">
+                  <DataTemplate DataType="{x:Type model:ChatOverlaySettingsModel}">
                     <Border
                       Margin="10"
                       Padding="10"
                       CornerRadius="2"
                       Background="{DynamicResource GrayBrush8}"
-                      Width="270">
-                      
+                      Width="270"
+                      MouseLeftButtonDown="OverlaySettingsPanel_MouseLeftButtonDown">
+
                       <Grid>
                         <metro:MetroHeader>
                           <metro:MetroHeader.Header>
-                            <TextBlock 
-                              Text="{Binding Name, Mode=OneWay}" 
+                            <TextBlock
+                              Text="{Binding Name, Mode=OneWay}"
                               FontSize="{DynamicResource FlyoutHeaderFontSize}"
                               TextTrimming="WordEllipsis"
-                              Margin="0 0 0 30"/>
+                              Margin="0 0 0 30" />
                           </metro:MetroHeader.Header>
 
                           <metro:MetroHeader.Resources>
@@ -80,22 +83,22 @@
                           <StackPanel VerticalAlignment="Bottom">
                             <StackPanel Orientation="Horizontal">
                               <Label Content="X" Width="21" HorizontalContentAlignment="Right" />
-                              <metro:NumericUpDown 
+                              <metro:NumericUpDown
                                 Style="{DynamicResource LocationUpDown}"
                                 Value="{Binding X, Mode=TwoWay}" />
                               <Label Content="Y" Width="21" HorizontalContentAlignment="Right" Margin="10 0 0 0" />
-                              <metro:NumericUpDown 
+                              <metro:NumericUpDown
                                 Style="{DynamicResource LocationUpDown}"
                                 Value="{Binding Y, Mode=TwoWay}" />
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
                               <Label Content="W" Width="21" HorizontalContentAlignment="Right" />
-                              <metro:NumericUpDown 
+                              <metro:NumericUpDown
                                 Style="{DynamicResource LocationUpDown}"
                                 Value="{Binding W, Mode=TwoWay}" />
                               <Label Content="H" Width="21"  HorizontalContentAlignment="Right" Margin="10 0 0 0" />
-                              <metro:NumericUpDown 
+                              <metro:NumericUpDown
                                 Style="{DynamicResource LocationUpDown}"
                                 Value="{Binding H, Mode=TwoWay}" />
                             </StackPanel>
@@ -128,7 +131,6 @@
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>
-
             </ScrollViewer>
 
             <DockPanel VerticalAlignment="Bottom">
@@ -142,7 +144,7 @@
               </Button>
             </DockPanel>
           </Grid>
-          
+
           <!-- Overlay サブページ -->
           <ContentPresenter
             x:Name="SubPagePresenter"
@@ -150,8 +152,7 @@
         </Grid>
       </TabItem>
 
-      <TabItem Header="Log Colors" Padding="15 0">
-
+      <TabItem Header="Log Colors" Padding="15 0" metro:ControlsHelper.HeaderFontSize="24">
       </TabItem>
     </TabControl>
   </Grid>

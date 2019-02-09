@@ -46,7 +46,7 @@ namespace RINGS.Models
             {
                 var b = new SuspendableObservableCollection<ChatLogModel>(InnerList);
 
-                if (WPFHelper.IsDesignMode || WPFHelper.IsDebugMode)
+                if (WPFHelper.IsDesignMode)
                 {
                     this.CreateDesigntimeChatLogs(b);
                 }
@@ -78,7 +78,7 @@ namespace RINGS.Models
         public Predicate<ChatLogModel> FilterCallback { get; set; }
 
         private void Buffer_CollectionChanged(
-            object sender, 
+            object sender,
             NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null &&
@@ -165,141 +165,193 @@ namespace RINGS.Models
             }
         }
 
+        public void LoadDummyLogs()
+        {
+            this.RemoveDummyLogs();
+
+            lock (this.Buffer)
+            {
+                this.CreateDesigntimeChatLogs(this.Buffer);
+            }
+        }
+
+        public void RemoveDummyLogs()
+        {
+            lock (this.Buffer)
+            {
+                var dummys = this.Buffer.Where(x => x.IsDummy).ToArray();
+                foreach (var item in dummys)
+                {
+                    this.Buffer.Remove(item);
+                }
+            }
+        }
+
         private void CreateDesigntimeChatLogs(
             SuspendableObservableCollection<ChatLogModel> buffer)
         {
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Say,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "本日は晴天なり。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Say,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "明日も晴天かな？"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Say,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Party,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "よろしくおねがいします～ ＞＜"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell1,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル1の皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell2,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル2の皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell3,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル3の皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell4,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル4の皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell5,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル5の皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell6,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル6の皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell7,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル7の皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell8,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル8の皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.CrossWorldLinkshell,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "CWLSの皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.FreeCompany,
-                Speaker = "Naoki Y.",
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "フリーカンパニーの皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
             {
+                IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.NPCAnnounce,
-                Speaker = "ネール・デウス・ダーナス",
+                OriginalSpeaker = "ネール・デウス・ダーナス",
+                SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "チャリオッツいくおー ^ ^"
             });
         }
@@ -310,6 +362,7 @@ namespace RINGS.Models
         public ChatLogAddedEventArgs()
         {
         }
+
         public ChatLogAddedEventArgs(
             ChatPageSettingsModel parentPage,
             ChatLogModel addedLog)

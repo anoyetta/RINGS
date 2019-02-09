@@ -23,7 +23,7 @@ namespace RINGS
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() }
         };
 
-        public readonly static string DefaultChatOverlayName = "General";
+        public readonly static string DefaultChatOverlayName = "Default";
 
         private static ChatOverlaySettingsModel[] CreateDefaultChatOverlaySettings()
         {
@@ -41,7 +41,7 @@ namespace RINGS
                 PCNameStyle = PCNameStyles.FullName,
             };
 
-            var chatPages = new[]
+            var chatPages = new SuspendableObservableCollection<ChatPageSettingsModel>()
             {
                 new ChatPageSettingsModel()
                 {

@@ -22,9 +22,320 @@
   RenderOptions.BitmapScalingMode="Fant"
   RenderOptions.ClearTypeHint="Enabled"
   TextElement.FontWeight="Regular"
-  d:DesignHeight="450" d:DesignWidth="800"
-  d:DataContext="{d:DesignInstance {x:Type vm:ChatOverlaySettingsViewModel}, IsDesignTimeCreatable=True}"
+  Focusable="False"
+  IsTabStop="False"
+  d:DesignWidth="800" d:DesignHeight="600"
+  d:DataContext="{d:DesignInstance {x:Type vm:ChatOverlaySettingsEditViewModel}, IsDesignTimeCreatable=True}"
   prism:ViewModelLocator.AutoWireViewModel="True">
+
+  <UserControl.Resources>
+    <Thickness x:Key="ContentMargin">0 20 0 0</Thickness>
+
+    <Style x:Key="LocationUpDown" TargetType="{x:Type metro:NumericUpDown}">
+      <Setter Property="StringFormat" Value="N0" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="MinWidth" Value="10" />
+      <Setter Property="Width" Value="90" />
+    </Style>
+  </UserControl.Resources>
+
+  <d:DesignerProperties.DesignStyle>
+    <Style TargetType="UserControl">
+      <Setter Property="Background" Value="White" />
+    </Style>
+  </d:DesignerProperties.DesignStyle>
+
   <Grid>
+    <TabControl>
+      <!-- General Tab -->
+      <TabItem Header="General" Padding="15 0" metro:ControlsHelper.HeaderFontSize="18">
+        <ScrollViewer
+          Focusable="False"
+          IsTabStop="False"
+          HorizontalScrollBarVisibility="Disabled"
+          VerticalScrollBarVisibility="Auto"
+          Padding="10">
+
+          <StackPanel>
+            <metro:MetroHeader Header="名前">
+              <StackPanel>
+                <TextBox Text="{Binding TempName, Mode=TwoWay}" />
+                <metro:ToggleSwitch
+                  Margin="0 8 0 0"
+                  Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                  IsChecked="{Binding Model.IsEnabled, Mode=TwoWay}"
+                  Content="Enabled" />
+                <metro:ToggleSwitch
+                  Margin="0 8 0 0"
+                  Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                  IsChecked="{Binding IsDummy, Mode=TwoWay}"
+                  Content="Dummy" />
+              </StackPanel>
+            </metro:MetroHeader>
+
+            <StackPanel Orientation="Horizontal">
+              <!-- General 1 -->
+              <StackPanel>
+                <metro:MetroHeader Header="レイアウト" Margin="{DynamicResource ContentMargin}">
+                  <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                      <Label Content="X" Width="21" HorizontalContentAlignment="Right" />
+                      <metro:NumericUpDown
+                        Style="{DynamicResource LocationUpDown}"
+                        Value="{Binding Model.X, Mode=TwoWay}" />
+                      <Label Content="Y" Width="21" HorizontalContentAlignment="Right" Margin="10 0 0 0" />
+                      <metro:NumericUpDown
+                        Style="{DynamicResource LocationUpDown}"
+                        Value="{Binding Model.Y, Mode=TwoWay}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                      <Label Content="W" Width="21" HorizontalContentAlignment="Right" />
+                      <metro:NumericUpDown
+                        Style="{DynamicResource LocationUpDown}"
+                        Value="{Binding Model.W, Mode=TwoWay}" />
+                      <Label Content="H" Width="21" HorizontalContentAlignment="Right" Margin="10 0 0 0" />
+                      <metro:NumericUpDown
+                        Style="{DynamicResource LocationUpDown}"
+                        Value="{Binding Model.H, Mode=TwoWay}" />
+                    </StackPanel>
+
+                    <metro:ToggleSwitch
+                      Margin="0 8 0 0"
+                      Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                      IsChecked="{Binding Model.IsLock, Mode=TwoWay}"
+                      Content="Lock" />
+                  </StackPanel>
+                </metro:MetroHeader>
+
+                <metro:MetroHeader Header="スケール" Margin="{DynamicResource ContentMargin}">
+                  <metro:NumericUpDown
+                    HorizontalAlignment="Left"
+                    StringFormat="N2"
+                    Interval="0.01"
+                    Style="{DynamicResource LocationUpDown}"
+                    Value="{Binding Model.Scale, Mode=TwoWay}" />
+                </metro:MetroHeader>
+
+                <metro:MetroHeader Header="背景" Margin="{DynamicResource ContentMargin}">
+                  <StackPanel Orientation="Horizontal">
+                    <Button
+                      HorizontalAlignment="Left"
+                      Width="110"
+                      Background="{Binding Model.BackgroundBrush, Mode=OneWay}"
+                      Command="{Binding ChangeBackgroundCommand, Mode=OneWay}" />
+
+                    <StackPanel Orientation="Horizontal" Margin="15 0 0 0">
+                      <Label Content="Opacity" Margin="0 0 5 0" />
+                      <metro:NumericUpDown
+                        HorizontalAlignment="Left"
+                        StringFormat="N2"
+                        Interval="0.01"
+                        Style="{DynamicResource LocationUpDown}"
+                        Value="{Binding Model.Opacity, Mode=TwoWay}" />
+                    </StackPanel>
+                  </StackPanel>
+                </metro:MetroHeader>
+
+                <metro:MetroHeader Header="フォント" Margin="{DynamicResource ContentMargin}">
+                  <StackPanel>
+                    <Button
+                      metro:ButtonHelper.PreserveTextCase="True"
+                      HorizontalAlignment="Left"
+                      HorizontalContentAlignment="Left"
+                      Command="{Binding ChangeFontCommand, Mode=OneWay}"
+                      Content="{Binding Model.Font.DisplayText, Mode=OneWay}"
+                      FontFamily="{Binding Model.Font.FontFamily, Mode=OneWay}"
+                      FontStyle="{Binding Model.Font.Style, Mode=OneWay}"
+                      FontWeight="{Binding Model.Font.Weight, Mode=OneWay}"
+                      FontStretch="{Binding Model.Font.Stretch, Mode=OneWay}"
+                      FontSize="14"
+                      Width="270">
+                      <Button.Style>
+                        <Style TargetType="Button">
+                          <Setter Property="Template">
+                            <Setter.Value>
+                              <ControlTemplate TargetType="{x:Type Button}">
+                                <TextBlock Text="{TemplateBinding Content}" TextWrapping="Wrap" />
+                              </ControlTemplate>
+                            </Setter.Value>
+                          </Setter>
+                        </Style>
+                      </Button.Style>
+                    </Button>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                      <Label Content="行間" Margin="0 0 5 0" />
+                      <metro:NumericUpDown
+                        HorizontalAlignment="Left"
+                        Interval="1"
+                        Width="75"
+                        Style="{DynamicResource LocationUpDown}"
+                        Value="{Binding Model.LineMargin, Mode=TwoWay}" />
+                    </StackPanel>
+                  </StackPanel>
+                </metro:MetroHeader>
+              </StackPanel>
+              <!-- General 1 end -->
+
+              <!-- General 2 -->
+              <StackPanel Margin="50 0 0 0">
+                <metro:MetroHeader Header="キャラクター名の表示スタイル" Margin="{DynamicResource ContentMargin}">
+                  <ComboBox
+                    HorizontalAlignment="Left"
+                    Width="130"
+                    ItemsSource="{Binding PCNameStyles, Mode=OneWay}"
+                    DisplayMemberPath="Display"
+                    SelectedValuePath="Value"
+                    SelectedValue="{Binding Model.PCNameStyle, Mode=TwoWay}" />
+                </metro:MetroHeader>
+
+                <metro:MetroHeader Header="オプション" Margin="{DynamicResource ContentMargin}">
+                  <StackPanel>
+                    <metro:ToggleSwitch
+                      VerticalAlignment="Center"
+                      Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                      IsChecked="{Binding Model.IsAutoHide, Mode=TwoWay}"
+                      Content="最後の発言後一定時間で隠す" />
+                    <StackPanel
+                      Margin="0 8 0 0"
+                      Orientation="Horizontal"
+                      Visibility="{Binding Model.IsAutoHide, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+                      <metro:NumericUpDown
+                        HorizontalAlignment="Left"
+                        Interval="1"
+                        Minimum="1"
+                        Width="80"
+                        Style="{DynamicResource LocationUpDown}"
+                        Value="{Binding Model.TimeToHide, Mode=TwoWay}" />
+                      <Label
+                        VerticalAlignment="Center"
+                        Content="秒後"
+                        Margin="5 0 0 0" />
+                    </StackPanel>
+                    <metro:ToggleSwitch
+                      Margin="0 8 0 0"
+                      VerticalAlignment="Center"
+                      Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                      IsChecked="{Binding Model.IsAutoActivatePage, Mode=TwoWay}"
+                      Content="最後に発言のあったタブをアクティブにする" />
+                  </StackPanel>
+                </metro:MetroHeader>
+              </StackPanel>
+              <!-- General 2 end -->
+            </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+      <!-- General Tab end -->
+
+      <!-- Tab Pages Tab -->
+      <TabItem Header="Tabs" Padding="15 0" metro:ControlsHelper.HeaderFontSize="18">
+        <Grid Margin="10">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+
+          <ListBox
+            x:Name="PagesListBox"
+            Grid.Column="0"
+            Grid.Row="0"
+            Width="200"
+            SelectionMode="Single"
+            SelectionChanged="PagesListBox_SelectionChanged"
+            ItemsSource="{Binding Model.ChatPages, Mode=OneWay}">
+
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="{x:Type model:ChatPageSettingsModel}">
+                <TextBlock
+                  HorizontalAlignment="Stretch"
+                  Text="{Binding Name, Mode=OneWay}" />
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <DockPanel
+            Grid.Column="0"
+            Grid.Row="1">
+            <StackPanel
+              Margin="0 10 0 0"
+              HorizontalAlignment="Left"
+              DockPanel.Dock="Left"
+              Orientation="Horizontal">
+              <Button
+                Height="20" Width="20"
+                HorizontalAlignment="Right"
+                Style="{DynamicResource IconButtonStyle}"
+                Command="{Binding AddPageCommand, Mode=OneWay}">
+                <Viewbox Width="12">
+                  <iconPacks:PackIconMaterial Kind="Plus"  Foreground="{DynamicResource IdealForegroundColorBrush}" />
+                </Viewbox>
+              </Button>
+
+              <Button
+                Margin="5 0 0 0"
+                Height="20" Width="20"
+                HorizontalAlignment="Right"
+                Style="{DynamicResource IconButtonStyle}"
+                Command="{Binding DeletePageCommand, Mode=OneWay}"
+                CommandParameter="{Binding ElementName=PagesListBox, Path=SelectedItem, Mode=OneWay}">
+                <Viewbox Width="12">
+                  <iconPacks:PackIconMaterial Kind="Minus"  Foreground="{DynamicResource IdealForegroundColorBrush}" />
+                </Viewbox>
+              </Button>
+
+              <Button
+                Margin="5 0 0 0"
+                Height="20" Width="20"
+                HorizontalAlignment="Right"
+                Style="{DynamicResource IconButtonStyle}"
+                Command="{Binding UpPageOrderCommand, Mode=OneWay}"
+                CommandParameter="{Binding ElementName=PagesListBox, Path=SelectedItem, Mode=OneWay}">
+                <Viewbox Width="12">
+                  <iconPacks:PackIconMaterial Kind="ArrowUp"  Foreground="{DynamicResource IdealForegroundColorBrush}" />
+                </Viewbox>
+              </Button>
+
+              <Button
+                Margin="5 0 0 0"
+                Height="20" Width="20"
+                HorizontalAlignment="Right"
+                Style="{DynamicResource IconButtonStyle}"
+                Command="{Binding DownPageOrderCommand, Mode=OneWay}"
+                CommandParameter="{Binding ElementName=PagesListBox, Path=SelectedItem, Mode=OneWay}">
+                <Viewbox Width="12">
+                  <iconPacks:PackIconMaterial Kind="ArrowDown"  Foreground="{DynamicResource IdealForegroundColorBrush}" />
+                </Viewbox>
+              </Button>
+            </StackPanel>
+          </DockPanel>
+
+          <StackPanel
+            Grid.Column="1"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Margin="15 0 0 0"
+            x:Name="PagePanel">
+          </StackPanel>
+        </Grid>
+      </TabItem>
+      <!-- Tab Pages Tab end -->
+    </TabControl>
+
+    <DockPanel VerticalAlignment="Bottom">
+      <Button
+        Height="40"
+        Width="40"
+        HorizontalAlignment="Right"
+        Style="{DynamicResource IconButtonStyle}"
+        Command="{Binding BackCommand, Mode=OneWay}">
+        <iconPacks:PackIconMaterial Kind="ArrowLeft"  Foreground="{DynamicResource IdealForegroundColorBrush}" />
+      </Button>
+    </DockPanel>
   </Grid>
 </UserControl>
