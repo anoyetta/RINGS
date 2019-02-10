@@ -152,8 +152,108 @@
         </Grid>
       </TabItem>
 
+      <!-- Log Colors -->
       <TabItem Header="Log Colors" Padding="15 0" metro:ControlsHelper.HeaderFontSize="24">
+        <ScrollViewer
+          Focusable="False"
+          IsTabStop="False"
+          HorizontalScrollBarVisibility="Disabled"
+          VerticalScrollBarVisibility="Auto">
+
+          <ItemsControl
+            Focusable="False"
+            IsTabStop="False"
+            ItemsSource="{Binding Config.ChatChannelsSettings, Mode=OneWay}">
+
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="{x:Type model:ChatChannelSettingsModel}">
+                <Border
+                  Margin="10"
+                  Padding="10"
+                  CornerRadius="2"
+                  Background="{DynamicResource GrayBrush8}"
+                  Width="230">
+                  <metro:MetroHeader>
+                    <metro:MetroHeader.Header>
+                      <TextBlock
+                        Text="{Binding ChannelName, Mode=OneWay}"
+                        FontSize="14"
+                        TextWrapping="WrapWithOverflow" />
+                    </metro:MetroHeader.Header>
+
+                    <StackPanel>
+                      <DockPanel>
+                        <Label Content="Foreground" VerticalAlignment="Center" />
+                        <Button
+                          HorizontalAlignment="Right"
+                          MinHeight="0"
+                          Height="15"
+                          Background="{Binding ColorBrush, Mode=OneWay}"
+                          Command="{Binding ChangeMainColorCommand, Mode=OneWay}"
+                          Width="60" />
+                      </DockPanel>
+
+                      <DockPanel>
+                        <Label Content="Drop Shadow"  VerticalAlignment="Center" />
+                        <metro:ToggleSwitch
+                          Margin="0 2 -3 0"
+                          HorizontalAlignment="Right"
+                          IsChecked="{Binding IsEnabledShadow, Mode=TwoWay}"
+                          Background="{Binding ColorBrush, Mode=OneWay}"
+                          Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                          Content="" />
+                      </DockPanel>
+
+                      <DockPanel>
+                        <Label Content="Shadow Color"  VerticalAlignment="Center" />
+                        <Button
+                          MinHeight="0"
+                          Height="15"
+                          HorizontalAlignment="Right"
+                          Background="{Binding ShadowColor, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
+                          Command="{Binding ChangeShadowColorCommand, Mode=OneWay}"
+                          Width="60" />
+                      </DockPanel>
+
+                      <DockPanel>
+                        <Label Content="Blur Radius"  VerticalAlignment="Center" />
+                        <metro:NumericUpDown
+                          Background="Transparent"
+                          HorizontalAlignment="Right"
+                          HideUpDownButtons="True"
+                          Interval="0.1"
+                          Minimum="0"
+                          StringFormat="N1"
+                          Value="{Binding BlurRadius, Mode=TwoWay}" />
+                      </DockPanel>
+
+                      <DockPanel Margin="0 4 0 0">
+                        <Label Content="Shadow Opacity"  VerticalAlignment="Center" />
+                        <metro:NumericUpDown
+                          Background="Transparent"
+                          HorizontalAlignment="Right"
+                          HideUpDownButtons="True"
+                          Interval="0.01"
+                          Minimum="0"
+                          Maximum="1"
+                          StringFormat="N2"
+                          Value="{Binding ShadowOpacity, Mode=TwoWay}" />
+                      </DockPanel>
+                    </StackPanel>
+                  </metro:MetroHeader>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
       </TabItem>
+      <!-- Log Colors end -->
     </TabControl>
   </Grid>
 </UserControl>

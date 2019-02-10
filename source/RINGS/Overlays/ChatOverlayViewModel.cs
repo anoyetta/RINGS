@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Threading;
@@ -67,6 +68,7 @@ namespace RINGS.Overlays
             if (this.ChatOverlaySettings != null)
             {
                 this.ChatOverlaySettings.PropertyChanged += this.ChatOverlaySettings_PropertyChanged;
+                this.ChatOverlaySettings.ChatPages.CollectionChanged += this.ChatPages_CollectionChanged;
             }
         }
 
@@ -75,6 +77,7 @@ namespace RINGS.Overlays
             if (this.ChatOverlaySettings != null)
             {
                 this.ChatOverlaySettings.PropertyChanged -= this.ChatOverlaySettings_PropertyChanged;
+                this.ChatOverlaySettings.ChatPages.CollectionChanged -= this.ChatPages_CollectionChanged;
             }
         }
 
@@ -98,6 +101,33 @@ namespace RINGS.Overlays
                     },
                     DispatcherPriority.ContextIdle);
                     break;
+            }
+        }
+
+        private void ChatPages_CollectionChanged(
+            object sender,
+            NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (var page in e.NewItems.Cast<ChatPageSettingsModel>())
+                {
+                    page.CreateLogBuffer();
+                    page.LogBuffer.ChatLogAdded += this.LogBuffer_ChatLogAdded;
+                }
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (var page in e.OldItems.Cast<ChatPageSettingsModel>())
+                {
+                    if (page.LogBuffer != null)
+                    {
+                        page.LogBuffer.ChatLogAdded -= this.LogBuffer_ChatLogAdded;
+                    }
+
+                    page.DisposeLogBuffer();
+                }
             }
         }
 

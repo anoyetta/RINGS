@@ -176,7 +176,7 @@ namespace RINGS.ViewModels
                 return;
             }
 
-            if (this.model.ChatPages.Any(x => x.Name == parameter.Name))
+            if (this.model.ChatPages.Contains(parameter))
             {
                 this.model.ChatPages.Remove(parameter);
             }

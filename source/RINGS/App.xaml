@@ -52,6 +52,7 @@
       <fw:CompanyNameToShortConverter x:Key="CompanyNameToShortConverter" />
       <fw:FontSizeToLargeConverter x:Key="ToLarge" />
       <fw:FontSizeToSmallConverter x:Key="ToSmall" />
+      <fw:ColorToBrushConverter x:Key="ColorToBrushConverter" />
 
       <!-- Pre-Defined Scaling -->
       <ScaleTransform x:Key="ScaleL" ScaleX="{x:Static fw:Constants.ScalingL}" ScaleY="{x:Static fw:Constants.ScalingL}" />

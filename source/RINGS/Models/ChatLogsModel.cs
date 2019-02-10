@@ -195,6 +195,17 @@ namespace RINGS.Models
                 IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.SystemMessage,
+                OriginalSpeaker = "SYSTEM",
+                SpeakerType = SpeakerTypes.XIVPlayer,
+                Message = $"ダミーログ {this.ParentPageSettings.Name}"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                IsDummy = true,
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Say,
                 OriginalSpeaker = "Naoki Yoshida",
                 SpeakerType = SpeakerTypes.XIVPlayer,

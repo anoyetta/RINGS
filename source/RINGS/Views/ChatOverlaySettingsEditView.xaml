@@ -246,6 +246,7 @@
             Grid.Column="0"
             Grid.Row="0"
             Width="200"
+            SelectedIndex="0"
             SelectionMode="Single"
             SelectionChanged="PagesListBox_SelectionChanged"
             ItemsSource="{Binding Model.ChatPages, Mode=OneWay}">
@@ -315,13 +316,54 @@
             </StackPanel>
           </DockPanel>
 
-          <StackPanel
+          <Grid
             Grid.Column="1"
             Grid.Row="0"
             Grid.RowSpan="2"
             Margin="15 0 0 0"
-            x:Name="PagePanel">
-          </StackPanel>
+            x:Name="PagePanel"
+            d:DataContext="{d:DesignInstance Type={x:Type model:ChatPageSettingsModel}, IsDesignTimeCreatable=True}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <metro:MetroHeader Header="ページ名" Grid.Row="0">
+              <TextBox Text="{Binding Name, Mode=TwoWay}" />
+            </metro:MetroHeader>
+
+            <metro:MetroHeader Header="ハンドルするチャットチャンネル" Margin="0 10 0 0" Grid.Row="1">
+              <ItemsControl
+                Focusable="False"
+                IsTabStop="False"
+                ItemsSource="{Binding HandledChannels, Mode=OneWay}">
+
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Vertical" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate DataType="{x:Type model:HandledChatChannelModel}">
+                    <metro:ToggleSwitch
+                      Margin="0 0 20 3"
+                      Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                      Content="{Binding ChannelName, Mode=OneWay}"
+                      IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </metro:MetroHeader>
+
+            <metro:ToggleSwitch
+              Grid.Row="2"
+              Margin="0 8 0 0"
+              Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+              IsChecked="{Binding IsEnabledAllChannels, Mode=TwoWay}"
+              Content="ALL" />
+          </Grid>
         </Grid>
       </TabItem>
       <!-- Tab Pages Tab end -->

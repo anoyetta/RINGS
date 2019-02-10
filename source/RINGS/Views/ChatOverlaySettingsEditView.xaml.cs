@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 using RINGS.ViewModels;
 
@@ -12,6 +13,7 @@ namespace RINGS.Views
         {
             this.InitializeComponent();
 
+            this.PagePanel.Visibility = Visibility.Collapsed;
             this.ViewModel.ChangeSelectedPageCallback = (page)
                 => this.PagesListBox.SelectedItem = page;
         }
@@ -27,6 +29,9 @@ namespace RINGS.Views
                 null;
 
             this.PagePanel.DataContext = model;
+            this.PagePanel.Visibility = model != null ?
+                Visibility.Visible :
+                Visibility.Collapsed;
         }
     }
 }

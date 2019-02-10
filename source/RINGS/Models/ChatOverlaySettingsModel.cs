@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using aframe;
 using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Mvvm;
 using RINGS.Common;
 
@@ -206,8 +207,14 @@ namespace RINGS.Models
             get => this.chatPages;
             set
             {
+                this.chatPages.Clear();
+
+                foreach (var page in value)
+                {
+                    page.ParentOverlaySettings = this;
+                }
+
                 this.chatPages.AddRange(value, true);
-                this.RaisePropertyChanged();
             }
         }
 
@@ -285,6 +292,22 @@ namespace RINGS.Models
             }
         }
 
+        private bool isEnabledAllChannels;
+
+        [JsonIgnore]
+        public bool IsEnabledAllChannels
+        {
+            get => this.isEnabledAllChannels;
+            set
+            {
+                if (this.SetProperty(ref this.isEnabledAllChannels, value))
+                {
+                    this.HandledChannels.Walk(x =>
+                        x.IsEnabled = this.isEnabledAllChannels);
+                }
+            }
+        }
+
         [JsonIgnore]
         public ChatLogsModel LogBuffer
         {
@@ -344,8 +367,19 @@ namespace RINGS.Models
         public string ChatCode
         {
             get => this.chatCode;
-            set => this.SetProperty(ref this.chatCode, value);
+            set
+            {
+                if (this.SetProperty(ref this.chatCode, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.ChannelName));
+                }
+            }
         }
+
+        [JsonIgnore]
+        public string ChannelName => ChatCodes.DisplayNames.ContainsKey(this.chatCode) ?
+            ChatCodes.DisplayNames[this.chatCode].DisplayName :
+            string.Empty;
 
         private bool isEnabled;
 
@@ -368,8 +402,19 @@ namespace RINGS.Models
         public string ChatCode
         {
             get => this.chatCode;
-            set => this.SetProperty(ref this.chatCode, value);
+            set
+            {
+                if (this.SetProperty(ref this.chatCode, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.ChannelName));
+                }
+            }
         }
+
+        [JsonIgnore]
+        public string ChannelName => ChatCodes.DisplayNames.ContainsKey(this.chatCode) ?
+            ChatCodes.DisplayNames[this.chatCode].DisplayName :
+            string.Empty;
 
         #region Main Color
 
@@ -453,7 +498,7 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.blurRadius, value);
         }
 
-        private double shadowOpacity = 0;
+        private double shadowOpacity = 1.0;
 
         [JsonProperty(PropertyName = "shadow_opacity")]
         public double ShadowOpacity
@@ -461,6 +506,24 @@ namespace RINGS.Models
             get => this.shadowOpacity;
             set => this.SetProperty(ref this.shadowOpacity, value);
         }
+
+        private DelegateCommand changeMainColorCommand;
+
+        [JsonIgnore]
+        public DelegateCommand ChangeMainColorCommand =>
+            this.changeMainColorCommand ?? (this.changeMainColorCommand = new DelegateCommand(
+                () => CommandHelper.ExecuteChangeColor(
+                    () => this.Color,
+                    color => this.Color = color)));
+
+        private DelegateCommand changeShadowColorCommand;
+
+        [JsonIgnore]
+        public DelegateCommand ChangeShadowColorCommand =>
+            this.changeShadowColorCommand ?? (this.changeShadowColorCommand = new DelegateCommand(
+                () => CommandHelper.ExecuteChangeColor(
+                    () => this.ShadowColor,
+                    color => this.ShadowColor = color)));
 
         #endregion Shadow Color
     }

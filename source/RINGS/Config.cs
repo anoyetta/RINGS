@@ -17,7 +17,7 @@ namespace RINGS
 
         private static Config instance;
 
-        public static Config Instance => instance ?? (instance = new Lazy<Config>(() => Config.Load<Config>(FileName)).Value);
+        public static Config Instance => instance ?? (instance = new Lazy<Config>(Load).Value);
 
         public Config()
         {
@@ -28,6 +28,22 @@ namespace RINGS
         public static string FileName => Path.Combine(
             Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
             "RINGS.config.json");
+
+        public static Config Load()
+        {
+            var config = Config.Load<Config>(FileName);
+
+            // チャットページに親オブジェクトを設定する
+            foreach (var overlay in config.ChatOverlaySettings)
+            {
+                foreach (var page in overlay.ChatPages)
+                {
+                    page.ParentOverlaySettings = overlay;
+                }
+            }
+
+            return config;
+        }
 
         public void Save() => this.Save(FileName);
 

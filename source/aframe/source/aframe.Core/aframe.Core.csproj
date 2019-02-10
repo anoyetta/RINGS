@@ -85,6 +85,7 @@
     <Compile Include="Converters\BooleanToNotVisibilityConverter.cs" />
     <Compile Include="Converters\CompanyNameConverter.cs" />
     <Compile Include="Converters\EnumBooleanConverter.cs" />
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\FontSizeToSmallConverter.cs" />
     <Compile Include="Converters\FontSizeToLargeConverter.cs" />
     <Compile Include="Converters\CompanyNameOmitConverter.cs" />
