@@ -161,6 +161,7 @@ namespace RINGS.ViewModels
             };
 
             this.model.ChatPages.Add(page);
+            this.ChangeSelectedPageCallback?.Invoke(page);
         }
 
         private DelegateCommand<ChatPageSettingsModel> deletePageCommand;
@@ -178,7 +179,19 @@ namespace RINGS.ViewModels
 
             if (this.model.ChatPages.Contains(parameter))
             {
+                var selectIndex = this.model.ChatPages.IndexOf(parameter) - 1;
+                if (selectIndex < 0)
+                {
+                    selectIndex = 0;
+                }
+
                 this.model.ChatPages.Remove(parameter);
+
+                if (this.model.ChatPages.Count > 0)
+                {
+                    this.ChangeSelectedPageCallback?.Invoke(
+                        this.model.ChatPages[selectIndex]);
+                }
             }
         }
 

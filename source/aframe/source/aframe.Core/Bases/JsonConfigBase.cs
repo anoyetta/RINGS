@@ -67,8 +67,11 @@ namespace aframe
         /// <returns>
         /// ロードした設定オブジェクト</returns>
         public static T Load<T>(
-            string fileName) where T : JsonConfigBase, new()
+            string fileName,
+            out bool isFirstLoad) where T : JsonConfigBase, new()
         {
+            isFirstLoad = true;
+
             fileName = SwitchFileName(fileName);
 
             lock (JsonConfigBase.Locker)
@@ -77,6 +80,7 @@ namespace aframe
 
                 if (File.Exists(fileName))
                 {
+                    isFirstLoad = false;
                     json = File.ReadAllText(
                         fileName,
                         new UTF8Encoding(false));
@@ -114,6 +118,18 @@ namespace aframe
                 return data;
             }
         }
+
+        /// <summary>
+        /// 設定ファイルからロードする（デシリアライズする）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fileName">
+        /// 設定ファイルのパス</param>
+        /// <returns>
+        /// ロードした設定オブジェクト</returns>
+        public static T Load<T>(
+            string fileName) where T : JsonConfigBase, new()
+            => Load<T>(fileName, out bool b);
 
         internal static string SwitchFileName(
             string baseFileName)

@@ -11,10 +11,11 @@ namespace RINGS.ViewModels
 
         public HomeView HomeView => new HomeView();
         public ChatOverlaySettingsView ChatOverlaySettingsView => new ChatOverlaySettingsView();
-        public ProfilesSettingsView ProfilesSettingsView => new ProfilesSettingsView();
+        public ChatLinkSettingsView ChatLinkSettingsView => new ChatLinkSettingsView();
         public DiscordBotSettingsView DiscordBotSettingsView => new DiscordBotSettingsView();
 
         public AppSettingsView AppSettingsView => new AppSettingsView();
+        public HelpView HelpView => new HelpView();
 
         #endregion Content View Creator
     }

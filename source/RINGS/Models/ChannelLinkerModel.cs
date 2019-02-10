@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Prism.Mvvm;
+using RINGS.Common;
 
 namespace RINGS.Models
 {
@@ -21,8 +22,19 @@ namespace RINGS.Models
         public string ChatCode
         {
             get => this.chatCode;
-            set => this.SetProperty(ref this.chatCode, value);
+            set
+            {
+                if (this.SetProperty(ref this.chatCode, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.ChannelName));
+                }
+            }
         }
+
+        [JsonIgnore]
+        public string ChannelName => ChatCodes.DisplayNames.ContainsKey(this.chatCode) ?
+            ChatCodes.DisplayNames[this.chatCode].DisplayName :
+            string.Empty;
 
         private uint discordChannelID;
 

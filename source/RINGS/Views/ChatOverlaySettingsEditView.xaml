@@ -246,7 +246,6 @@
             Grid.Column="0"
             Grid.Row="0"
             Width="200"
-            SelectedIndex="0"
             SelectionMode="Single"
             SelectionChanged="PagesListBox_SelectionChanged"
             ItemsSource="{Binding Model.ChatPages, Mode=OneWay}">

@@ -20,7 +20,7 @@ namespace RINGS
             { nameof(IsMinimizeStartup), false },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
-            { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() }
+            { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },
         };
 
         public readonly static string DefaultChatOverlayName = "Default";
@@ -100,5 +100,15 @@ namespace RINGS
 
             return settings.ToArray();
         }
+
+        private static SuspendableObservableCollection<CharacterProfileModel> CreateDefaultCharacterProfile() =>
+            new SuspendableObservableCollection<CharacterProfileModel>()
+            {
+                new CharacterProfileModel()
+                {
+                    CharacterName = "Taro Yamada",
+                    Server = "Chocobo",
+                },
+            };
     }
 }

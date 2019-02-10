@@ -83,13 +83,17 @@
     <Compile Include="Overlays\ChatOverlaysController.cs" />
     <Compile Include="Overlays\ChatOverlayViewModel.cs" />
     <Compile Include="Overlays\IOverlay.cs" />
+    <Compile Include="ViewModels\HelpViewModel.cs" />
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />
     <Compile Include="ViewModels\ChatOverlaySettingsEditViewModel.cs" />
     <Compile Include="ViewModels\ChatOverlaySettingsViewModel.cs" />
     <Compile Include="ViewModels\DiscordBotSettingsViewModel.cs" />
-    <Compile Include="ViewModels\ProfilesSettingsViewModel.cs" />
+    <Compile Include="ViewModels\ChatLinkSettingsViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\HelpView.xaml.cs">
+      <DependentUpon>HelpView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AppSettingsView.xaml.cs">
       <DependentUpon>AppSettingsView.xaml</DependentUpon>
     </Compile>
@@ -105,8 +109,8 @@
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProfilesSettingsView.xaml.cs">
-      <DependentUpon>ProfilesSettingsView.xaml</DependentUpon>
+    <Compile Include="Views\ChatLinkSettingsView.xaml.cs">
+      <DependentUpon>ChatLinkSettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -125,6 +129,10 @@
     <Page Include="Overlays\ChatOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HelpView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AppSettingsView.xaml">
       <SubType>Designer</SubType>
@@ -146,7 +154,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ProfilesSettingsView.xaml">
+    <Page Include="Views\ChatLinkSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

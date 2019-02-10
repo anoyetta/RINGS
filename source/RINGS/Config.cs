@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -31,7 +32,9 @@ namespace RINGS
 
         public static Config Load()
         {
-            var config = Config.Load<Config>(FileName);
+            var config = Config.Load<Config>(
+                FileName,
+                out bool isFirstLoad);
 
             // チャットページに親オブジェクトを設定する
             foreach (var overlay in config.ChatOverlaySettings)
@@ -40,6 +43,13 @@ namespace RINGS
                 {
                     page.ParentOverlaySettings = overlay;
                 }
+            }
+
+            if (isFirstLoad)
+            {
+                config.CharacterProfileList = CreateDefaultCharacterProfile();
+                config.CharacterProfileList.First().ChannelLinkerList.AddRange(
+                    CharacterProfileModel.CreateDefaultChannelLinkers());
             }
 
             return config;
@@ -237,6 +247,27 @@ namespace RINGS
 
             return null;
         }
+
+        [JsonProperty(PropertyName = "character_profiles", DefaultValueHandling = DefaultValueHandling.Include)]
+        public SuspendableObservableCollection<CharacterProfileModel> CharacterProfileList
+        {
+            get;
+            private set;
+        } = new SuspendableObservableCollection<CharacterProfileModel>();
+
+        [JsonProperty(PropertyName = "discord_channels", DefaultValueHandling = DefaultValueHandling.Include)]
+        public SuspendableObservableCollection<DiscordChannelModel> DiscordChannelList
+        {
+            get;
+            private set;
+        } = new SuspendableObservableCollection<DiscordChannelModel>();
+
+        [JsonProperty(PropertyName = "discord_bots", DefaultValueHandling = DefaultValueHandling.Include)]
+        public SuspendableObservableCollection<DiscordBotModel> DiscordBotList
+        {
+            get;
+            private set;
+        } = new SuspendableObservableCollection<DiscordBotModel>();
 
         #endregion Data
     }

@@ -16,6 +16,8 @@ namespace RINGS.Views
             this.PagePanel.Visibility = Visibility.Collapsed;
             this.ViewModel.ChangeSelectedPageCallback = (page)
                 => this.PagesListBox.SelectedItem = page;
+
+            this.PagesListBox.SelectedIndex = 0;
         }
 
         public ChatOverlaySettingsEditViewModel ViewModel => this.DataContext as ChatOverlaySettingsEditViewModel;

@@ -242,7 +242,7 @@
         <metro:HamburgerMenuItemCollection>
           <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Home}" Label="ホーム" Tag="{Binding HomeView, Mode=OneWay}" />
           <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=MessageText}" Label="チャットオーバーレイ" Tag="{Binding ChatOverlaySettingsView, Mode=OneWay}" />
-          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=AccountCircle}" Label="プロファイル" Tag="{Binding ProfilesSettingsView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=LinkVariant}" Label="チャットリンク" Tag="{Binding ChatLinkSettingsView, Mode=OneWay}" />
           <metro:HamburgerMenuIconItem Icon="{iconPacks:FontAwesome Kind=DiscordBrands}" Label="DISCORD Bot" Tag="{Binding DiscordBotSettingsView, Mode=OneWay}" />
         </metro:HamburgerMenuItemCollection>
       </metro:HamburgerMenu.ItemsSource>
@@ -251,6 +251,7 @@
       <metro:HamburgerMenu.OptionsItemsSource>
         <metro:HamburgerMenuItemCollection>
           <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Settings}" Label="設定" Tag="{Binding AppSettingsView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Help}" Label="ヘルプ" Tag="{Binding HomeView, Mode=OneWay}" />
         </metro:HamburgerMenuItemCollection>
       </metro:HamburgerMenu.OptionsItemsSource>
     </metro:HamburgerMenu>

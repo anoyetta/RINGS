@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using aframe;
 using Newtonsoft.Json;
 using Prism.Mvvm;
 using RINGS.Common;
@@ -11,11 +9,6 @@ namespace RINGS.Models
     public class CharacterProfileModel :
         BindableBase
     {
-        public CharacterProfileModel()
-        {
-            this.ChannelLinkerList = CreateDefaultChannelLinkers();
-        }
-
         private bool isEnabled;
 
         [JsonProperty(PropertyName = "enabled")]
@@ -43,14 +36,12 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.server, value);
         }
 
-        private readonly SuspendableObservableCollection<ChannelLinkerModel> channelLinkerList = new SuspendableObservableCollection<ChannelLinkerModel>();
-
         [JsonProperty(PropertyName = "channel_linker_settings")]
         public ObservableCollection<ChannelLinkerModel> ChannelLinkerList
         {
-            get => this.channelLinkerList;
-            set => this.channelLinkerList.AddRange(value.OrderBy(x => x.ChatCode), true);
-        }
+            get;
+            private set;
+        } = new ObservableCollection<ChannelLinkerModel>();
 
         private bool isActive;
 
@@ -61,7 +52,7 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.isActive, value);
         }
 
-        private static ObservableCollection<ChannelLinkerModel> CreateDefaultChannelLinkers()
+        public static ObservableCollection<ChannelLinkerModel> CreateDefaultChannelLinkers()
         {
             var result = new List<ChannelLinkerModel>();
 
