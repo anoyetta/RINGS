@@ -154,7 +154,7 @@ namespace RINGS.Controllers
                 return;
             }
 
-            if (uint.TryParse(linker.DiscordChannelID, out uint uid))
+            if (ulong.TryParse(linker.DiscordChannelID, out ulong uid))
             {
                 var ch = bot.GetChannel(uid) as ISocketMessageChannel;
                 if (ch == null)

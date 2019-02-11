@@ -6,16 +6,6 @@ namespace RINGS.Models
     public class DiscordBotModel :
         BindableBase
     {
-        public DiscordBotModel()
-        {
-            /*
-            this.PropertyChanged += (_, e) =>
-            {
-                this.Config.RefreshDiscordBotList();
-            };
-            */
-        }
-
         [JsonIgnore]
         public Config Config => Config.Instance;
 

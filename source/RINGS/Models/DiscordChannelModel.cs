@@ -6,16 +6,6 @@ namespace RINGS.Models
     public class DiscordChannelModel :
         BindableBase
     {
-        public DiscordChannelModel()
-        {
-            /*
-            this.PropertyChanged += (_, e) =>
-            {
-                this.Config.RefreshDiscordChannelList();
-            };
-            */
-        }
-
         [JsonIgnore]
         public Config Config => Config.Instance;
 
