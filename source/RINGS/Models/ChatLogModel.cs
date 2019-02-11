@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using Discord.WebSocket;
 using Prism.Mvvm;
 using RINGS.Common;
@@ -50,10 +51,15 @@ namespace RINGS.Models
             {
                 if (this.SetProperty(ref this.chatCode, value))
                 {
+                    this.RaisePropertyChanged(nameof(this.ChannelName));
                     this.RaisePropertyChanged(nameof(this.ChatCodeIndicator));
                 }
             }
         }
+
+        public string ChannelName => ChatCodes.DisplayNames.ContainsKey(this.chatCode) ?
+            ChatCodes.DisplayNames[this.chatCode].DisplayName :
+            string.Empty;
 
         public string ChatCodeIndicator =>
             ChatCodes.DisplayNames.ContainsKey(this.chatCode) && !string.IsNullOrEmpty(ChatCodes.DisplayNames[this.chatCode].ShortName) ?
@@ -163,7 +169,8 @@ namespace RINGS.Models
             $"{this.chatCode}:{this.speaker}:{this.message}";
 
         public static ChatLogModel FromXIVLog(
-            ChatLogItem xivLog)
+            ChatLogItem xivLog,
+            string[] currentPlayerNames)
         {
             var log = new ChatLogModel()
             {
@@ -182,6 +189,11 @@ namespace RINGS.Models
             else
             {
                 log.Message = xivLog.Line;
+            }
+
+            if (currentPlayerNames != null)
+            {
+                log.IsMe = currentPlayerNames.Contains(log.OriginalSpeaker);
             }
 
             return log;

@@ -18,7 +18,7 @@
   mc:Ignorable="d"
   DataContext="{x:Static vm:HelpViewModel.Instance}"
   d:DataContext="{d:DesignInstance vm:HelpViewModel, IsDesignTimeCreatable=True}"
-  d:DesignHeight="450" d:DesignWidth="800">
+  d:DesignHeight="600" d:DesignWidth="800">
 
   <d:DesignerProperties.DesignStyle>
     <Style TargetType="UserControl">
@@ -45,13 +45,13 @@
       <metro:MetroHeader>
         <metro:MetroHeader.Header>
           <DockPanel>
-            <Label DockPanel.Dock="Left" Content="Version Infomation" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource HighlightBrush}" />
+            <Label DockPanel.Dock="Left" Content="Version Infomation" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource BlackBrush}" />
             <Label
               DockPanel.Dock="Right"
               HorizontalAlignment="Right"
               Content="[DEBUG BUILD]"
               VerticalContentAlignment="Center"
-              Foreground="{DynamicResource HighlightBrush}"
+              Foreground="{DynamicResource BlackBrush}"
               FontWeight="Bold"
               Visibility="{Binding IsDebugBuild, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" />
           </DockPanel>
@@ -107,7 +107,7 @@
       <!-- Help Commands -->
       <metro:MetroHeader Margin="0 40 0 0">
         <metro:MetroHeader.Header>
-          <Label Content="Help Menu" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource HighlightBrush}" />
+          <Label Content="Help Menu" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource BlackBrush}" />
         </metro:MetroHeader.Header>
         <StackPanel Margin="10 5 0 0">
           <StackPanel.Resources>
@@ -116,6 +116,10 @@
               <Setter Property="FontSize" Value="18" />
             </Style>
           </StackPanel.Resources>
+
+          <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
+            <Hyperlink Command="{Binding OpenOfficialSiteCommand, Mode=OneWay}">オフィシャルサイトを開く</Hyperlink>
+          </TextBlock>
 
           <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
             <Hyperlink Command="{Binding CheckUpdateCommand, Mode=OneWay}">アップデートを確認する</Hyperlink>
@@ -137,7 +141,7 @@
     <metro:MetroHeader Grid.Row="2">
       <!-- Log -->
       <metro:MetroHeader.Header>
-        <Label Content="Log" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource HighlightBrush}" />
+        <Label Content="Log" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource BlackBrush}" />
       </metro:MetroHeader.Header>
       <ScrollViewer
         x:Name="LogScrollViewer"

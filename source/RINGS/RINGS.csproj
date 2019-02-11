@@ -68,8 +68,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\ChatCodes.cs" />
+    <Compile Include="Common\ChatLogger.cs" />
     <Compile Include="Common\PCNameStyles.cs" />
     <Compile Include="Common\SpeakerTypes.cs" />
+    <Compile Include="Controllers\DiscordBotController.cs" />
+    <Compile Include="Controllers\SharlayanController.cs" />
     <Compile Include="Models\ChannelLinkerModel.cs" />
     <Compile Include="Models\CharacterProfileModel.cs" />
     <Compile Include="Models\ChatLogsModel.cs" />
@@ -84,7 +87,7 @@
     <Compile Include="Overlays\ChatOverlayViewModel.cs" />
     <Compile Include="Overlays\IOverlay.cs" />
     <Compile Include="ViewModels\HelpViewModel.cs" />
-    <Compile Include="ViewModels\AppSettingsViewModel.cs" />
+    <Compile Include="ViewModels\ConfigViewModel.cs" />
     <Compile Include="ViewModels\ChatOverlaySettingsEditViewModel.cs" />
     <Compile Include="ViewModels\ChatOverlaySettingsViewModel.cs" />
     <Compile Include="ViewModels\DiscordBotSettingsViewModel.cs" />
@@ -94,8 +97,8 @@
     <Compile Include="Views\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AppSettingsView.xaml.cs">
-      <DependentUpon>AppSettingsView.xaml</DependentUpon>
+    <Compile Include="Views\ConfigView.xaml.cs">
+      <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ChatOverlaySettingsEditView.xaml.cs">
       <DependentUpon>ChatOverlaySettingsEditView.xaml</DependentUpon>
@@ -134,7 +137,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AppSettingsView.xaml">
+    <Page Include="Views\ConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

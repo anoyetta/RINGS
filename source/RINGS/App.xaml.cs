@@ -1,6 +1,12 @@
+using System;
+using System.Net;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using aframe;
+using aframe.ViewModels;
+using RINGS.Controllers;
 using RINGS.Overlays;
 
 namespace RINGS
@@ -10,23 +16,49 @@ namespace RINGS
     /// </summary>
     public partial class App : Application
     {
+        private static readonly Assembly[] ReferenceAssemblies = new[]
+        {
+            Assembly.GetExecutingAssembly(),
+            typeof(Sharlayan.Reader).Assembly,
+            typeof(Discord.IApplication).Assembly,
+        };
+
         public App()
         {
             AppLogger.Init("RINGSLogger");
+
+            ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls;
+            ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls11;
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
 
             this.DispatcherUnhandledException += this.App_DispatcherUnhandledException;
             this.Startup += this.App_Startup;
             this.Exit += this.App_Exit;
 
             this.ShutdownMode = ShutdownMode.OnMainWindowClose;
+
+            // Help にAppLogを登録する
+            AppLogger.OnWrite += (_, e) => HelpViewModel.Instance.AddLog(e);
         }
 
-        private void App_Startup(object sender, StartupEventArgs e)
+        private async void App_Startup(object sender, StartupEventArgs e)
         {
             var c = Config.Instance;
             c.SetStartup(c.IsStartupWithWindows);
 
             ChatOverlaysController.Instance.Start();
+
+            await Task.WhenAll(
+                SharlayanController.Instance.StartAsync(),
+                DiscordBotController.Instance.StartAsync(),
+                Task.Run(() =>
+                {
+                    HelpViewModel.Instance.OfficialSiteUri = new Uri(@"https://github.com/anoyetta/RINGS");
+                    foreach (var asm in ReferenceAssemblies)
+                    {
+                        HelpViewModel.Instance.AddVersionInfos(asm);
+                    }
+                }));
 
             AppLogger.Write($"{c.AppNameWithVersion} Start.");
         }

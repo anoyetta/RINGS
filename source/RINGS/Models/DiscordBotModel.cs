@@ -1,20 +1,11 @@
-using System;
-using Discord.WebSocket;
 using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace RINGS.Models
 {
     public class DiscordBotModel :
-        BindableBase,
-        IDisposable
-
+        BindableBase
     {
-        public void Dispose()
-        {
-            this.discordClient?.Dispose();
-        }
-
         [JsonIgnore]
         public Config Config => Config.Instance;
 
@@ -35,7 +26,5 @@ namespace RINGS.Models
             get => this.token;
             set => this.SetProperty(ref this.token, value);
         }
-
-        private DiscordSocketClient discordClient;
     }
 }

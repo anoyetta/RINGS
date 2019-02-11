@@ -250,8 +250,8 @@
       <!-- Options -->
       <metro:HamburgerMenu.OptionsItemsSource>
         <metro:HamburgerMenuItemCollection>
-          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Settings}" Label="設定" Tag="{Binding AppSettingsView, Mode=OneWay}" />
-          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Help}" Label="ヘルプ" Tag="{Binding HomeView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Settings}" Label="設定" Tag="{Binding ConfigView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Help}" Label="ヘルプ" Tag="{Binding HelpView, Mode=OneWay}" />
         </metro:HamburgerMenuItemCollection>
       </metro:HamburgerMenu.OptionsItemsSource>
     </metro:HamburgerMenu>

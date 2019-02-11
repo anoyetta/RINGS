@@ -14,7 +14,7 @@ namespace RINGS.ViewModels
         public ChatLinkSettingsView ChatLinkSettingsView => new ChatLinkSettingsView();
         public DiscordBotSettingsView DiscordBotSettingsView => new DiscordBotSettingsView();
 
-        public AppSettingsView AppSettingsView => new AppSettingsView();
+        public ConfigView ConfigView => new ConfigView();
         public HelpView HelpView => new HelpView();
 
         #endregion Content View Creator

@@ -59,7 +59,9 @@ namespace aframe.ViewModels
             AppLogOnWriteEventArgs args)
             => Application.Current.Dispatcher.InvokeAsync(
                 () => this.Logs.Add(args),
-                DispatcherPriority.Background);
+                DispatcherPriority.ContextIdle);
+
+        public Uri OfficialSiteUri { get; set; }
 
         private static readonly SaveFileDialog SaveLogFileDialog = new SaveFileDialog()
         {
@@ -81,6 +83,17 @@ namespace aframe.ViewModels
 
         public DelegateCommand RefreshCommand =>
             this.refreshCommand ?? (this.refreshCommand = new DelegateCommand(this.Refresh));
+
+        private DelegateCommand openOfficialSiteCommand;
+
+        public DelegateCommand OpenOfficialSiteCommand =>
+            this.openOfficialSiteCommand ?? (this.openOfficialSiteCommand = new DelegateCommand(async () =>
+            {
+                if (this.OfficialSiteUri != null)
+                {
+                    await Task.Run(() => Process.Start(this.OfficialSiteUri.ToString()));
+                }
+            }));
 
         private DelegateCommand checkUpdateCommand;
 

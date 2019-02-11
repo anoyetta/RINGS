@@ -9,7 +9,7 @@ namespace RINGS.Views
     {
         public HelpView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using aframe;
 using MahApps.Metro.Controls;
 
@@ -16,13 +17,16 @@ namespace RINGS
                 this.Snackbar.MessageQueue.Enqueue(message, neverDuplicate);
         }
 
-        private void HamburgerMenuControl_OnItemInvoked(
+        private async void HamburgerMenuControl_OnItemInvoked(
             object sender,
             HamburgerMenuItemInvokedEventArgs e)
         {
             this.HamburgerMenuControl.SetCurrentValue(
                 ContentProperty,
                 e.InvokedItem);
+
+            // ついでにConfigを保存する
+            await Task.Run(() => Config.Instance.Save());
         }
     }
 }

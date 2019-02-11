@@ -14,6 +14,7 @@
   xmlns:vm="clr-namespace:RINGS.ViewModels"
   xmlns:model="clr-namespace:RINGS.Models"
   xmlns:prism="http://prismlibrary.com/"
+  xmlns:fw_view="clr-namespace:aframe.Views;assembly=aframe.Core"
   mc:Ignorable="d"
   TextOptions.TextFormattingMode="Ideal"
   TextOptions.TextRenderingMode="ClearType"
@@ -28,5 +29,6 @@
   d:DataContext="{d:DesignInstance {x:Type vm:HelpViewModel}, IsDesignTimeCreatable=True}"
   prism:ViewModelLocator.AutoWireViewModel="True">
   <Grid>
+    <fw_view:HelpView />
   </Grid>
 </UserControl>
