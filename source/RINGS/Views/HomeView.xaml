@@ -27,6 +27,73 @@
   d:DesignHeight="450" d:DesignWidth="800"
   d:DataContext="{d:DesignInstance {x:Type vm:HomeViewModel}, IsDesignTimeCreatable=True}"
   prism:ViewModelLocator.AutoWireViewModel="True">
-  <Grid>
+
+  <Grid Margin="10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="55*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="45*" />
+    </Grid.RowDefinitions>
+    <GridSplitter Grid.Row="1" Height="1" HorizontalAlignment="Stretch" Background="{DynamicResource GrayBrush10}" />
+
+    <!-- Status -->
+    <metro:MetroHeader Grid.Row="0" Header="Status" metro:ControlsHelper.HeaderFontSize="20">
+      <StackPanel Margin="10 0 0 0">
+        <StackPanel Orientation="Horizontal">
+          <Label Content="Sharlayan" Width="100" />
+          <Label Content=": " />
+          <Label Content="{Binding SharlayanStatus, Mode=OneWay}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+          <Label Content="Player Name" Width="100" />
+          <Label Content=": " />
+          <Label Content="{Binding SharlayanStatus, Mode=OneWay}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+          <Label Content="Active Profile" Width="100" />
+          <Label Content=": " />
+          <Label Content="{Binding ActiveProfileName, Mode=OneWay}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+          <Label Content="DISCORD Bot" Width="100" />
+          <Label Content=": " />
+          <Label Content="{Binding DiscordBotStatus, Mode=OneWay}" />
+        </StackPanel>
+      </StackPanel>
+    </metro:MetroHeader>
+
+    <!-- Log -->
+    <metro:MetroHeader Grid.Row="2" Margin="0 5 0 0" Header="Chat Log" metro:ControlsHelper.HeaderFontSize="20">
+      <ScrollViewer
+        x:Name="LogScrollViewer"
+        Focusable="False"
+        IsTabStop="False"
+        HorizontalScrollBarVisibility="Disabled"
+        VerticalScrollBarVisibility="Auto">
+        <ItemsControl
+          ItemsSource="{Binding ChatLogs, Mode=OneWay}"
+          Focusable="False"
+          IsTabStop="False">
+
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <Label FontFamily="Consolas" Content="{Binding DateTime, Mode=OneWay}" />
+                <Label FontFamily="Consolas" Content="{Binding Message, Mode=OneWay}" />
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </metro:MetroHeader>
   </Grid>
 </UserControl>

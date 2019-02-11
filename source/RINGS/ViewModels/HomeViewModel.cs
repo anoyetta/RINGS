@@ -8,6 +8,7 @@ using Discord;
 using Prism.Mvvm;
 using RINGS.Common;
 using RINGS.Controllers;
+using RINGS.Views;
 
 namespace RINGS.ViewModels
 {
@@ -20,6 +21,7 @@ namespace RINGS.ViewModels
             this.refreshTimer.Tick += this.RefreshTimer_Tick;
             this.refreshTimer.Start();
 
+            this.ChatLogs.CollectionChanged += (_, __) => HomeView.SendScrollToEndLog();
             ChatLogger.OnWrite += (_, e) => this.AddLog(e);
         }
 
@@ -41,10 +43,9 @@ namespace RINGS.ViewModels
                 .FirstOrDefault(x => x.IsEnabled && x.IsActive)?
                 .CharacterName ?? string.Empty;
 
-            var disco = DiscordBotController.Instance;
-            var bots = disco.GetBots();
+            var bots = DiscordBotController.Instance.GetBots();
             this.DiscordBotStatus =
-                bots.All(x => x.ConnectionState == ConnectionState.Connected) ?
+                bots.Any() && bots.All(x => x.ConnectionState == ConnectionState.Connected) ?
                 "Ready" :
                 string.Empty;
         }
