@@ -35,14 +35,14 @@ namespace RINGS.Controllers
         private int handledProcessID;
         private int previousArrayIndex = 0;
         private int previousOffset = 0;
-        private ActorItem currentPlayer;
+        private CurrentPlayer currentPlayer;
         private string[] currentPlayerNames;
 
         public int HandledProcessID => this.handledProcessID;
 
         public bool IsAttached => this.handledProcessID != 0;
 
-        public ActorItem CurrentPlayer => this.currentPlayer;
+        public CurrentPlayer CurrentPlayer => this.currentPlayer;
 
         public async Task StartAsync() => await Task.Run(() =>
         {
@@ -107,13 +107,13 @@ namespace RINGS.Controllers
                         AppLogger.Write("Attached to FFXIV.");
                     }
 
-                    if (Reader.CanGetActors())
+                    if (Reader.CanGetPlayerInfo())
                     {
-                        var result = Reader.GetActors();
+                        var result = Reader.GetCurrentPlayer();
                         if (result != null)
                         {
-                            var newPlayer = result.CurrentPCs.FirstOrDefault().Value;
-                            if (this.currentPlayer != newPlayer)
+                            var newPlayer = result.CurrentPlayer;
+                            if (this.currentPlayer?.Name != newPlayer.Name)
                             {
                                 this.currentPlayer = newPlayer;
                                 this.currentPlayerNames = new[]

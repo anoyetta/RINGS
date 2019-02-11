@@ -78,7 +78,7 @@
                 <Border
                   BorderThickness="0"
                   Padding="8"
-                  Margin="0 0 15 15">
+                  Margin="0 0 15 10">
                   <Border.Resources>
                     <Style TargetType="Label" BasedOn="{StaticResource MetroLabel}">
                       <Setter Property="FontFamily" Value="Consolas" />
@@ -105,15 +105,15 @@
       </metro:MetroHeader>
 
       <!-- Help Commands -->
-      <metro:MetroHeader Margin="0 40 0 0">
+      <metro:MetroHeader Margin="0 5 0 0">
         <metro:MetroHeader.Header>
           <Label Content="Help Menu" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource BlackBrush}" />
         </metro:MetroHeader.Header>
-        <StackPanel Margin="10 5 0 0">
+        <StackPanel Margin="10 0 0 0">
           <StackPanel.Resources>
-            <Thickness x:Key="MenuMargin">0 0 0 8</Thickness>
+            <Thickness x:Key="MenuMargin">0 0 0 5</Thickness>
             <Style TargetType="Hyperlink">
-              <Setter Property="FontSize" Value="18" />
+              <Setter Property="FontSize" Value="16" />
             </Style>
           </StackPanel.Resources>
 
@@ -163,9 +163,9 @@
           <ItemsControl.ItemTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <Label FontFamily="Consolas" Content="{Binding DateTime, Mode=OneWay}" />
-                <Label FontFamily="Consolas" Content="{Binding Level, Mode=OneWay}" ContentStringFormat="[{0, 5}]" />
-                <Label FontFamily="Consolas" Content="{Binding Message, Mode=OneWay}" />
+                <Label Padding="0" FontFamily="Consolas" Content="{Binding DateTime, Mode=OneWay}" />
+                <Label Padding="0" Margin="5 0 0 0" FontFamily="Consolas" Content="{Binding Level, Mode=OneWay}" ContentStringFormat="[{0, 5}]" />
+                <Label Padding="0" Margin="5 0 0 0" FontFamily="Consolas" Content="{Binding Message, Mode=OneWay}" />
               </StackPanel>
             </DataTemplate>
           </ItemsControl.ItemTemplate>

@@ -269,6 +269,17 @@ namespace RINGS
             private set;
         } = new SuspendableObservableCollection<DiscordBotModel>();
 
+        public void RefreshDiscordChannelList()
+        {
+            this.RaisePropertyChanged(nameof(this.DiscordChannelList));
+        }
+
+        public void RefreshDiscordBotList()
+        {
+            this.RaisePropertyChanged(nameof(this.DiscordBotList));
+        }
+
+
         #endregion Data
     }
 }

@@ -5,8 +5,17 @@ namespace RINGS.Models
 {
     public class DiscordChannelModel :
         BindableBase
-
     {
+        public DiscordChannelModel()
+        {
+            /*
+            this.PropertyChanged += (_, e) =>
+            {
+                this.Config.RefreshDiscordChannelList();
+            };
+            */
+        }
+
         [JsonIgnore]
         public Config Config => Config.Instance;
 
@@ -19,10 +28,10 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.name, value);
         }
 
-        private uint id;
+        private string id;
 
         [JsonProperty(PropertyName = "id")]
-        public uint ID
+        public string ID
         {
             get => this.id;
             set => this.SetProperty(ref this.id, value);

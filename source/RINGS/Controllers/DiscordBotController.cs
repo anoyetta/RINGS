@@ -78,13 +78,17 @@ namespace RINGS.Controllers
                     var task = Task.Run(async () =>
                     {
                         var activeBotSettings = activeProfile.ChannelLinkerList
-                            .Where(x => x.IsEnabled)
+                            .Where(x => 
+                                x.IsEnabled && 
+                                !string.IsNullOrEmpty(x.DiscordChannelID))
                             .Select(x => this.GetBotByChannelID(x.DiscordChannelID))
                             .ToArray();
 
                         // 新しいBOTを生成する
                         var newBots = activeBotSettings
-                            .Where(x => !this.Bots.ContainsKey(x.Name))
+                            .Where(x => 
+                                x != null && 
+                                !this.Bots.ContainsKey(x?.Name))
                             .ToArray();
 
                         foreach (var config in newBots)
@@ -95,7 +99,7 @@ namespace RINGS.Controllers
                                 (_) => bot,
                                 (_, old) => old = bot);
 
-                            bot.Log += this.Bot_Log; ;
+                            bot.Log += this.Bot_Log;
                             bot.MessageReceived += this.Bot_MessageReceived;
 
                             await bot.LoginAsync(TokenType.Bot, config.Token);
@@ -150,13 +154,16 @@ namespace RINGS.Controllers
                 return;
             }
 
-            var ch = bot.GetChannel(linker.DiscordChannelID) as ISocketMessageChannel;
-            if (ch == null)
+            if (uint.TryParse(linker.DiscordChannelID, out uint uid))
             {
-                return;
-            }
+                var ch = bot.GetChannel(uid) as ISocketMessageChannel;
+                if (ch == null)
+                {
+                    return;
+                }
 
-            await ch.SendMessageAsync($"{speaker}:{message}");
+                await ch.SendMessageAsync($"{speaker}:{message}");
+            }
         }
 
         private Task Bot_Log(
@@ -183,7 +190,9 @@ namespace RINGS.Controllers
                 return Task.CompletedTask;
             }
 
-            var ch = activeChannels.FirstOrDefault(x => x.DiscordChannelID == arg.Channel.Id);
+            var ch = activeChannels
+                .FirstOrDefault(x => 
+                    x.DiscordChannelID == arg.Channel.Id.ToString());
             if (ch == null)
             {
                 return Task.CompletedTask;
@@ -194,7 +203,7 @@ namespace RINGS.Controllers
             {
                 model = ChatLogModel.FromDiscordLog(arg);
                 model.ChatCode = ch.ChatCode;
-                model.IsMe = model.Speaker == SharlayanController.Instance.CurrentPlayer?.Name;
+                model.IsMe = model.OriginalSpeaker == SharlayanController.Instance.CurrentPlayer?.Name;
 
                 if (!model.IsMe)
                 {
@@ -287,10 +296,10 @@ namespace RINGS.Controllers
         }
 
         private DiscordBotModel GetBotByChannelID(
-            uint channelID)
+            string channelID)
         {
             var ch = Config.Instance.DiscordChannelList.FirstOrDefault(x => x.ID == channelID);
-            return Config.Instance.DiscordBotList.FirstOrDefault(x => x.Name == ch?.Name);
+            return Config.Instance.DiscordBotList.FirstOrDefault(x => x.Name == ch?.HelperBotName);
         }
     }
 }

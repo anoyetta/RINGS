@@ -42,10 +42,10 @@ namespace RINGS.Models
             ChatCodes.DisplayNames[this.chatCode].ShortName :
             string.Empty;
 
-        private uint discordChannelID;
+        private string discordChannelID;
 
         [JsonProperty(PropertyName = "discord_channel_id")]
-        public uint DiscordChannelID
+        public string DiscordChannelID
         {
             get => this.discordChannelID;
             set => this.SetProperty(ref this.discordChannelID, value);

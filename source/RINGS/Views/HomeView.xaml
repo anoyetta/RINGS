@@ -49,7 +49,7 @@
           <StackPanel Orientation="Horizontal">
             <Label Content="Player Name" Width="100" />
             <Label Content=": " />
-            <Label Content="{Binding SharlayanStatus, Mode=OneWay}" />
+            <Label Content="{Binding CurrentPlayerName, Mode=OneWay}" />
           </StackPanel>
 
           <StackPanel Orientation="Horizontal">
