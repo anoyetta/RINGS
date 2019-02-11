@@ -147,6 +147,7 @@
         <TabControl.ContentTemplate>
           <DataTemplate>
             <ScrollViewer
+              fw:ScrollViewerHelper.AutoScroll="True"
               Focusable="False"
               IsTabStop="False"
               HorizontalScrollBarVisibility="Disabled"

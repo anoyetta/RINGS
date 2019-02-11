@@ -118,6 +118,7 @@
     <Compile Include="FontInfo.cs" />
     <Compile Include="Helpers\CommandHelper.cs" />
     <Compile Include="Helpers\MessageBoxHelper.cs" />
+    <Compile Include="Helpers\ScrollViewerHelper.cs" />
     <Compile Include="Helpers\WPFHelper.cs" />
     <Compile Include="AppLogger.cs" />
     <Compile Include="Models\VersionInfoModel.cs" />
