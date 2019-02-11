@@ -16,7 +16,7 @@ namespace RINGS.Common
             string message)
         {
             LazyLogger.Value.Info(
-                $"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")}] {channel}:{speaker}({originalSpeaker}):{message}");
+                $"[{channel}]:{speaker}({originalSpeaker}):{message}");
         }
 
         public static OnWriteEventHandler OnWrite;
@@ -35,6 +35,7 @@ namespace RINGS.Common
                 var arg = new AppLogOnWriteEventArgs()
                 {
                     DateTime = dateTime,
+                    DateTimeShort = DateTime.Parse(dateTime).ToString("HH:mm:ss"),
                     Message = message,
                 };
 

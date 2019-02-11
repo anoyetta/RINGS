@@ -232,6 +232,8 @@ namespace aframe
     {
         public string DateTime { get; set; }
 
+        public string DateTimeShort { get; set; }
+
         public string Level { get; set; }
 
         public string CallSite { get; set; }

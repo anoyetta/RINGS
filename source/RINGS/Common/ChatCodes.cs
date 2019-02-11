@@ -98,4 +98,13 @@ namespace RINGS.Common
             CrossWorldLinkshell,
         };
     }
+
+    public class ChatCodeContainer
+    {
+        public string ChatCode { get; set; }
+
+        public string DisplayName => ChatCodes.DisplayNames[this.ChatCode].DisplayName;
+
+        public string ShortName => ChatCodes.DisplayNames[this.ChatCode].ShortName;
+    }
 }

@@ -204,7 +204,10 @@ namespace RINGS.Controllers
 
             if (!model.IsMe)
             {
-                ChatLogger.Write(ch.ChannelName + "-D", model.OriginalSpeaker, model.Speaker, model.Message);
+                var chName = !string.IsNullOrEmpty(ch.ChannelShortName) ?
+                    ch.ChannelShortName :
+                    ch.ChannelName;
+                ChatLogger.Write(chName + "+", model.OriginalSpeaker, model.Speaker, model.Message);
             }
 
             return Task.CompletedTask;

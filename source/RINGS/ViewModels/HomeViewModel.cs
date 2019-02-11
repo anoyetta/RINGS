@@ -1,13 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using aframe;
 using Discord;
+using Prism.Commands;
 using Prism.Mvvm;
 using RINGS.Common;
 using RINGS.Controllers;
+using RINGS.Models;
 using RINGS.Views;
 
 namespace RINGS.ViewModels
@@ -59,6 +62,12 @@ namespace RINGS.ViewModels
         public ObservableCollection<AppLogOnWriteEventArgs> ChatLogs { get; }
             = new ObservableCollection<AppLogOnWriteEventArgs>();
 
+        public IEnumerable<ChatCodeContainer> ChatCodeList =>
+            ChatCodes.Linkshells.Select(x => new ChatCodeContainer()
+            {
+                ChatCode = x
+            });
+
         private string sharlayanStatus;
 
         public string SharlayanStatus
@@ -89,6 +98,50 @@ namespace RINGS.ViewModels
         {
             get => this.discordBotStatus;
             set => this.SetProperty(ref this.discordBotStatus, value);
+        }
+
+        private string testChatCode = ChatCodes.Linkshell1;
+
+        public string TestChatCode
+        {
+            get => this.testChatCode;
+            set => this.SetProperty(ref this.testChatCode, value);
+        }
+
+        private string testMessage;
+
+        public string TestMessage
+        {
+            get => this.testMessage;
+            set => this.SetProperty(ref this.testMessage, value);
+        }
+
+        private DelegateCommand submitTestMessageCommand;
+
+        public DelegateCommand SubmitTestMessageCommand =>
+            this.submitTestMessageCommand ?? (this.submitTestMessageCommand = new DelegateCommand(this.ExecuteSubmitTestMessageCommand));
+
+        private void ExecuteSubmitTestMessageCommand()
+        {
+            if (string.IsNullOrEmpty(this.TestMessage))
+            {
+                return;
+            }
+
+            var model = new ChatLogModel()
+            {
+                ChatCode = this.TestChatCode,
+                OriginalSpeaker = SharlayanController.Instance.CurrentPlayer?.Name ?? "RINGS",
+                SpeakerType = SpeakerTypes.XIVPlayer,
+                Message = this.TestMessage,
+            };
+
+            ChatLogsModel.AddToBuffers(model);
+            DiscordBotController.Instance.SendMessage(
+                model.ChatCode,
+                SharlayanController.Instance.CurrentPlayer?.Name ?? "RINGS",
+                model.Message);
+            ChatLogger.Write(model.ChannelShortName, model.OriginalSpeaker, model.Speaker, model.Message);
         }
     }
 }

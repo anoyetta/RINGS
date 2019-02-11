@@ -34,9 +34,9 @@
 
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="50*" />
+      <RowDefinition Height="60*" />
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="50*" />
+      <RowDefinition Height="40*" />
     </Grid.RowDefinitions>
 
     <StackPanel

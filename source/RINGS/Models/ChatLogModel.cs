@@ -25,6 +25,7 @@ namespace RINGS.Models
             {
                 case nameof(this.OriginalSpeaker):
                 case nameof(this.SpeakerType):
+                case nameof(this.ParentOverlaySettings):
                     this.SetSpeaker();
                     break;
 
@@ -52,6 +53,7 @@ namespace RINGS.Models
                 if (this.SetProperty(ref this.chatCode, value))
                 {
                     this.RaisePropertyChanged(nameof(this.ChannelName));
+                    this.RaisePropertyChanged(nameof(this.ChannelShortName));
                     this.RaisePropertyChanged(nameof(this.ChatCodeIndicator));
                 }
             }
@@ -59,6 +61,10 @@ namespace RINGS.Models
 
         public string ChannelName => ChatCodes.DisplayNames.ContainsKey(this.chatCode) ?
             ChatCodes.DisplayNames[this.chatCode].DisplayName :
+            string.Empty;
+
+        public string ChannelShortName => ChatCodes.DisplayNames.ContainsKey(this.chatCode) ?
+            ChatCodes.DisplayNames[this.chatCode].ShortName :
             string.Empty;
 
         public string ChatCodeIndicator =>
@@ -98,7 +104,7 @@ namespace RINGS.Models
             {
                 case SpeakerTypes.XIVPlayer:
                 case SpeakerTypes.DiscordBot:
-                    speaker = this.ParentOverlaySettings.PCNameStyle.FormatName(this.OriginalSpeaker);
+                    speaker = this.ParentOverlaySettings?.PCNameStyle.FormatName(this.OriginalSpeaker);
                     break;
 
                 case SpeakerTypes.DiscordUser:

@@ -27,6 +27,7 @@ namespace RINGS.Models
                 if (this.SetProperty(ref this.chatCode, value))
                 {
                     this.RaisePropertyChanged(nameof(this.ChannelName));
+                    this.RaisePropertyChanged(nameof(this.ChannelShortName));
                 }
             }
         }
@@ -34,6 +35,11 @@ namespace RINGS.Models
         [JsonIgnore]
         public string ChannelName => ChatCodes.DisplayNames.ContainsKey(this.chatCode) ?
             ChatCodes.DisplayNames[this.chatCode].DisplayName :
+            string.Empty;
+
+        [JsonIgnore]
+        public string ChannelShortName => ChatCodes.DisplayNames.ContainsKey(this.chatCode) ?
+            ChatCodes.DisplayNames[this.chatCode].ShortName :
             string.Empty;
 
         private uint discordChannelID;
