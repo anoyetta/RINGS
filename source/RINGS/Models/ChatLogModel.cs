@@ -77,8 +77,16 @@ namespace RINGS.Models
         public string Speaker
         {
             get => this.speaker;
-            private set => this.SetProperty(ref this.speaker, value);
+            private set
+            {
+                if (this.SetProperty(ref this.speaker, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsExistSpeaker));
+                }
+            }
         }
+
+        public bool IsExistSpeaker => !string.IsNullOrEmpty(this.Speaker);
 
         private string originalSpeaker;
 

@@ -45,7 +45,7 @@
       <metro:MetroHeader>
         <metro:MetroHeader.Header>
           <DockPanel>
-            <Label DockPanel.Dock="Left" Content="Version Infomation" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource BlackBrush}" />
+            <Label DockPanel.Dock="Left" Content="Version Infomation" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
             <Label
               DockPanel.Dock="Right"
               HorizontalAlignment="Right"
@@ -107,7 +107,7 @@
       <!-- Help Commands -->
       <metro:MetroHeader Margin="0 5 0 0">
         <metro:MetroHeader.Header>
-          <Label Content="Help Menu" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource BlackBrush}" />
+          <Label Content="Help Menu" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
         </metro:MetroHeader.Header>
         <StackPanel Margin="10 0 0 0">
           <StackPanel.Resources>
@@ -141,7 +141,7 @@
     <metro:MetroHeader Grid.Row="2">
       <!-- Log -->
       <metro:MetroHeader.Header>
-        <Label Content="Log" FontSize="{DynamicResource TabItemFontSize}" Foreground="{DynamicResource BlackBrush}" />
+        <Label Content="Log" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
       </metro:MetroHeader.Header>
       <ScrollViewer
         x:Name="LogScrollViewer"

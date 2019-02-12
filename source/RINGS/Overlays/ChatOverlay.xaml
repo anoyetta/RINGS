@@ -239,6 +239,7 @@
                       <!-- Speaker -->
                       <TextBox
                         Grid.Column="1"
+                        Visibility="{Binding IsExistSpeaker, Mode=OneWay, Converter={StaticResource VisibilityConverter}}"
                         Text="{Binding Speaker, Mode=OneWay, StringFormat={}{0} :}" />
 
                       <!-- Message -->

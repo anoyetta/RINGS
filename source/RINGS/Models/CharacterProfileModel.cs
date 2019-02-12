@@ -27,6 +27,7 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.characterName, value);
         }
 
+#if false
         private string server;
 
         [JsonProperty(PropertyName = "server")]
@@ -35,6 +36,7 @@ namespace RINGS.Models
             get => this.server;
             set => this.SetProperty(ref this.server, value);
         }
+#endif
 
         [JsonProperty(PropertyName = "channel_linker_settings")]
         public ObservableCollection<ChannelLinkerModel> ChannelLinkerList
@@ -56,7 +58,7 @@ namespace RINGS.Models
         {
             var result = new List<ChannelLinkerModel>();
 
-            foreach (var code in ChatCodes.All)
+            foreach (var code in ChatCodes.LinkableChannels)
             {
                 result.Add(new ChannelLinkerModel()
                 {

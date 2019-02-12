@@ -107,7 +107,6 @@ namespace RINGS
                 new CharacterProfileModel()
                 {
                     CharacterName = "Taro Yamada",
-                    Server = "Chocobo",
                 },
             };
     }

@@ -106,7 +106,7 @@ namespace RINGS
             finally
             {
                 AppLogger.Fatal(
-                    "Unhandled Exception. 予期しない例外が発生しました。",
+                    "Unhandled Exception. 予期しない例外を検知しました。",
                     e.Exception);
 
                 AppLogger.Write("RINGS Abort.");

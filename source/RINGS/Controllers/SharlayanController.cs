@@ -84,6 +84,7 @@ namespace RINGS.Controllers
                             this.handledProcessID = 0;
                         }
 
+                        this.ClearActiveProfile();
                         continue;
                     }
 
@@ -107,37 +108,7 @@ namespace RINGS.Controllers
                         AppLogger.Write("Attached to FFXIV.");
                     }
 
-                    if (Reader.CanGetPlayerInfo())
-                    {
-                        var result = Reader.GetCurrentPlayer();
-                        if (result != null)
-                        {
-                            var newPlayer = result.CurrentPlayer;
-                            if (this.currentPlayer?.Name != newPlayer.Name)
-                            {
-                                this.currentPlayer = newPlayer;
-                                this.currentPlayerNames = new[]
-                                {
-                                    PCNameStyles.FullName.FormatName(this.currentPlayer.Name),
-                                    PCNameStyles.FullInitial.FormatName(this.currentPlayer.Name),
-                                    PCNameStyles.InitialFull.FormatName(this.currentPlayer.Name),
-                                    PCNameStyles.Initial.FormatName(this.currentPlayer.Name),
-                                };
-
-                                AppLogger.Write($"Current player is {this.currentPlayer?.Name}");
-
-                                Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
-                                var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
-                                    x.IsEnabled &&
-                                    x.CharacterName == this.currentPlayer.Name);
-                                if (prof != null)
-                                {
-                                    prof.IsActive = true;
-                                    AppLogger.Write($"\"{prof.CharacterName}\"'s chat link profile activated.");
-                                }
-                            }
-                        }
-                    }
+                    this.RefreshActiveProfile();
                 }
                 catch (ThreadAbortException)
                 {
@@ -149,6 +120,54 @@ namespace RINGS.Controllers
                     Thread.Sleep(TimeSpan.FromSeconds(DetectProcessInterval * 2));
                 }
             }
+        }
+
+        private void RefreshActiveProfile()
+        {
+            if (!Reader.CanGetPlayerInfo())
+            {
+                this.ClearActiveProfile();
+                return;
+            }
+
+            var result = Reader.GetCurrentPlayer();
+            if (result == null)
+            {
+                this.ClearActiveProfile();
+                return;
+            }
+
+            var newPlayer = result.CurrentPlayer;
+            if (this.currentPlayer?.Name != newPlayer.Name)
+            {
+                this.currentPlayer = newPlayer;
+                this.currentPlayerNames = new[]
+                {
+                    PCNameStyles.FullName.FormatName(this.currentPlayer.Name),
+                    PCNameStyles.FullInitial.FormatName(this.currentPlayer.Name),
+                    PCNameStyles.InitialFull.FormatName(this.currentPlayer.Name),
+                    PCNameStyles.Initial.FormatName(this.currentPlayer.Name),
+                };
+
+                AppLogger.Write($"Current player is {this.currentPlayer?.Name}");
+
+                Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
+                var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
+                    x.IsEnabled &&
+                    x.CharacterName == this.currentPlayer.Name);
+                if (prof != null)
+                {
+                    prof.IsActive = true;
+                    AppLogger.Write($"\"{prof.CharacterName}\"'s chat link profile activated.");
+                }
+            }
+        }
+
+        private void ClearActiveProfile()
+        {
+            Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
+            this.currentPlayer = null;
+            this.currentPlayerNames = new string[0];
         }
 
         private void SubscribeChatLog()

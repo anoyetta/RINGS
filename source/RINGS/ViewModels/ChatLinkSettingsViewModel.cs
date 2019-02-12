@@ -22,7 +22,6 @@ namespace RINGS.ViewModels
             var model = new CharacterProfileModel()
             {
                 CharacterName = "Your Character",
-                Server = "Your Server",
                 IsEnabled = true,
             };
 

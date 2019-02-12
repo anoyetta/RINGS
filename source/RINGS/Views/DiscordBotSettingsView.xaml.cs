@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 using RINGS.ViewModels;
 
@@ -16,6 +17,32 @@ namespace RINGS.Views
                 => this.DISCORDChannelsListBox.SelectedItem = item;
             this.ViewModel.ChangeSelectedBotCallback = (item)
                 => this.BotListBox.SelectedItem = item;
+
+            if (this.ViewModel.Config.DiscordChannelList.Count > 0)
+            {
+                this.DISCORDChannelsListBox.SelectedIndex = 0;
+            }
+
+            if (this.ViewModel.Config.DiscordBotList.Count > 0)
+            {
+                this.BotListBox.SelectedIndex = 0;
+            }
+
+            this.ViewModel.Config.DiscordChannelList.CollectionChanged += (_, __) =>
+            {
+                this.ChannelPanel.Visibility =
+                    this.ViewModel.Config.DiscordChannelList.Count > 0 ?
+                    Visibility.Visible :
+                    Visibility.Hidden;
+            };
+
+            this.ViewModel.Config.DiscordBotList.CollectionChanged += (_, __) =>
+            {
+                this.BotPanel.Visibility =
+                    this.ViewModel.Config.DiscordBotList.Count > 0 ?
+                    Visibility.Visible :
+                    Visibility.Hidden;
+            };
         }
 
         public DiscordBotSettingsViewModel ViewModel => this.DataContext as DiscordBotSettingsViewModel;

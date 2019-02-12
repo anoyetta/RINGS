@@ -111,9 +111,11 @@
           <TextBox Text="{Binding CharacterName, Mode=TwoWay}" />
         </metro:MetroHeader>
 
+        <!--
         <metro:MetroHeader Header="サーバー" Margin="0 15 0 0">
           <TextBox Text="{Binding Server, Mode=TwoWay}" />
         </metro:MetroHeader>
+        -->
 
         <metro:ToggleSwitch
           Margin="0 15 0 0"

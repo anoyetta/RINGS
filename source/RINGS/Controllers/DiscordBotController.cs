@@ -61,16 +61,7 @@ namespace RINGS.Controllers
 
                     if (activeProfile == null)
                     {
-                        foreach (var old in this.Bots)
-                        {
-                            this.Bots.TryRemove(old.Key, out DiscordSocketClient oldBot);
-                            if (oldBot != null)
-                            {
-                                oldBot.LogoutAsync().GetAwaiter().GetResult();
-                                oldBot.Dispose();
-                            }
-                        }
-
+                        this.ClearBots();
                         Thread.Sleep(TimeSpan.FromSeconds(5));
                         continue;
                     }
@@ -78,16 +69,16 @@ namespace RINGS.Controllers
                     var task = Task.Run(async () =>
                     {
                         var activeBotSettings = activeProfile.ChannelLinkerList
-                            .Where(x => 
-                                x.IsEnabled && 
+                            .Where(x =>
+                                x.IsEnabled &&
                                 !string.IsNullOrEmpty(x.DiscordChannelID))
                             .Select(x => this.GetBotByChannelID(x.DiscordChannelID))
                             .ToArray();
 
                         // 新しいBOTを生成する
                         var newBots = activeBotSettings
-                            .Where(x => 
-                                x != null && 
+                            .Where(x =>
+                                x != null &&
                                 !this.Bots.ContainsKey(x?.Name))
                             .ToArray();
 
@@ -132,6 +123,21 @@ namespace RINGS.Controllers
                 {
                     AppLogger.Error("Happened exception from DISCORD Bot initializer.", ex);
                     Thread.Sleep(TimeSpan.FromSeconds(10));
+                }
+            }
+        }
+
+        private async void ClearBots()
+        {
+            var keys = this.Bots.Keys;
+
+            foreach (var key in keys)
+            {
+                this.Bots.TryRemove(key, out DiscordSocketClient oldBot);
+                if (oldBot != null)
+                {
+                    await oldBot.LogoutAsync();
+                    oldBot.Dispose();
                 }
             }
         }
@@ -191,7 +197,7 @@ namespace RINGS.Controllers
             }
 
             var ch = activeChannels
-                .FirstOrDefault(x => 
+                .FirstOrDefault(x =>
                     x.DiscordChannelID == arg.Channel.Id.ToString());
             if (ch == null)
             {
