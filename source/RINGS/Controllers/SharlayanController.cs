@@ -223,7 +223,7 @@ namespace RINGS.Controllers
                                 model.Message);
                         }
 
-                        ChatLogger.Write(model.ChannelShortName, model.OriginalSpeaker, model.Speaker, model.Message);
+                        ChatLogger.Write(model.ChannelShortName, model.Speaker, model.SpeakerAlias, model.Message);
                     }
                 }
                 catch (ThreadAbortException)

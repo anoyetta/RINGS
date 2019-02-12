@@ -40,29 +40,39 @@
 
     <!-- Status -->
     <metro:MetroHeader Grid.Row="0" Header="Status" metro:ControlsHelper.HeaderFontSize="20">
+      <metro:MetroHeader.Resources>
+        <SolidColorBrush x:Key="IndicatorBrush" Color="#c3d825" />
+        <DropShadowEffect
+          x:Key="IndicatorEffect"
+          Direction="0"
+          ShadowDepth="0"
+          BlurRadius="6"
+          Color="#c3d825" />
+      </metro:MetroHeader.Resources>
+
       <StackPanel Margin="10 0 0 0" TextElement.FontSize="16">
         <StackPanel Orientation="Horizontal">
           <Label Content="Sharlayan" Width="120" />
-          <Label Content=": " />
-          <Label Content="{Binding SharlayanStatus, Mode=OneWay}" />
+          <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
+          <Label Content="{Binding SharlayanStatus, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
           <Label Content="Player Name" Width="120" />
-          <Label Content=": " />
-          <Label Content="{Binding CurrentPlayerName, Mode=OneWay}" />
+          <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
+          <Label Content="{Binding CurrentPlayerName, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
           <Label Content="Active Profile" Width="120" />
-          <Label Content=": " />
-          <Label Content="{Binding ActiveProfileName, Mode=OneWay}" />
+          <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
+          <Label Content="{Binding ActiveProfileName, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
           <Label Content="DISCORD Bot" Width="120" />
-          <Label Content=": " />
-          <Label Content="{Binding DiscordBotStatus, Mode=OneWay}" />
+          <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
+          <Label Content="{Binding DiscordBotStatus, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
         </StackPanel>
       </StackPanel>
     </metro:MetroHeader>
@@ -71,6 +81,7 @@
     <metro:MetroHeader Grid.Row="2" Margin="0 5 0 0" Header="Chat Log" metro:ControlsHelper.HeaderFontSize="20">
       <ScrollViewer
         x:Name="LogScrollViewer"
+        Margin="0 5 0 0"
         Focusable="False"
         IsTabStop="False"
         HorizontalScrollBarVisibility="Disabled"
@@ -78,7 +89,8 @@
         <ItemsControl
           ItemsSource="{Binding ChatLogs, Mode=OneWay}"
           Focusable="False"
-          IsTabStop="False">
+          IsTabStop="False"
+          TextElement.FontSize="14">
 
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
@@ -106,6 +118,7 @@
         <ColumnDefinition Width="Auto" />
       </Grid.ColumnDefinitions>
       <ComboBox
+        x:Name="TestChatChannelComboBox"
         Width="70"
         Grid.Column="0"
         ItemsSource="{Binding ChatCodeList, Mode=OneWay}"
@@ -113,6 +126,7 @@
         SelectedValuePath="ChatCode"
         SelectedValue="{Binding TestChatCode, Mode=TwoWay}" />
       <TextBox
+        x:Name="TestChatMessageTextBox"
         Grid.Column="1"
         Margin="2 0 2 0"
         VerticalContentAlignment="Center"
@@ -122,7 +136,8 @@
         Grid.Column="2"
         Width="70"
         Content="Submit"
-        Command="{Binding SubmitTestMessageCommand, Mode=OneWay}" />
+        Command="{Binding SubmitTestMessageCommand, Mode=OneWay}"
+        CommandParameter="{Binding ElementName=TestChatMessageTextBox, Path=Text, Mode=OneWay}" />
     </Grid>
   </Grid>
 </UserControl>

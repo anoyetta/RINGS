@@ -40,11 +40,25 @@ namespace RINGS.ViewModels
                 "Attached" :
                 string.Empty;
 
-            this.CurrentPlayerName = shar.CurrentPlayer?.Name;
+            this.CurrentPlayerName = shar.CurrentPlayer != null ?
+                $"{shar.CurrentPlayer.Name} ({shar.CurrentPlayer.Job})" :
+                string.Empty;
 
-            this.ActiveProfileName = Config.Instance.CharacterProfileList
-                .FirstOrDefault(x => x.IsEnabled && x.IsActive)?
-                .CharacterName ?? string.Empty;
+            var prof = this.Config.ActiveProfile;
+            if (prof == null)
+            {
+                this.ActiveProfileName = string.Empty;
+            }
+            else
+            {
+                var links = prof.ChannelLinkerList
+                    .Where(x => x.IsEnabled)
+                    .Select(x => x.ChannelShortName);
+
+                this.ActiveProfileName = links.Any() ?
+                    $"{prof.CharacterName} - {string.Join(",", links)}" :
+                    $"{prof.CharacterName} - NO LINK";
+            }
 
             var bots = DiscordBotController.Instance.GetBots();
             this.DiscordBotStatus =
@@ -116,24 +130,27 @@ namespace RINGS.ViewModels
             set => this.SetProperty(ref this.testMessage, value);
         }
 
-        private DelegateCommand submitTestMessageCommand;
+        private DelegateCommand<string> submitTestMessageCommand;
 
-        public DelegateCommand SubmitTestMessageCommand =>
-            this.submitTestMessageCommand ?? (this.submitTestMessageCommand = new DelegateCommand(this.ExecuteSubmitTestMessageCommand));
+        public DelegateCommand<string> SubmitTestMessageCommand =>
+            this.submitTestMessageCommand ?? (this.submitTestMessageCommand = new DelegateCommand<string>(this.ExecuteSubmitTestMessageCommand));
 
-        private void ExecuteSubmitTestMessageCommand()
+        private void ExecuteSubmitTestMessageCommand(
+            string message)
         {
-            if (string.IsNullOrEmpty(this.TestMessage))
+            if (string.IsNullOrEmpty(message))
             {
                 return;
             }
 
+            var speaker = SharlayanController.Instance.CurrentPlayer?.Name ?? "RINGS";
+
             var model = new ChatLogModel()
             {
                 ChatCode = this.TestChatCode,
-                OriginalSpeaker = SharlayanController.Instance.CurrentPlayer?.Name ?? "RINGS",
+                OriginalSpeaker = speaker,
                 SpeakerType = SpeakerTypes.XIVPlayer,
-                Message = this.TestMessage,
+                Message = message,
             };
 
             var alias = Config.Instance.CharacterProfileList
@@ -143,10 +160,13 @@ namespace RINGS.ViewModels
             ChatLogsModel.AddToBuffers(model);
             DiscordBotController.Instance.SendMessage(
                 model.ChatCode,
-                SharlayanController.Instance.CurrentPlayer?.Name ?? "RINGS",
+                speaker,
                 alias,
                 model.Message);
-            ChatLogger.Write(model.ChannelShortName, model.OriginalSpeaker, model.Speaker, model.Message);
+            ChatLogger.Write(model.ChannelShortName, speaker, alias, model.Message);
+
+            this.TestMessage = string.Empty;
+            this.RaisePropertyChanged(nameof(this.TestMessage));
         }
     }
 }

@@ -208,6 +208,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Say,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "本日は晴天なり。"
             });
@@ -219,6 +220,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Say,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "明日も晴天かな？"
             });
@@ -230,6 +232,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Say,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。"
             });
@@ -241,6 +244,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Party,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "よろしくおねがいします～ ＞＜"
             });
@@ -252,6 +256,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell1,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル1の皆さん、こんにちは。"
             });
@@ -263,6 +268,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell2,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル2の皆さん、こんにちは。"
             });
@@ -274,6 +280,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell3,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル3の皆さん、こんにちは。"
             });
@@ -285,6 +292,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell4,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル4の皆さん、こんにちは。"
             });
@@ -296,6 +304,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell5,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル5の皆さん、こんにちは。"
             });
@@ -307,6 +316,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell6,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル6の皆さん、こんにちは。"
             });
@@ -318,6 +328,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell7,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル7の皆さん、こんにちは。"
             });
@@ -329,6 +340,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.Linkshell8,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "リンクシェル8の皆さん、こんにちは。"
             });
@@ -340,6 +352,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.CrossWorldLinkshell,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "CWLSの皆さん、こんにちは。"
             });
@@ -351,6 +364,7 @@ namespace RINGS.Models
                 ParentPageSettings = this.ParentPageSettings,
                 ChatCode = ChatCodes.FreeCompany,
                 OriginalSpeaker = "Naoki Yoshida",
+                SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
                 Message = "フリーカンパニーの皆さん、こんにちは。"
             });

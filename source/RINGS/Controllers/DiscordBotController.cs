@@ -227,7 +227,7 @@ namespace RINGS.Controllers
                 var chName = !string.IsNullOrEmpty(ch.ChannelShortName) ?
                     ch.ChannelShortName :
                     ch.ChannelName;
-                ChatLogger.Write(chName + "+", model.OriginalSpeaker, model.Speaker, model.Message);
+                ChatLogger.Write(chName, model.Speaker, model.SpeakerAlias, model.Message);
             }
 
             return Task.CompletedTask;

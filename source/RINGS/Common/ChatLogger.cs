@@ -11,12 +11,20 @@ namespace RINGS.Common
 
         public static void Write(
             string channel,
-            string originalSpeaker,
             string speaker,
+            string speakerAlias,
             string message)
         {
-            LazyLogger.Value.Info(
-                $"[{channel}]:{speaker}({originalSpeaker}):{message}");
+            if (!string.IsNullOrEmpty(speakerAlias))
+            {
+                LazyLogger.Value.Info(
+                    $"[{channel}]:{speaker}({speakerAlias}):{message}");
+            }
+            else
+            {
+                LazyLogger.Value.Info(
+                    $"[{channel}]:{speaker}:{message}");
+            }
         }
 
         public static OnWriteEventHandler OnWrite;
