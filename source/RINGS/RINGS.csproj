@@ -86,6 +86,7 @@
     <Compile Include="Overlays\ChatOverlaysController.cs" />
     <Compile Include="Overlays\ChatOverlayViewModel.cs" />
     <Compile Include="Overlays\IOverlay.cs" />
+    <Compile Include="Version.cs" />
     <Compile Include="ViewModels\HelpViewModel.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
     <Compile Include="ViewModels\ChatOverlaySettingsEditViewModel.cs" />

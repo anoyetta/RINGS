@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<release_notes>
+  <name>RINGS</name>
+
+  <!-- 
+    #Placeholder#
+
+    BuildNo         : ビルド番号
+    Timestamp       : タイムスタンプ
+    Tag             : タグ
+    ArchiveFileName : アーカイブファイル名
+  -->
+
+  <note>
+    <version>0.0.0.5</version>
+    <channel>Alpha</channel>
+    <timestamp>2019-03-01</timestamp>
+    <uri></uri>
+    <description>
+      * first release
+    </description>
+  </note>
+</release_notes>

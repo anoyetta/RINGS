@@ -1,0 +1,9 @@
+﻿  <note>
+    <version>0.0.0.#BuildNo#</version>
+    <channel>Beta</channel>
+    <timestamp>#Timestamp#</timestamp>
+    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <description>
+      descriptions...
+    </description>
+  </note>
