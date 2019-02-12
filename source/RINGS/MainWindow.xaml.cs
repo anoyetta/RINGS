@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using aframe;
 using MahApps.Metro.Controls;
+using RINGS.ViewModels;
 
 namespace RINGS
 {
@@ -15,18 +16,27 @@ namespace RINGS
 
             MessageBoxHelper.EnqueueSnackbarCallback = (message, neverDuplicate) =>
                 this.Snackbar.MessageQueue.Enqueue(message, neverDuplicate);
+
+            this.ViewModel.CloseAction = () => this.Close();
         }
+
+        public MainWindowViewModel ViewModel => this.DataContext as MainWindowViewModel;
 
         private async void HamburgerMenuControl_OnItemInvoked(
             object sender,
             HamburgerMenuItemInvokedEventArgs e)
         {
-            this.HamburgerMenuControl.SetCurrentValue(
-                ContentProperty,
-                e.InvokedItem);
+            var item = e.InvokedItem as HamburgerMenuItem;
 
-            // ついでにConfigを保存する
-            await Task.Run(() => Config.Instance.Save());
+            if (item.Tag != null)
+            {
+                this.HamburgerMenuControl.SetCurrentValue(
+                    ContentProperty,
+                    item);
+
+                // ついでにConfigを保存する
+                await Task.Run(() => Config.Instance.Save());
+            }
         }
     }
 }

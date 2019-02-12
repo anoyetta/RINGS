@@ -27,6 +27,37 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.characterName, value);
         }
 
+        private string alias;
+
+        [JsonProperty(PropertyName = "alias")]
+        public string Alias
+        {
+            get => this.alias;
+            set => this.SetProperty(ref this.alias, NameFilter(value));
+        }
+
+        private static string NameFilter(
+            string name)
+        {
+            var result = string.Empty;
+
+            var chars = name.ToCharArray();
+            foreach (var c in chars)
+            {
+                if ((c >= 'a' && c <= 'z') ||
+                    (c >= 'A' && c <= 'Z') ||
+                    c == '\'' ||
+                    c == '-' ||
+                    c == ' ' ||
+                    c == '.')
+                {
+                    result += c;
+                }
+            }
+
+            return result;
+        }
+
 #if false
         private string server;
 

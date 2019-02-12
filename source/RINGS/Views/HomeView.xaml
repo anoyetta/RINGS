@@ -30,69 +30,42 @@
 
   <Grid Margin="10">
     <Grid.RowDefinitions>
+      <RowDefinition Height="45*" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="55*" />
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="45*" />
     </Grid.RowDefinitions>
-    <GridSplitter Grid.Row="1" Height="1" HorizontalAlignment="Stretch" Background="{DynamicResource GrayBrush10}" />
 
-    <DockPanel Grid.Row="0">
-      <!-- Status -->
-      <metro:MetroHeader Header="Status" DockPanel.Dock="Top" metro:ControlsHelper.HeaderFontSize="20">
-        <StackPanel Margin="10 0 0 0">
-          <StackPanel Orientation="Horizontal">
-            <Label Content="Sharlayan" Width="100" />
-            <Label Content=": " />
-            <Label Content="{Binding SharlayanStatus, Mode=OneWay}" />
-          </StackPanel>
+    <GridSplitter Grid.Row="1" Height="1" HorizontalAlignment="Stretch" Background="{DynamicResource GrayBrush10}" Focusable="False" IsTabStop="False" />
 
-          <StackPanel Orientation="Horizontal">
-            <Label Content="Player Name" Width="100" />
-            <Label Content=": " />
-            <Label Content="{Binding CurrentPlayerName, Mode=OneWay}" />
-          </StackPanel>
-
-          <StackPanel Orientation="Horizontal">
-            <Label Content="Active Profile" Width="100" />
-            <Label Content=": " />
-            <Label Content="{Binding ActiveProfileName, Mode=OneWay}" />
-          </StackPanel>
-
-          <StackPanel Orientation="Horizontal">
-            <Label Content="DISCORD Bot" Width="100" />
-            <Label Content=": " />
-            <Label Content="{Binding DiscordBotStatus, Mode=OneWay}" />
-          </StackPanel>
+    <!-- Status -->
+    <metro:MetroHeader Grid.Row="0" Header="Status" metro:ControlsHelper.HeaderFontSize="20">
+      <StackPanel Margin="10 0 0 0" TextElement.FontSize="16">
+        <StackPanel Orientation="Horizontal">
+          <Label Content="Sharlayan" Width="120" />
+          <Label Content=": " />
+          <Label Content="{Binding SharlayanStatus, Mode=OneWay}" />
         </StackPanel>
-      </metro:MetroHeader>
 
-      <!-- Chat Tester -->
-      <metro:MetroHeader Header="Chat Tester" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" metro:ControlsHelper.HeaderFontSize="20" Margin="0 30 0 0">
-        <Grid Margin="0 10 0 10">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-          </Grid.ColumnDefinitions>
-          <ComboBox
-            Width="75"
-            Grid.Column="0"
-            ItemsSource="{Binding ChatCodeList, Mode=OneWay}"
-            DisplayMemberPath="ShortName"
-            SelectedValuePath="ChatCode"
-            SelectedValue="{Binding TestChatCode, Mode=TwoWay}" />
-          <TextBox
-            Grid.Column="1"
-            VerticalContentAlignment="Center"
-            Text="{Binding TestMessage, Mode=TwoWay}" />
-          <Button
-            Grid.Column="2"
-            Width="90"
-            Content="Submit"
-            Command="{Binding SubmitTestMessageCommand, Mode=OneWay}" />
-        </Grid>
-      </metro:MetroHeader>
-    </DockPanel>
+        <StackPanel Orientation="Horizontal">
+          <Label Content="Player Name" Width="120" />
+          <Label Content=": " />
+          <Label Content="{Binding CurrentPlayerName, Mode=OneWay}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+          <Label Content="Active Profile" Width="120" />
+          <Label Content=": " />
+          <Label Content="{Binding ActiveProfileName, Mode=OneWay}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+          <Label Content="DISCORD Bot" Width="120" />
+          <Label Content=": " />
+          <Label Content="{Binding DiscordBotStatus, Mode=OneWay}" />
+        </StackPanel>
+      </StackPanel>
+    </metro:MetroHeader>
 
     <!-- Log -->
     <metro:MetroHeader Grid.Row="2" Margin="0 5 0 0" Header="Chat Log" metro:ControlsHelper.HeaderFontSize="20">
@@ -124,5 +97,32 @@
         </ItemsControl>
       </ScrollViewer>
     </metro:MetroHeader>
+
+    <!-- Chat Tester -->
+    <Grid Grid.Row="3" Margin="0 5 0 0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <ComboBox
+        Width="70"
+        Grid.Column="0"
+        ItemsSource="{Binding ChatCodeList, Mode=OneWay}"
+        DisplayMemberPath="ShortName"
+        SelectedValuePath="ChatCode"
+        SelectedValue="{Binding TestChatCode, Mode=TwoWay}" />
+      <TextBox
+        Grid.Column="1"
+        Margin="2 0 2 0"
+        VerticalContentAlignment="Center"
+        FontSize="14"
+        Text="{Binding TestMessage, Mode=TwoWay}" />
+      <Button
+        Grid.Column="2"
+        Width="70"
+        Content="Submit"
+        Command="{Binding SubmitTestMessageCommand, Mode=OneWay}" />
+    </Grid>
   </Grid>
 </UserControl>

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Discord.WebSocket;
 using Prism.Mvvm;
 using RINGS.Common;
@@ -95,6 +96,22 @@ namespace RINGS.Models
             get => this.originalSpeaker;
             set => this.SetProperty(ref this.originalSpeaker, value);
         }
+
+        private string speakerAlias;
+
+        public string SpeakerAlias
+        {
+            get => this.speakerAlias;
+            set
+            {
+                if (this.SetProperty(ref this.speakerAlias, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.SpeakerAlias));
+                }
+            }
+        }
+
+        public bool IsExistSpeakerAlias => !string.IsNullOrEmpty(this.SpeakerAlias);
 
         private SpeakerTypes speakerType = SpeakerTypes.XIVPlayer;
 
@@ -213,6 +230,10 @@ namespace RINGS.Models
             return log;
         }
 
+        private static readonly Regex SpeakerRegex = new Regex(
+            @"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+) \((?<alias>.+)\)",
+            RegexOptions.Compiled);
+
         public static ChatLogModel FromDiscordLog(
             SocketMessage dicordLog)
         {
@@ -233,8 +254,20 @@ namespace RINGS.Models
                 if (i >= 0)
                 {
                     log.SpeakerType = SpeakerTypes.DiscordBot;
-                    log.OriginalSpeaker = dicordLog.Content.Substring(0, i);
                     log.Message = dicordLog.Content.Substring(i + 1);
+
+                    var speaker = dicordLog.Content.Substring(0, i).Trim();
+                    var match = SpeakerRegex.Match(speaker);
+                    if (!match.Success)
+                    {
+                        log.OriginalSpeaker = speaker;
+                        log.SpeakerAlias = string.Empty;
+                    }
+                    else
+                    {
+                        log.OriginalSpeaker = match.Groups["name"].ToString();
+                        log.SpeakerAlias = match.Groups["alias"].ToString();
+                    }
                 }
                 else
                 {

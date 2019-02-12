@@ -145,6 +145,7 @@ namespace RINGS.Controllers
         public async void SendMessage(
             string chatCode,
             string speaker,
+            string speakerAlias,
             string message)
         {
             var bot = this.GetBotByChatCode(chatCode);
@@ -168,7 +169,11 @@ namespace RINGS.Controllers
                     return;
                 }
 
-                await ch.SendMessageAsync($"{speaker}:{message}");
+                var text = !string.IsNullOrEmpty(speakerAlias) ?
+                    $"{speaker} :{message}" :
+                    $"{speaker} ({speakerAlias}) :{message}";
+
+                await ch.SendMessageAsync(text);
             }
         }
 

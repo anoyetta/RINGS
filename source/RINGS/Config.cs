@@ -262,6 +262,9 @@ namespace RINGS
             private set;
         } = new SuspendableObservableCollection<CharacterProfileModel>();
 
+        [JsonIgnore]
+        public CharacterProfileModel ActiveProfile => this.CharacterProfileList.FirstOrDefault(x => x.IsEnabled && x.IsActive);
+
         [JsonProperty(PropertyName = "discord_channels", DefaultValueHandling = DefaultValueHandling.Include)]
         public SuspendableObservableCollection<DiscordChannelModel> DiscordChannelList
         {

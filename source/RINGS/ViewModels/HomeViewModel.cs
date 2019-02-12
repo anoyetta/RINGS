@@ -136,10 +136,15 @@ namespace RINGS.ViewModels
                 Message = this.TestMessage,
             };
 
+            var alias = Config.Instance.CharacterProfileList
+                .FirstOrDefault(x => x.IsEnabled && x.IsActive)?
+                .CharacterName ?? string.Empty;
+
             ChatLogsModel.AddToBuffers(model);
             DiscordBotController.Instance.SendMessage(
                 model.ChatCode,
                 SharlayanController.Instance.CurrentPlayer?.Name ?? "RINGS",
+                alias,
                 model.Message);
             ChatLogger.Write(model.ChannelShortName, model.OriginalSpeaker, model.Speaker, model.Message);
         }

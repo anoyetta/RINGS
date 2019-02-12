@@ -219,6 +219,7 @@ namespace RINGS.Controllers
                             DiscordBotController.Instance.SendMessage(
                                 model.ChatCode,
                                 this.currentPlayer?.Name,
+                                Config.Instance.ActiveProfile?.Alias,
                                 model.Message);
                         }
 
