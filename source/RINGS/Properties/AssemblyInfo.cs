@@ -4,7 +4,6 @@ using System.Windows;
 
 [assembly: AssemblyTitle("RINGS")]
 [assembly: AssemblyDescription("Connects chat channel to Discord for FFXIV.")]
-[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("RINGS")]
 [assembly: AssemblyCopyright("Copyright © anoyetta 2019")]
@@ -15,5 +14,6 @@ using System.Windows;
     ResourceDictionaryLocation.None,
     ResourceDictionaryLocation.SourceAssembly
 )]
-[assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.0.0.0")]
+[assembly: AssemblyVersion("0.0.0.5")]
+[assembly: AssemblyFileVersion("0.0.0.5")]
+[assembly: AssemblyConfiguration("Alpha")]
