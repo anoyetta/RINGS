@@ -58,7 +58,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
-          <Label Content="Player Name" Width="120" />
+          <Label Content="Player" Width="120" />
           <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
           <Label Content="{Binding CurrentPlayerName, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
         </StackPanel>
