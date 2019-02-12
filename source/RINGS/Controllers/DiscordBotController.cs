@@ -98,19 +98,12 @@ namespace RINGS.Controllers
                         }
 
                         // 不要になったBOTを始末する
-                        var oldItems = this.Bots
+                        var keys = this.Bots
                             .Where(x => !activeBotSettings.Any(y => y.Name == x.Key))
+                            .Select(x => x.Key)
                             .ToArray();
 
-                        foreach (var old in oldItems)
-                        {
-                            this.Bots.TryRemove(old.Key, out DiscordSocketClient oldBot);
-                            if (oldBot != null)
-                            {
-                                await oldBot.LogoutAsync();
-                                oldBot.Dispose();
-                            }
-                        }
+                        this.ClearBots(keys);
                     });
 
                     task.Wait();
@@ -127,17 +120,24 @@ namespace RINGS.Controllers
             }
         }
 
-        private async void ClearBots()
+        private async void ClearBots(
+            IEnumerable<string> keys = null)
         {
-            var keys = this.Bots.Keys;
+            if (keys == null)
+            {
+                keys = this.Bots.Keys;
+            }
 
             foreach (var key in keys)
             {
-                this.Bots.TryRemove(key, out DiscordSocketClient oldBot);
-                if (oldBot != null)
+                if (this.Bots.TryRemove(key, out DiscordSocketClient bot) &&
+                    bot != null)
                 {
-                    await oldBot.LogoutAsync();
-                    oldBot.Dispose();
+                    await bot.LogoutAsync();
+                    bot.Log -= this.Bot_Log;
+                    bot.MessageReceived -= this.Bot_MessageReceived;
+                    bot.Dispose();
+                    bot = null;
                 }
             }
         }

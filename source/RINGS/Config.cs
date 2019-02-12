@@ -197,7 +197,14 @@ namespace RINGS
         {
             if (this.chatOverlaySettings.ContainsKey(settings.Name))
             {
+                foreach (var page in settings.ChatPages)
+                {
+                    page.DisposeLogBuffer();
+                }
+
                 this.chatOverlaySettings.Remove(settings.Name);
+                settings = null;
+
                 this.RaisePropertyChanged(nameof(this.ChatOverlaySettings));
             }
         }
@@ -278,7 +285,6 @@ namespace RINGS
         {
             this.RaisePropertyChanged(nameof(this.DiscordBotList));
         }
-
 
         #endregion Data
     }

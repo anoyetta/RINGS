@@ -52,14 +52,17 @@ namespace RINGS.Overlays
 
             this.UnsubscribeOverlaySettings();
 
-            foreach (var page in this.ChatOverlaySettings.ChatPages)
+            if (this.ChatOverlaySettings != null)
             {
-                if (page.LogBuffer != null)
+                foreach (var page in this.ChatOverlaySettings.ChatPages)
                 {
-                    page.LogBuffer.ChatLogAdded -= this.LogBuffer_ChatLogAdded;
-                }
+                    if (page.LogBuffer != null)
+                    {
+                        page.LogBuffer.ChatLogAdded -= this.LogBuffer_ChatLogAdded;
+                    }
 
-                page.DisposeLogBuffer();
+                    page.DisposeLogBuffer();
+                }
             }
         }
 
@@ -135,6 +138,11 @@ namespace RINGS.Overlays
             object sender,
             ChatLogAddedEventArgs e)
         {
+            if (sender == null)
+            {
+                return;
+            }
+
             this.lastLogAddedTimestamp = DateTime.Now;
             this.ShowCallback?.Invoke();
 

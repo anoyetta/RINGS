@@ -59,7 +59,11 @@ namespace RINGS.Overlays
 
             this.Closed += (_, __) =>
             {
-                this.ViewModel.ChatOverlaySettings.PropertyChanged -= this.ChatOverlaySettings_PropertyChanged;
+                if (this.ViewModel.ChatOverlaySettings != null)
+                {
+                    this.ViewModel.ChatOverlaySettings.PropertyChanged -= this.ChatOverlaySettings_PropertyChanged;
+                }
+
                 this.ViewModel.Dispose();
             };
         }
@@ -67,7 +71,7 @@ namespace RINGS.Overlays
         public ChatOverlayViewModel ViewModel => this.DataContext as ChatOverlayViewModel;
 
         private void ChatOverlaySettings_PropertyChanged(
-            object sender, 
+            object sender,
             PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
