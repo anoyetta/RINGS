@@ -263,8 +263,8 @@
       HorizontalContentAlignment="Center"
       VerticalContentAlignment="Center"
       FontSize="{DynamicResource TabItemFontSize}"
-      Background="{DynamicResource GrayBrush2}"
-      Foreground="{DynamicResource WhiteBrush}"
+      Background="{DynamicResource GrayBrush8}"
+      Foreground="{DynamicResource BlackBrush}"
       Opacity="0.95"
       Margin="0 0 0 20"
       MessageQueue="{materialDesign:MessageQueue}" />

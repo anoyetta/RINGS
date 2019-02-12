@@ -1,3 +1,4 @@
+using System.Linq;
 using Newtonsoft.Json;
 using Prism.Mvvm;
 
@@ -33,7 +34,16 @@ namespace RINGS.Models
         public string HelperBotName
         {
             get => this.helperBotName;
-            set => this.SetProperty(ref this.helperBotName, value);
+            set
+            {
+                if (this.SetProperty(ref this.helperBotName, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.HelperBot));
+                }
+            }
         }
+
+        [JsonIgnore]
+        public DiscordBotModel HelperBot => this.Config.DiscordBotList.FirstOrDefault(x => x.Name == this.HelperBotName);
     }
 }

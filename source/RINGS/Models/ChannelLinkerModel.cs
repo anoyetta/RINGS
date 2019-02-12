@@ -1,3 +1,4 @@
+using System.Linq;
 using Newtonsoft.Json;
 using Prism.Mvvm;
 using RINGS.Common;
@@ -7,6 +8,9 @@ namespace RINGS.Models
     public class ChannelLinkerModel :
         BindableBase
     {
+        [JsonIgnore]
+        public Config Config => Config.Instance;
+
         private bool isEnabled;
 
         [JsonProperty(PropertyName = "enabled")]
@@ -48,7 +52,16 @@ namespace RINGS.Models
         public string DiscordChannelID
         {
             get => this.discordChannelID;
-            set => this.SetProperty(ref this.discordChannelID, value);
+            set
+            {
+                if (this.SetProperty(ref this.discordChannelID, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.DiscordChannel));
+                }
+            }
         }
+
+        [JsonIgnore]
+        public DiscordChannelModel DiscordChannel => this.Config.DiscordChannelList.FirstOrDefault(x => x.ID == this.DiscordChannelID);
     }
 }
