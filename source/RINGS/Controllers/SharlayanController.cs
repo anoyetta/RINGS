@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using aframe;
@@ -28,7 +29,7 @@ namespace RINGS.Controllers
         #endregion Singleton
 
         private static readonly double DetectProcessInterval = 5.0d;
-        private static readonly double ChatLogPollingInterval = 0.05d;
+        private static readonly double ChatLogPollingInterval = 0.01d;
 
         private Thread subscribeFFXIVProcessThread;
         private Thread subscribeChatLogThread;
@@ -202,28 +203,43 @@ namespace RINGS.Controllers
 
                     isExistLogs = targetLogs.Any();
 
-                    var models = default(IEnumerable<ChatLogModel>);
-                    WPFHelper.Dispatcher.Invoke(() =>
+                    if (isExistLogs)
                     {
-                        models = targetLogs
-                            .Select(x => ChatLogModel.FromXIVLog(x, this.currentPlayerNames))
-                            .ToArray();
-
-                        ChatLogsModel.AddToBuffers(models);
-                    });
-
-                    foreach (var model in models)
-                    {
-                        if (model.IsMe)
+                        var models = default(IEnumerable<ChatLogModel>);
+                        WPFHelper.Dispatcher.Invoke(() =>
                         {
-                            DiscordBotController.Instance.SendMessage(
-                                model.ChatCode,
-                                this.currentPlayer?.Name,
-                                Config.Instance.ActiveProfile?.Alias,
+                            models = targetLogs
+                                .Select(x =>
+                                {
+                                    x.Line = RemoveSpecialChar(x.Line);
+                                    return ChatLogModel.FromXIVLog(x, this.currentPlayerNames);
+                                })
+                                .ToArray();
+
+                            ChatLogsModel.AddToBuffers(models);
+                        });
+
+                        foreach (var model in models)
+                        {
+                            if (model.IsMe)
+                            {
+                                DiscordBotController.Instance.SendMessage(
+                                    model.ChatCode,
+                                    this.currentPlayer?.Name,
+                                    Config.Instance.ActiveProfile?.Alias,
+                                    model.Message);
+                            }
+
+                            var chName = !string.IsNullOrEmpty(model.ChannelShortName) ?
+                                model.ChannelShortName :
+                                model.ChannelName;
+
+                            ChatLogger.Write(
+                                chName,
+                                model.Speaker,
+                                model.SpeakerAlias,
                                 model.Message);
                         }
-
-                        ChatLogger.Write(model.ChannelShortName, model.Speaker, model.SpeakerAlias, model.Message);
                     }
                 }
                 catch (ThreadAbortException)
@@ -245,6 +261,37 @@ namespace RINGS.Controllers
                     Thread.Sleep(TimeSpan.FromSeconds(ChatLogPollingInterval));
                 }
             }
+        }
+
+        private static readonly Regex[] SpecialCharRegexList = new[]
+        {
+            // Unicodeのその他の記号(Miscellaneous Symbols)
+            new Regex("[\u2600-\u26FF]", RegexOptions.Compiled),
+
+            // Unicodeのアルメニア文字(Armenian)
+            new Regex("[\u0530-\u058F]", RegexOptions.Compiled),
+
+            // Unicodeのグルムキー文字(Gurmukhi)
+            new Regex("[\u0A00-\u0A7F]", RegexOptions.Compiled),
+
+            // 私用領域(Private Use Area)
+            new Regex("[\uE000-\uF8FF]", RegexOptions.Compiled),
+        };
+
+        /// <summary>
+        /// 特殊文字を除去する
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string RemoveSpecialChar(
+            string text)
+        {
+            foreach (var regex in SpecialCharRegexList)
+            {
+                text = regex.Replace(text, string.Empty);
+            }
+
+            return text;
         }
     }
 }

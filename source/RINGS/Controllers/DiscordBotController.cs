@@ -170,8 +170,8 @@ namespace RINGS.Controllers
                 }
 
                 var text = !string.IsNullOrEmpty(speakerAlias) ?
-                    $"{speaker} :{message}" :
-                    $"{speaker} ({speakerAlias}) :{message}";
+                    $"{speaker} ({speakerAlias}) :{message}" :
+                    $"{speaker} :{message}";
 
                 await ch.SendMessageAsync(text);
             }
@@ -192,9 +192,21 @@ namespace RINGS.Controllers
             return Task.CompletedTask;
         }
 
+        private readonly List<ulong> LogIDHistory = new List<ulong>(5120);
+
         private Task Bot_MessageReceived(
             SocketMessage arg)
         {
+            lock (this.LogIDHistory)
+            {
+                if (this.LogIDHistory.Contains(arg.Id))
+                {
+                    return Task.CompletedTask;
+                }
+
+                this.LogIDHistory.Add(arg.Id);
+            }
+
             var activeChannels = this.GetActiveChannels();
             if (activeChannels == null)
             {
@@ -227,7 +239,12 @@ namespace RINGS.Controllers
                 var chName = !string.IsNullOrEmpty(ch.ChannelShortName) ?
                     ch.ChannelShortName :
                     ch.ChannelName;
-                ChatLogger.Write(chName, model.Speaker, model.SpeakerAlias, model.Message);
+
+                ChatLogger.Write(
+                    chName,
+                    model.Speaker,
+                    model.SpeakerAlias,
+                    model.Message);
             }
 
             return Task.CompletedTask;
