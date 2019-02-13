@@ -333,7 +333,8 @@ namespace RINGS.Models
                 this.parentOverlaySettings != null &&
                 this.parentOverlaySettings.IsEnabled &&
                 this.handledChatChannels.ContainsKey(chatLog.ChatCode ?? string.Empty) &&
-                this.handledChatChannels[chatLog.ChatCode ?? string.Empty].IsEnabled;
+                this.handledChatChannels[chatLog.ChatCode ?? string.Empty].IsEnabled &&
+                !this.IsDuplicate(chatLog);
 
             this.RaisePropertyChanged(nameof(this.LogBuffer));
         }
@@ -348,6 +349,24 @@ namespace RINGS.Models
 
             this.RaisePropertyChanged(nameof(this.LogBuffer));
         }
+
+        private bool IsDuplicate(
+            ChatLogModel chatLog)
+            => this.LogBuffer.Buffer.Any(x =>
+            {
+                if (chatLog.DiscordLog != null)
+                {
+                    var time = (chatLog.Timestamp - x.Timestamp).TotalSeconds;
+                    if (time <= 1.0)
+                    {
+                        return
+                            x.ChatCode == chatLog.ChatCode &&
+                            x.Message == chatLog.Message;
+                    }
+                }
+
+                return false;
+            });
     }
 
     public class HandledChatChannelModel :
