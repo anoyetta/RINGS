@@ -39,10 +39,8 @@
   </Window.DataContext>
 
   <Window.Resources>
-    <Style TargetType="TabControl">
-    </Style>
-    <Style TargetType="TabItem">
-    </Style>
+    <Style TargetType="TabControl" />
+    <Style TargetType="TabItem" />
   </Window.Resources>
 
   <Grid Margin="9">

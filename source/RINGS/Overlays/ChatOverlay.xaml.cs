@@ -1,8 +1,10 @@
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
+using System.Windows.Media.Animation;
 using RINGS.Models;
 
 namespace RINGS.Overlays
@@ -31,8 +33,14 @@ namespace RINGS.Overlays
                 ResizeMode.NoResize :
                 ResizeMode.CanResizeWithGrip;
 
-            this.ViewModel.ShowCallback = () => this.OverlayVisible = true;
-            this.ViewModel.HideCallback = () => this.OverlayVisible = false;
+            this.FadeoutAnimation.Completed += (_, __) => this.OverlayVisible = false;
+            this.ViewModel.HideCallback = () => this.StartFadeout();
+            this.ViewModel.ShowCallback = () =>
+            {
+                this.StopFadeout();
+                this.OverlayVisible = true;
+            };
+
             this.ViewModel.ChangeActivePageCallback = (pageName) =>
             {
                 var pages = this.ChatPagesTabControl.Items.Cast<ChatPageSettingsModel>();
@@ -86,6 +94,26 @@ namespace RINGS.Overlays
                         ResizeMode.CanResizeWithGrip;
                     break;
             }
+        }
+
+        private readonly DoubleAnimation FadeoutAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromSeconds(1)));
+
+        public void StartFadeout()
+        {
+            Timeline.SetDesiredFrameRate(this.FadeoutAnimation, 30);
+
+            this.BeginAnimation(
+                Window.OpacityProperty,
+                this.FadeoutAnimation,
+                HandoffBehavior.SnapshotAndReplace);
+        }
+
+        public void StopFadeout()
+        {
+            this.BeginAnimation(
+                Window.OpacityProperty,
+                null,
+                HandoffBehavior.SnapshotAndReplace);
         }
 
         #region IOverlay
