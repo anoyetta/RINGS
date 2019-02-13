@@ -120,6 +120,11 @@ namespace RINGS.Models
         {
             lock (this.Buffer)
             {
+                if (this.IsDuplicate(log))
+                {
+                    return;
+                }
+
                 log.ParentOverlaySettings = this.ParentOverlaySettings;
                 log.ParentPageSettings = this.ParentPageSettings;
                 this.Buffer.Add(log);
@@ -133,6 +138,11 @@ namespace RINGS.Models
             {
                 foreach (var log in logs)
                 {
+                    if (this.IsDuplicate(log))
+                    {
+                        return;
+                    }
+
                     log.ParentOverlaySettings = this.ParentOverlaySettings;
                     log.ParentPageSettings = this.ParentPageSettings;
                     this.Buffer.Add(log);
@@ -147,6 +157,21 @@ namespace RINGS.Models
                 this.Buffer.Clear();
             }
         }
+
+        private bool IsDuplicate(
+            ChatLogModel chatLog)
+            => this.Buffer.Any(x =>
+            {
+                var time = (chatLog.Timestamp - x.Timestamp).TotalSeconds;
+                if (time <= 0.5)
+                {
+                    return
+                        x.ChatCode == chatLog.ChatCode &&
+                        x.Message == chatLog.Message;
+                }
+
+                return false;
+            });
 
         public void Garbage()
         {

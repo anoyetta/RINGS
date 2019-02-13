@@ -71,6 +71,7 @@
     <Compile Include="Common\ChatCodes.cs" />
     <Compile Include="Common\ChatLogger.cs" />
     <Compile Include="Common\PCNameStyles.cs" />
+    <Compile Include="Common\Servers.cs" />
     <Compile Include="Common\SpeakerTypes.cs" />
     <Compile Include="Controllers\DiscordBotController.cs" />
     <Compile Include="Controllers\SharlayanController.cs" />

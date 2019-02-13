@@ -30,7 +30,15 @@ namespace RINGS.Common
                 return result;
             }
 
-            var parts = result.Split(' ');
+            var server = string.Empty;
+            var parts = result.Split('@');
+            if (parts.Length >= 2)
+            {
+                result = parts[0];
+                server = parts[1];
+            }
+
+            parts = result.Split(' ');
             if (parts.Length < 2)
             {
                 return result;
@@ -48,29 +56,30 @@ namespace RINGS.Common
             switch (style)
             {
                 case PCNameStyles.FullName:
-                    return result;
+                    break;
 
                 case PCNameStyles.FullInitial:
-                    if (result.Contains("."))
+                    if (!result.Contains("."))
                     {
-                        return result;
+                        result = $"{part1} {part2.Substring(0, 1)}.";
                     }
-
-                    result = $"{part1} {part2.Substring(0, 1)}.";
                     break;
 
                 case PCNameStyles.InitialFull:
-                    if (result.Contains("."))
+                    if (!result.Contains("."))
                     {
-                        return result;
+                        result = $"{part1.Substring(0, 1)}. {part2}.";
                     }
-
-                    result = $"{part1.Substring(0, 1)}. {part2}.";
                     break;
 
                 case PCNameStyles.Initial:
                     result = $"{part1.Substring(0, 1)}. {part2.Substring(0, 1)}.";
                     break;
+            }
+
+            if (!string.IsNullOrEmpty(server))
+            {
+                result = $"{result}@{server}";
             }
 
             return result;

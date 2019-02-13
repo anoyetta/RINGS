@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using aframe;
@@ -232,11 +231,7 @@ namespace RINGS.Controllers
                     if (isExistLogs)
                     {
                         var models = targetLogs
-                            .Select(x =>
-                            {
-                                x.Line = RemoveSpecialChar(x.Line);
-                                return ChatLogModel.FromXIVLog(x, this.currentPlayerNames);
-                            })
+                            .Select(x => ChatLogModel.FromXIVLog(x, this.currentPlayerNames))
                             .ToArray();
 
                         WPFHelper.Dispatcher.Invoke(() =>
@@ -286,37 +281,6 @@ namespace RINGS.Controllers
                     Thread.Sleep(TimeSpan.FromMilliseconds(Config.Instance.ChatLogPollingInterval));
                 }
             }
-        }
-
-        private static readonly Regex[] SpecialCharRegexList = new[]
-        {
-            // Unicodeのその他の記号(Miscellaneous Symbols)
-            new Regex("[\u2600-\u26FF]", RegexOptions.Compiled),
-
-            // Unicodeのアルメニア文字(Armenian)
-            new Regex("[\u0530-\u058F]", RegexOptions.Compiled),
-
-            // Unicodeのグルムキー文字(Gurmukhi)
-            new Regex("[\u0A00-\u0A7F]", RegexOptions.Compiled),
-
-            // 私用領域(Private Use Area)
-            new Regex("[\uE000-\uF8FF]", RegexOptions.Compiled),
-        };
-
-        /// <summary>
-        /// 特殊文字を除去する
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string RemoveSpecialChar(
-            string text)
-        {
-            foreach (var regex in SpecialCharRegexList)
-            {
-                text = regex.Replace(text, string.Empty);
-            }
-
-            return text;
         }
     }
 }

@@ -42,9 +42,11 @@ namespace RINGS.Models
                 {
                     para1.Inlines.Add(new Run($"( {this.SpeakerAlias} )" + " "));
                 }
+
+                para1.Inlines.Add(new Run(": "));
             }
 
-            para1.Inlines.Add($": {this.Message}");
+            para1.Inlines.Add($"{this.Message}");
             doc.Blocks.Add(para1);
 
             if (this.discordLog == null)
@@ -372,7 +374,22 @@ namespace RINGS.Models
             var i = xivLog.Line.IndexOf(":");
             if (i >= 0)
             {
-                log.OriginalSpeaker = xivLog.Line.Substring(0, i);
+                // 話者の部分を取り出す
+                var speakerPart = xivLog.Line.Substring(0, i);
+
+                // 話者から特殊文字を除去する
+                speakerPart = RemoveSpecialChar(speakerPart);
+
+                // サーバ名部分を取り出して書式を整える
+                var server = Servers.Names.FirstOrDefault(x =>
+                    speakerPart.EndsWith(x));
+                if (!string.IsNullOrEmpty(server))
+                {
+                    speakerPart = speakerPart.Replace(server, string.Empty);
+                    speakerPart = $"{speakerPart}@{server}";
+                }
+
+                log.OriginalSpeaker = speakerPart;
                 log.Message = xivLog.Line.Substring(i + 1);
             }
             else
@@ -382,14 +399,15 @@ namespace RINGS.Models
 
             if (currentPlayerNames != null)
             {
-                log.IsMe = currentPlayerNames.Contains(log.OriginalSpeaker);
+                log.IsMe = currentPlayerNames.Any(x =>
+                    log.OriginalSpeaker.Contains(x));
             }
 
             return log;
         }
 
         private static readonly Regex SpeakerRegex = new Regex(
-            @"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+) \((?<alias>.+)\)",
+            @"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+@?[a-zA-Z]*) \((?<alias>.+)\)",
             RegexOptions.Compiled);
 
         public static ChatLogModel FromDiscordLog(
@@ -440,6 +458,37 @@ namespace RINGS.Models
             log.Message = message.ToString();
 
             return log;
+        }
+
+        private static readonly Regex[] SpecialCharRegexList = new[]
+        {
+            // Unicodeのその他の記号(Miscellaneous Symbols)
+            new Regex("[\u2600-\u26FF]", RegexOptions.Compiled),
+
+            // Unicodeのアルメニア文字(Armenian)
+            new Regex("[\u0530-\u058F]", RegexOptions.Compiled),
+
+            // Unicodeのグルムキー文字(Gurmukhi)
+            new Regex("[\u0A00-\u0A7F]", RegexOptions.Compiled),
+
+            // 私用領域(Private Use Area)
+            new Regex("[\uE000-\uF8FF]", RegexOptions.Compiled),
+        };
+
+        /// <summary>
+        /// 特殊文字を除去する
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string RemoveSpecialChar(
+            string text)
+        {
+            foreach (var regex in SpecialCharRegexList)
+            {
+                text = regex.Replace(text, string.Empty);
+            }
+
+            return text;
         }
     }
 }
