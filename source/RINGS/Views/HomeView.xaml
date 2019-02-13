@@ -36,6 +36,13 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
+    <Label
+      VerticalAlignment="Top"
+      HorizontalAlignment="Right"
+      Content="{Binding Config.AppNameWithVersion}"
+      FontSize="13"
+      FontFamily="Consolas" />
+
     <GridSplitter Grid.Row="1" Height="1" HorizontalAlignment="Stretch" Background="{DynamicResource GrayBrush10}" Focusable="False" IsTabStop="False" />
 
     <!-- Status -->
