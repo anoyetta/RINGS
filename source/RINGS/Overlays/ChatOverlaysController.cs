@@ -1,9 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
+using aframe;
 
 namespace RINGS.Overlays
 {
@@ -76,6 +82,8 @@ namespace RINGS.Overlays
 
         public bool IsEditing { get; set; }
 
+        private bool isActive;
+
         public void RefreshOverlays(
             bool force = false)
         {
@@ -86,6 +94,8 @@ namespace RINGS.Overlays
                     return;
                 }
             }
+
+            var overlays = default(IEnumerable<ChatOverlay>);
 
             lock (this)
             {
@@ -107,7 +117,66 @@ namespace RINGS.Overlays
                     this.OverlayDictionary.Remove(entry.Key);
                     Thread.Yield();
                 }
+
+                overlays = this.OverlayDictionary.Values.ToArray();
             }
+
+            var isActiveNew = GetFFXIVIsActive();
+            if (this.isActive != isActiveNew)
+            {
+                this.isActive = isActiveNew;
+
+                foreach (var overlay in overlays)
+                {
+                    overlay.Visibility = this.isActive ?
+                        Visibility.Visible :
+                        Visibility.Collapsed;
+                }
+            }
+        }
+
+        private static bool GetFFXIVIsActive()
+        {
+            var isActive = true;
+
+            try
+            {
+                // フォアグラウンドWindowのハンドルを取得する
+                var hWnd = NativeMethods.GetForegroundWindow();
+
+                // プロセスIDに変換する
+                uint pid;
+                NativeMethods.GetWindowThreadProcessId(hWnd, out pid);
+
+                // メインモジュールのファイル名を取得する
+                var p = Process.GetProcessById((int)pid);
+                if (p != null)
+                {
+                    var fileName = Path.GetFileName(
+                        p.MainModule.FileName);
+
+                    var actFileName = Path.GetFileName(
+                        Process.GetCurrentProcess().MainModule.FileName);
+
+                    var entry = Path.GetFileName(Assembly.GetEntryAssembly().Location);
+
+                    if (fileName.ToLower() == "ffxiv.exe" ||
+                        fileName.ToLower() == "ffxiv_dx11.exe" ||
+                        fileName.ToLower() == entry.ToLower())
+                    {
+                        isActive = true;
+                    }
+                    else
+                    {
+                        isActive = false;
+                    }
+                }
+            }
+            catch (Win32Exception)
+            {
+            }
+
+            return isActive;
         }
     }
 }
