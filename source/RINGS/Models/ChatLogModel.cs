@@ -221,8 +221,10 @@ namespace RINGS.Models
 
         public string ChatCodeIndicator =>
             ChatCodes.DisplayNames.ContainsKey(this.chatCode) && !string.IsNullOrEmpty(ChatCodes.DisplayNames[this.chatCode].ShortName) ?
-            $"[{ChatCodes.DisplayNames[this.chatCode].ShortName}]" :
+            $"[{ChatCodes.DisplayNames[this.chatCode].ShortName}{this.ChatCodeIndicatorPlus}]" :
             string.Empty;
+
+        private string ChatCodeIndicatorPlus => this.IsFromDiscord ? "+" : string.Empty;
 
         public bool IsExistChatCodeIndicator => !string.IsNullOrEmpty(this.ChatCodeIndicator);
 
@@ -317,6 +319,8 @@ namespace RINGS.Models
             get => this.discordLog;
             set => this.SetProperty(ref this.discordLog, value);
         }
+
+        public bool IsFromDiscord => this.discordLog != null;
 
         private ChatLogItem xivLog;
 

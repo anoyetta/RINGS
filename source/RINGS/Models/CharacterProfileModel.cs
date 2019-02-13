@@ -39,6 +39,7 @@ namespace RINGS.Models
         private static string NameFilter(
             string name)
         {
+#if false
             var result = string.Empty;
 
             var chars = name.ToCharArray();
@@ -56,6 +57,9 @@ namespace RINGS.Models
             }
 
             return result;
+#else
+            return name;
+#endif
         }
 
 #if false

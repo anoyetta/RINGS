@@ -117,8 +117,7 @@
         <metro:MetroHeader Header="エイリアス" Margin="0 15 0 0">
           <TextBox
             Text="{Binding Alias, Mode=TwoWay}"
-            MaxLength="20"
-            InputMethod.IsInputMethodEnabled="False" />
+            MaxLength="20" />
         </metro:MetroHeader>
 
         <!--
