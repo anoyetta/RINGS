@@ -60,12 +60,12 @@ namespace RINGS
         {
             var defaultSettings = new[]
             {
-                new ChatChannelSettingsModel() { ChatCode = ChatCodes.Say, Color = Colors.White, },
+                new ChatChannelSettingsModel() { ChatCode = ChatCodes.Say, Color = WaColors.ぞうげいろ, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.Yell, Color = WaColors.こがね, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.Shout, Color = WaColors.しょうじょうひ, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.TellIn, Color = WaColors.なでしこいろ, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.TellOut, Color = WaColors.なでしこいろ, },
-                new ChatChannelSettingsModel() { ChatCode = ChatCodes.Party, Color = WaColors.あお, },
+                new ChatChannelSettingsModel() { ChatCode = ChatCodes.Party, Color = WaColors.わすれなぐさいろ, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.Alliance, Color = WaColors.あかだいだい, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.Linkshell1, Color = WaColors.もえぎ, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.Linkshell2, Color = WaColors.もえぎ, },
@@ -77,7 +77,11 @@ namespace RINGS
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.Linkshell8, Color = WaColors.もえぎ, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.CrossWorldLinkshell, Color = WaColors.かんぞういろ, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.FreeCompany, Color = WaColors.きみどり, },
+                new ChatChannelSettingsModel() { ChatCode = ChatCodes.FreeCompanyAnnounce, Color = WaColors.せいじねず, },
+                new ChatChannelSettingsModel() { ChatCode = ChatCodes.FreeCompanyLogInOut, Color = WaColors.せいじねず, },
                 new ChatChannelSettingsModel() { ChatCode = ChatCodes.NPCAnnounce, Color = WaColors.あかむらさき, },
+                new ChatChannelSettingsModel() { ChatCode = ChatCodes.SystemMessage, Color = WaColors.しらうめねず, },
+                new ChatChannelSettingsModel() { ChatCode = ChatCodes.PartyRecruiting, Color = WaColors.しらうめねず, },
             };
 
             var settings = ChatCodes.All.Select(x => new ChatChannelSettingsModel()

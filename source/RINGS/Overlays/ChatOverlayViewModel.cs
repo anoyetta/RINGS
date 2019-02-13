@@ -164,6 +164,10 @@ namespace RINGS.Overlays
                     this.HideCallback?.Invoke();
                 }
             }
+            else
+            {
+                this.ShowCallback?.Invoke();
+            }
         }
 
         private DateTime lastLogAddedTimestamp = DateTime.Now;

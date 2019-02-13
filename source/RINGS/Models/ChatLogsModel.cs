@@ -129,15 +129,14 @@ namespace RINGS.Models
         public void AddRange(
             IEnumerable<ChatLogModel> logs)
         {
-            foreach (var log in logs)
-            {
-                log.ParentOverlaySettings = this.ParentOverlaySettings;
-                log.ParentPageSettings = this.ParentPageSettings;
-            }
-
             lock (this.Buffer)
             {
-                this.Buffer.AddRange(logs);
+                foreach (var log in logs)
+                {
+                    log.ParentOverlaySettings = this.ParentOverlaySettings;
+                    log.ParentPageSettings = this.ParentPageSettings;
+                    this.Buffer.Add(log);
+                }
             }
         }
 

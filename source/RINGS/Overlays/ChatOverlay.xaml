@@ -211,7 +211,9 @@
                       TextElement.Foreground="{Binding ChannelSettings.ColorBrush, Mode=OneWay}"
                       TextOptions.TextRenderingMode="Aliased"
                       TextOptions.TextFormattingMode="Ideal"
-                      TextOptions.TextHintingMode="Auto">
+                      TextOptions.TextHintingMode="Auto"
+                      ContextMenu="{x:Null}">
+
                       <FlowDocument>
                         <Paragraph>
                           <!-- Indicator -->
