@@ -56,6 +56,7 @@ namespace RINGS.Models
                     this.RaisePropertyChanged(nameof(this.ChannelName));
                     this.RaisePropertyChanged(nameof(this.ChannelShortName));
                     this.RaisePropertyChanged(nameof(this.ChatCodeIndicator));
+                    this.RaisePropertyChanged(nameof(this.IsExistChatCodeIndicator));
                 }
             }
         }
@@ -70,8 +71,10 @@ namespace RINGS.Models
 
         public string ChatCodeIndicator =>
             ChatCodes.DisplayNames.ContainsKey(this.chatCode) && !string.IsNullOrEmpty(ChatCodes.DisplayNames[this.chatCode].ShortName) ?
-            $"[{ChatCodes.DisplayNames[this.chatCode].ShortName}] " :
+            $"[{ChatCodes.DisplayNames[this.chatCode].ShortName}]" :
             string.Empty;
+
+        public bool IsExistChatCodeIndicator => !string.IsNullOrEmpty(this.ChatCodeIndicator);
 
         private string speaker;
 
@@ -83,6 +86,7 @@ namespace RINGS.Models
                 if (this.SetProperty(ref this.speaker, value))
                 {
                     this.RaisePropertyChanged(nameof(this.IsExistSpeaker));
+                    this.RaisePropertyChanged(nameof(this.IsExistSpeakerAlias));
                 }
             }
         }
@@ -111,7 +115,7 @@ namespace RINGS.Models
             }
         }
 
-        public bool IsExistSpeakerAlias => !string.IsNullOrEmpty(this.SpeakerAlias);
+        public bool IsExistSpeakerAlias => !string.IsNullOrEmpty(this.Speaker) && !string.IsNullOrEmpty(this.SpeakerAlias);
 
         private SpeakerTypes speakerType = SpeakerTypes.XIVPlayer;
 

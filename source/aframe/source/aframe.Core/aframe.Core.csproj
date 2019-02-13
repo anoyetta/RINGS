@@ -117,6 +117,7 @@
     <Compile Include="Extensions\TreeViewExtensions.cs" />
     <Compile Include="FontInfo.cs" />
     <Compile Include="Helpers\CommandHelper.cs" />
+    <Compile Include="Helpers\DocumentHelper.cs" />
     <Compile Include="Helpers\MessageBoxHelper.cs" />
     <Compile Include="Helpers\ScrollViewerHelper.cs" />
     <Compile Include="Helpers\WPFHelper.cs" />

@@ -5,7 +5,7 @@ namespace aframe
         /// <summary>
         /// フォントサイズの拡大基本レート
         /// </summary>
-        public const double FontSizeScalingRate = 0.2;
+        public const double FontSizeScalingRate = 0.1;
 
         public static double ScalingL => 1.0 + (Constants.FontSizeScalingRate * 1.0);
 

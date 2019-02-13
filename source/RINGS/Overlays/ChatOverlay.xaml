@@ -176,7 +176,32 @@
 
                 <ItemsControl.ItemTemplate>
                   <DataTemplate DataType="{x:Type model:ChatLogModel}">
-                    <Grid
+                    <DataTemplate.Resources>
+                      <DropShadowEffect
+                        x:Key="TextEffect"
+                        Direction="0"
+                        ShadowDepth="0"
+                        BlurRadius="{Binding ChannelSettings.BlurRadius, Mode=OneWay}"
+                        Color="{Binding ChannelSettings.ShadowColor, Mode=OneWay}"
+                        Opacity="{Binding ChannelSettings.ShadowOpacity, Mode=OneWay}" />
+
+                      <Style TargetType="RichTextBox">
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="IsReadOnly" Value="True" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="{Binding ChannelSettings.ColorBrush, Mode=OneWay}" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="True">
+                            <Setter Property="Effect" Value="{DynamicResource TextEffect}" />
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="False">
+                            <Setter Property="Effect" Value="{x:Null}" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </DataTemplate.Resources>
+
+                    <RichTextBox
                       Margin="{Binding ParentOverlaySettings.LineMarginThickness, Mode=OneWay}"
                       TextElement.FontFamily="{Binding ParentOverlaySettings.Font.FontFamily, Mode=OneWay}"
                       TextElement.FontSize="{Binding ParentOverlaySettings.Font.Size, Mode=OneWay}"
@@ -187,78 +212,28 @@
                       TextOptions.TextRenderingMode="Aliased"
                       TextOptions.TextFormattingMode="Ideal"
                       TextOptions.TextHintingMode="Auto">
+                      <FlowDocument>
+                        <Paragraph>
+                          <!-- Indicator -->
+                          <Run
+                            Text="{Binding ChatCodeIndicator, Mode=OneWay, StringFormat={} {0}}"
+                            FontSize="{Binding ParentOverlaySettings.Font.Size, Mode=OneWay, Converter={StaticResource ToSmall}}"
+                            fw:DocumentHelper.Visible="{Binding IsExistChatCodeIndicator, Mode=OneWay}" />
 
-                      <Grid.Resources>
-                        <DropShadowEffect
-                          x:Key="TextEffect"
-                          Direction="0"
-                          ShadowDepth="0"
-                          BlurRadius="{Binding ChannelSettings.BlurRadius, Mode=OneWay}"
-                          Color="{Binding ChannelSettings.ShadowColor, Mode=OneWay}"
-                          Opacity="{Binding ChannelSettings.ShadowOpacity, Mode=OneWay}" />
+                          <!-- Speaker -->
+                          <Run
+                            Text="{Binding Speaker, Mode=OneWay}"
+                            fw:DocumentHelper.Visible="{Binding IsExistSpeaker, Mode=OneWay}" />
+                          <Run
+                            Text="{Binding SpeakerAlias, Mode=OneWay, StringFormat=( {0} )}"
+                            fw:DocumentHelper.Visible="{Binding IsExistSpeakerAlias, Mode=OneWay}" />
 
-                        <Style TargetType="TextBlock">
-                          <Setter Property="Background" Value="Transparent" />
-                          <Style.Triggers>
-                            <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="True">
-                              <Setter Property="Effect" Value="{DynamicResource TextEffect}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="False">
-                              <Setter Property="Effect" Value="{x:Null}" />
-                            </DataTrigger>
-                          </Style.Triggers>
-                        </Style>
-
-                        <Style TargetType="TextBox">
-                          <Setter Property="BorderThickness" Value="0" />
-                          <Setter Property="IsReadOnly" Value="True" />
-                          <Setter Property="Background" Value="Transparent" />
-                          <Setter Property="Foreground" Value="{Binding ChannelSettings.ColorBrush, Mode=OneWay}" />
-                          <Style.Triggers>
-                            <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="True">
-                              <Setter Property="Effect" Value="{DynamicResource TextEffect}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="False">
-                              <Setter Property="Effect" Value="{x:Null}" />
-                            </DataTrigger>
-                          </Style.Triggers>
-                        </Style>
-                      </Grid.Resources>
-
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                      </Grid.ColumnDefinitions>
-
-                      <!-- Indicator -->
-                      <TextBlock
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="{Binding ChatCodeIndicator, Mode=OneWay}" LayoutTransform="{DynamicResource ScaleS}" />
-
-                      <!-- Speaker -->
-                      <StackPanel
-                        Grid.Column="1"
-                        Orientation="Horizontal"
-                        Visibility="{Binding IsExistSpeaker, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
-                        <TextBlock Text="{Binding Speaker, Mode=OneWay}" />
-                        <StackPanel
-                          Orientation="Horizontal"
-                          Visibility="{Binding IsExistSpeakerAlias, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
-                          <TextBlock Text=" (" />
-                          <TextBlock Margin="2 0 2 0" Text="{Binding SpeakerAlias, Mode=OneWay}" />
-                          <TextBlock Text=")" />
-                        </StackPanel>
-                        <TextBlock Text=" : " />
-                      </StackPanel>
-
-                      <!-- Message -->
-                      <TextBox
-                        Grid.Column="2"
-                        TextWrapping="Wrap"
-                        Text="{Binding Message, Mode=OneWay}" />
-                    </Grid>
+                          <!-- Message -->
+                          <Run Text=":" />
+                          <Run Text="{Binding Message, Mode=OneWay}" />
+                        </Paragraph>
+                      </FlowDocument>
+                    </RichTextBox>
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>
