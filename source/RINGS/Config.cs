@@ -14,17 +14,19 @@ namespace RINGS
 {
     public partial class Config : JsonConfigBase
     {
-        #region Singleton
+        #region Lazy Singleton
 
-        private static Config instance;
+        private readonly static Lazy<Config> instance = new Lazy<Config>(Load);
 
-        public static Config Instance => instance ?? (instance = new Lazy<Config>(Load).Value);
+        public static Config Instance => instance.Value;
 
         public Config()
         {
+            this.DiscordChannelList.CollectionChanged += (_, __) => this.RaisePropertyChanged(nameof(this.DiscordChannelItemsSource));
+            this.DiscordBotList.CollectionChanged += (_, __) => this.RaisePropertyChanged(nameof(this.DiscordBotItemsSource));
         }
 
-        #endregion Singleton
+        #endregion Lazy Singleton
 
         public static string FileName => Path.Combine(
             Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
@@ -50,6 +52,9 @@ namespace RINGS
                 config.CharacterProfileList = CreateDefaultCharacterProfile();
                 config.CharacterProfileList.First().ChannelLinkerList.AddRange(
                     CharacterProfileModel.CreateDefaultChannelLinkers());
+
+                config.DiscordBotList = CreateDefaultDiscordBots();
+                config.DiscordChannelList = CreateDefaultDiscordChannels();
             }
 
             return config;
@@ -161,6 +166,15 @@ namespace RINGS
         {
             get => this.isMinimizeStartup;
             set => this.SetProperty(ref this.isMinimizeStartup, value);
+        }
+
+        private double chatLogPollingInterval = 10.0d;
+
+        [JsonProperty(PropertyName = "chatlog_polling_interval")]
+        public double ChatLogPollingInterval
+        {
+            get => this.chatLogPollingInterval;
+            set => this.SetProperty(ref this.chatLogPollingInterval, value);
         }
 
         private readonly Dictionary<string, ChatOverlaySettingsModel> chatOverlaySettings = new Dictionary<string, ChatOverlaySettingsModel>();
@@ -279,15 +293,30 @@ namespace RINGS
             private set;
         } = new SuspendableObservableCollection<DiscordBotModel>();
 
-        public void RefreshDiscordChannelList()
-        {
-            this.RaisePropertyChanged(nameof(this.DiscordChannelList));
-        }
+        [JsonIgnore]
+        public IEnumerable<DiscordChannelModel> DiscordChannelItemsSource
+            => new[]
+            {
+                new DiscordChannelModel()
+                {
+                    ID = string.Empty,
+                    Name = "NO LINKED",
+                },
+            }.Concat(this.DiscordChannelList);
 
-        public void RefreshDiscordBotList()
-        {
-            this.RaisePropertyChanged(nameof(this.DiscordBotList));
-        }
+        [JsonIgnore]
+        public static readonly string EmptyBotName = "NO ASSIGNED";
+
+        [JsonIgnore]
+        public IEnumerable<DiscordBotModel> DiscordBotItemsSource
+            => new[]
+            {
+                new DiscordBotModel()
+                {
+                    Name = EmptyBotName,
+                    Token = string.Empty,
+                },
+            }.Concat(this.DiscordBotList);
 
         #endregion Data
     }

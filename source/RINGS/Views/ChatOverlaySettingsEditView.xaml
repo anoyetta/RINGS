@@ -159,7 +159,7 @@
                           <Setter Property="Template">
                             <Setter.Value>
                               <ControlTemplate TargetType="{x:Type Button}">
-                                <TextBlock Text="{TemplateBinding Content}" TextWrapping="Wrap" />
+                                <TextBlock Text="{TemplateBinding Content}" TextWrapping="Wrap" Padding="5 2" />
                               </ControlTemplate>
                             </Setter.Value>
                           </Setter>

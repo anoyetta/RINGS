@@ -88,7 +88,7 @@ namespace RINGS.ViewModels
 
             await Task.Run(() => this.Config.Save());
 
-            ChatOverlaysController.Instance.RefreshOverlays();
+            ChatOverlaysController.Instance.RefreshOverlays(true);
         }
 
         #endregion Commands

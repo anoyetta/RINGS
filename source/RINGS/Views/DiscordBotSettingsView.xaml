@@ -122,7 +122,7 @@
               <ComboBox
                 HorizontalAlignment="Left"
                 Width="280"
-                ItemsSource="{Binding Config.DiscordBotList, Mode=OneWay}"
+                ItemsSource="{Binding Config.DiscordBotItemsSource, Mode=OneWay}"
                 DisplayMemberPath="Name"
                 SelectedValuePath="Name"
                 SelectedValue="{Binding HelperBotName, Mode=TwoWay}" />

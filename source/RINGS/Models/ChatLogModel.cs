@@ -1,7 +1,12 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media.Imaging;
 using Discord.WebSocket;
 using Prism.Mvvm;
 using RINGS.Common;
@@ -12,6 +17,144 @@ namespace RINGS.Models
     public class ChatLogModel :
         BindableBase
     {
+        private FlowDocument CreateChatDocument()
+        {
+            var doc = new FlowDocument();
+
+            var para1 = new Paragraph();
+
+            if (this.IsExistChatCodeIndicator)
+            {
+                para1.Inlines.Add(this.ParentOverlaySettings != null ?
+                    new Run(this.ChatCodeIndicator + " ")
+                    {
+                        FontSize = this.ParentOverlaySettings.Font.Size * 0.9,
+                        BaselineAlignment = BaselineAlignment.Center,
+                    } :
+                    new Run(this.ChatCodeIndicator + " "));
+            }
+
+            if (this.IsExistSpeaker)
+            {
+                para1.Inlines.Add(new Run(this.Speaker + " "));
+
+                if (this.IsExistSpeakerAlias)
+                {
+                    para1.Inlines.Add(new Run($"( {this.SpeakerAlias} )" + " "));
+                }
+            }
+
+            para1.Inlines.Add($": {this.Message}");
+            doc.Blocks.Add(para1);
+
+            if (this.discordLog == null)
+            {
+                return doc;
+            }
+
+            var fontSize = this.ParentOverlaySettings != null ?
+                this.ParentOverlaySettings.Font.Size * 0.85 :
+                15;
+
+            var contentWidth = this.ParentOverlaySettings != null ?
+                this.ParentOverlaySettings.W * 0.8 :
+                350;
+
+            // Attachments
+            foreach (var atta in this.discordLog.Attachments)
+            {
+                var para = new Paragraph(new Run("File : "))
+                {
+                    FontSize = fontSize
+                };
+
+                var link = new Hyperlink();
+                link.Inlines.Add(new Run(atta.Filename));
+                link.NavigateUri = new Uri(atta.Url);
+                para.Inlines.Add(link);
+
+                doc.Blocks.Add(para);
+            }
+
+            var links = this.discordLog.Embeds
+                .Where(x => x.Url != null)
+                .Select(x => x.Url);
+
+            var images = this.discordLog.Embeds
+                .Where(x => x.Image.HasValue)
+                .Select(x => x.Image.Value);
+
+            var videos = this.discordLog.Embeds
+                .Where(x => x.Video.HasValue)
+                .Select(x => x.Video.Value);
+
+            // Links
+            foreach (var url in links)
+            {
+                var para = new Paragraph(new Run("Link : "))
+                {
+                    FontSize = fontSize
+                };
+
+                var link = new Hyperlink();
+                link.Inlines.Add(new TextBlock()
+                {
+                    Text = url,
+                    MaxWidth = contentWidth,
+                    TextTrimming = TextTrimming.CharacterEllipsis,
+                });
+                link.NavigateUri = new Uri(url);
+                para.Inlines.Add(link);
+
+                doc.Blocks.Add(para);
+            }
+
+            // Images
+            foreach (var image in images)
+            {
+                var source = new BitmapImage();
+                source.BeginInit();
+                source.UriSource = new Uri(image.Url);
+                source.EndInit();
+
+                var view = new Viewbox()
+                {
+                    Child = new Image()
+                    {
+                        Source = source,
+                    },
+                    MaxWidth = contentWidth,
+                };
+
+                var con = new BlockUIContainer(view);
+
+                doc.Blocks.Add(con);
+            }
+
+            // Videos
+            foreach (var video in videos)
+            {
+                var para = new Paragraph(new Run("Video : "))
+                {
+                    FontSize = fontSize
+                };
+
+                var link = new Hyperlink();
+                link.Inlines.Add(new TextBlock()
+                {
+                    Text = video.Url,
+                    MaxWidth = contentWidth,
+                    TextTrimming = TextTrimming.CharacterEllipsis,
+                });
+                link.NavigateUri = new Uri(video.Url);
+                para.Inlines.Add(link);
+
+                doc.Blocks.Add(para);
+            }
+
+            return doc;
+        }
+
         private static volatile int CurrentID = 1;
 
         public ChatLogModel()
@@ -36,7 +179,14 @@ namespace RINGS.Models
                         ?? ChatChannelSettingsModel.DefaultChannelSettings;
                     break;
             }
+
+            if (e.PropertyName != nameof(this.ChatDocument))
+            {
+                this.RaisePropertyChanged(nameof(this.ChatDocument));
+            }
         }
+
+        public FlowDocument ChatDocument => this.CreateChatDocument();
 
         public int ID { get; private set; }
 
@@ -239,28 +389,30 @@ namespace RINGS.Models
             RegexOptions.Compiled);
 
         public static ChatLogModel FromDiscordLog(
-            SocketMessage dicordLog)
+            SocketMessage discordLog)
         {
             var log = new ChatLogModel()
             {
-                DiscordLog = dicordLog
+                DiscordLog = discordLog
             };
 
-            if (!dicordLog.Author.IsBot)
+            var message = new StringBuilder();
+
+            if (!discordLog.Author.IsBot)
             {
                 log.SpeakerType = SpeakerTypes.DiscordUser;
-                log.OriginalSpeaker = dicordLog.Author.Username;
-                log.Message = dicordLog.Content;
+                log.OriginalSpeaker = discordLog.Author.Username;
+                message.Append(discordLog.Content);
             }
             else
             {
-                var i = dicordLog.Content.IndexOf(":");
+                var i = discordLog.Content.IndexOf(":");
                 if (i >= 0)
                 {
                     log.SpeakerType = SpeakerTypes.DiscordBot;
-                    log.Message = dicordLog.Content.Substring(i + 1);
+                    message.Append(discordLog.Content.Substring(i + 1));
 
-                    var speaker = dicordLog.Content.Substring(0, i).Trim();
+                    var speaker = discordLog.Content.Substring(0, i).Trim();
                     var match = SpeakerRegex.Match(speaker);
                     if (!match.Success)
                     {
@@ -276,10 +428,12 @@ namespace RINGS.Models
                 else
                 {
                     log.SpeakerType = SpeakerTypes.DiscordUser;
-                    log.OriginalSpeaker = dicordLog.Author.Username;
-                    log.Message = dicordLog.Content;
+                    log.OriginalSpeaker = discordLog.Author.Username;
+                    message.Append(discordLog.Content);
                 }
             }
+
+            log.Message = message.ToString();
 
             return log;
         }

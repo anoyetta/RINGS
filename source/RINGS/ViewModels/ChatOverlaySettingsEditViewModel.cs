@@ -13,6 +13,12 @@ namespace RINGS.ViewModels
 {
     public class ChatOverlaySettingsEditViewModel : BindableBase
     {
+        public ChatOverlaySettingsEditViewModel()
+        {
+            // 編集モードにして自動更新を停止する
+            ChatOverlaysController.Instance.IsEditing = true;
+        }
+
         public Config Config => Config.Instance;
 
         public Action ClearSubContentCallback { get; set; }
@@ -137,7 +143,10 @@ namespace RINGS.ViewModels
 
             await Task.Run(() => this.Config.Save());
 
-            ChatOverlaysController.Instance.RefreshOverlays();
+            ChatOverlaysController.Instance.RefreshOverlays(true);
+
+            // 編集モードを解除して自動更新を再開する
+            ChatOverlaysController.Instance.IsEditing = false;
 
             this.ClearSubContentCallback?.Invoke();
         }

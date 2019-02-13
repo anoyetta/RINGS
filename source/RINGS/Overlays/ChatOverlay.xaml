@@ -185,7 +185,7 @@
                         Color="{Binding ChannelSettings.ShadowColor, Mode=OneWay}"
                         Opacity="{Binding ChannelSettings.ShadowOpacity, Mode=OneWay}" />
 
-                      <Style TargetType="RichTextBox">
+                      <Style TargetType="fw:BindableRichTextBox">
                         <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="IsReadOnly" Value="True" />
                         <Setter Property="Background" Value="Transparent" />
@@ -201,7 +201,7 @@
                       </Style>
                     </DataTemplate.Resources>
 
-                    <RichTextBox
+                    <fw:BindableRichTextBox
                       Margin="{Binding ParentOverlaySettings.LineMarginThickness, Mode=OneWay}"
                       TextElement.FontFamily="{Binding ParentOverlaySettings.Font.FontFamily, Mode=OneWay}"
                       TextElement.FontSize="{Binding ParentOverlaySettings.Font.Size, Mode=OneWay}"
@@ -212,30 +212,8 @@
                       TextOptions.TextRenderingMode="Aliased"
                       TextOptions.TextFormattingMode="Ideal"
                       TextOptions.TextHintingMode="Auto"
-                      ContextMenu="{x:Null}">
-
-                      <FlowDocument>
-                        <Paragraph>
-                          <!-- Indicator -->
-                          <Run
-                            Text="{Binding ChatCodeIndicator, Mode=OneWay, StringFormat={} {0}}"
-                            FontSize="{Binding ParentOverlaySettings.Font.Size, Mode=OneWay, Converter={StaticResource ToSmall}}"
-                            fw:DocumentHelper.Visible="{Binding IsExistChatCodeIndicator, Mode=OneWay}" />
-
-                          <!-- Speaker -->
-                          <Run
-                            Text="{Binding Speaker, Mode=OneWay}"
-                            fw:DocumentHelper.Visible="{Binding IsExistSpeaker, Mode=OneWay}" />
-                          <Run
-                            Text="{Binding SpeakerAlias, Mode=OneWay, StringFormat=( {0} )}"
-                            fw:DocumentHelper.Visible="{Binding IsExistSpeakerAlias, Mode=OneWay}" />
-
-                          <!-- Message -->
-                          <Run Text=":" />
-                          <Run Text="{Binding Message, Mode=OneWay}" />
-                        </Paragraph>
-                      </FlowDocument>
-                    </RichTextBox>
+                      ContextMenu="{x:Null}"
+                      Document="{Binding ChatDocument, Mode=OneWay}" />
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>

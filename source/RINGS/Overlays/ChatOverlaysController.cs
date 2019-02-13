@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace RINGS.Overlays
@@ -27,7 +28,7 @@ namespace RINGS.Overlays
             Interval = TimeSpan.FromSeconds(0.5),
         };
 
-        public void Start()
+        public async Task StartAsync() => await Task.Run(() =>
         {
             if (!this.refreshTimer.IsEnabled)
             {
@@ -35,7 +36,7 @@ namespace RINGS.Overlays
                 this.refreshTimer.Tick += this.RefreshTimer_Tick;
                 this.refreshTimer.Start();
             }
-        }
+        });
 
         public void Stop()
         {
@@ -73,11 +74,22 @@ namespace RINGS.Overlays
             }
         }
 
-        public void RefreshOverlays()
+        public bool IsEditing { get; set; }
+
+        public void RefreshOverlays(
+            bool force = false)
         {
+            if (!force)
+            {
+                if (this.IsEditing)
+                {
+                    return;
+                }
+            }
+
             lock (this)
             {
-                var overlaySettings = Config.Instance.ChatOverlaySettings.ToArray();
+                var overlaySettings = Config.Instance.ChatOverlaySettings;
 
                 var news = overlaySettings.Where(x => !this.OverlayDictionary.ContainsKey(x.Name));
                 foreach (var settings in news)

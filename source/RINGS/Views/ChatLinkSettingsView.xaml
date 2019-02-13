@@ -176,7 +176,7 @@
                     VerticalAlignment="Center"
                     Margin="30 0 0 0"
                     Width="170"
-                    ItemsSource="{Binding ElementName=BaseElement, Path=DataContext.Config.DiscordChannelList, Mode=OneWay}"
+                    ItemsSource="{Binding ElementName=BaseElement, Path=DataContext.Config.DiscordChannelItemsSource, Mode=OneWay}"
                     DisplayMemberPath="Name"
                     SelectedValuePath="ID"
                     SelectedValue="{Binding DiscordChannelID, Mode=TwoWay}" />

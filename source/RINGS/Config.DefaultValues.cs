@@ -15,9 +15,10 @@ namespace RINGS
             { nameof(X), 200 },
             { nameof(Y), 100 },
             { nameof(W), 1024 },
-            { nameof(H), 576 },
+            { nameof(H), 620 },
             { nameof(IsStartupWithWindows), false },
             { nameof(IsMinimizeStartup), false },
+            { nameof(ChatLogPollingInterval), 10.0d },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },
@@ -111,6 +112,27 @@ namespace RINGS
                 new CharacterProfileModel()
                 {
                     CharacterName = "Taro Yamada",
+                },
+            };
+
+        private static SuspendableObservableCollection<DiscordChannelModel> CreateDefaultDiscordChannels() =>
+            new SuspendableObservableCollection<DiscordChannelModel>()
+            {
+                new DiscordChannelModel()
+                {
+                    Name = "Default Channel",
+                    ID = "* Your Channel ID *",
+                    HelperBotName = "Default Channel Bot",
+                },
+            };
+
+        private static SuspendableObservableCollection<DiscordBotModel> CreateDefaultDiscordBots() =>
+            new SuspendableObservableCollection<DiscordBotModel>()
+            {
+                new DiscordBotModel()
+                {
+                    Name = "Default Channel Bot",
+                    Token = "* Your Bot Token *"
                 },
             };
     }

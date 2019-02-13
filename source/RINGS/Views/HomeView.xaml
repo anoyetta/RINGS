@@ -24,7 +24,7 @@
   TextElement.FontWeight="Regular"
   Focusable="False"
   IsTabStop="False"
-  d:DesignHeight="450" d:DesignWidth="800"
+  d:DesignHeight="480" d:DesignWidth="800"
   d:DataContext="{d:DesignInstance {x:Type vm:HomeViewModel}, IsDesignTimeCreatable=True}"
   prism:ViewModelLocator.AutoWireViewModel="True">
 
@@ -74,6 +74,14 @@
           <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
           <Label Content="{Binding DiscordBotStatus, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
         </StackPanel>
+
+        <Button
+          BorderThickness="0"
+          Margin="0 10 0 0"
+          Width="140"
+          HorizontalAlignment="Left"
+          Content="RESET SUBSCRIBERS"
+          Command="{Binding ResetCommand, Mode=OneWay}" />
       </StackPanel>
     </metro:MetroHeader>
 

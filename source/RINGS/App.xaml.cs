@@ -46,9 +46,8 @@ namespace RINGS
             var c = Config.Instance;
             c.SetStartup(c.IsStartupWithWindows);
 
-            ChatOverlaysController.Instance.Start();
-
             await Task.WhenAll(
+                ChatOverlaysController.Instance.StartAsync(),
                 SharlayanController.Instance.StartAsync(),
                 DiscordBotController.Instance.StartAsync(),
                 Task.Run(() =>
@@ -68,7 +67,6 @@ namespace RINGS
             try
             {
                 Config.Instance.Save();
-
                 ChatOverlaysController.Instance.Stop();
             }
             finally

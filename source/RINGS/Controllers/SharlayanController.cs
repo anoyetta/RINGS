@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -29,7 +28,6 @@ namespace RINGS.Controllers
         #endregion Singleton
 
         private static readonly double DetectProcessInterval = 5.0d;
-        private static readonly double ChatLogPollingInterval = 0.01d;
 
         private Thread subscribeFFXIVProcessThread;
         private Thread subscribeChatLogThread;
@@ -47,6 +45,34 @@ namespace RINGS.Controllers
 
         public async Task StartAsync() => await Task.Run(() =>
         {
+            this.handledProcessID = 0;
+            this.previousArrayIndex = 0;
+            this.previousOffset = 0;
+            this.currentPlayer = null;
+            this.currentPlayerNames = null;
+
+            if (this.subscribeFFXIVProcessThread != null)
+            {
+                if (this.subscribeFFXIVProcessThread.IsAlive)
+                {
+                    this.subscribeFFXIVProcessThread.Abort();
+                }
+
+                this.subscribeFFXIVProcessThread = null;
+            }
+
+            if (this.subscribeChatLogThread != null)
+            {
+                if (this.subscribeChatLogThread.IsAlive)
+                {
+                    this.subscribeChatLogThread.Abort();
+                }
+
+                this.subscribeChatLogThread = null;
+            }
+
+            this.ClearActiveProfile();
+
             this.subscribeFFXIVProcessThread = new Thread(new ThreadStart(this.SubscribeFFXIVProcess))
             {
                 IsBackground = true,
@@ -205,17 +231,16 @@ namespace RINGS.Controllers
 
                     if (isExistLogs)
                     {
-                        var models = default(IEnumerable<ChatLogModel>);
+                        var models = targetLogs
+                            .Select(x =>
+                            {
+                                x.Line = RemoveSpecialChar(x.Line);
+                                return ChatLogModel.FromXIVLog(x, this.currentPlayerNames);
+                            })
+                            .ToArray();
+
                         WPFHelper.Dispatcher.Invoke(() =>
                         {
-                            models = targetLogs
-                                .Select(x =>
-                                {
-                                    x.Line = RemoveSpecialChar(x.Line);
-                                    return ChatLogModel.FromXIVLog(x, this.currentPlayerNames);
-                                })
-                                .ToArray();
-
                             ChatLogsModel.AddToBuffers(models);
                         });
 
@@ -258,7 +283,7 @@ namespace RINGS.Controllers
                 }
                 else
                 {
-                    Thread.Sleep(TimeSpan.FromSeconds(ChatLogPollingInterval));
+                    Thread.Sleep(TimeSpan.FromMilliseconds(Config.Instance.ChatLogPollingInterval));
                 }
             }
         }

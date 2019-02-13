@@ -22,10 +22,18 @@ namespace RINGS.Views
             {
                 this.DISCORDChannelsListBox.SelectedIndex = 0;
             }
+            else
+            {
+                this.ChannelPanel.Visibility = Visibility.Hidden;
+            }
 
             if (this.ViewModel.Config.DiscordBotList.Count > 0)
             {
                 this.BotListBox.SelectedIndex = 0;
+            }
+            else
+            {
+                this.BotPanel.Visibility = Visibility.Hidden;
             }
 
             this.ViewModel.Config.DiscordChannelList.CollectionChanged += (_, __) =>

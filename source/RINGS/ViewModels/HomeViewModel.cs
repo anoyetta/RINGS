@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using aframe;
 using Discord;
+using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Mvvm;
 using RINGS.Common;
@@ -128,6 +130,37 @@ namespace RINGS.ViewModels
         {
             get => this.testMessage;
             set => this.SetProperty(ref this.testMessage, value);
+        }
+
+        private DelegateCommand resetCommand;
+
+        public DelegateCommand ResetCommand =>
+            this.resetCommand ?? (this.resetCommand = new DelegateCommand(this.ExecuteResetCommand));
+
+        private async void ExecuteResetCommand()
+        {
+            var result = await MessageBoxHelper.ShowMessageAsync(
+                "RESET SUBSCRIBERS",
+                "Sharlayan, DISCORD の監視スレッドをリセットしますか？\n" +
+                "すべての接続が解除されアプリケーションの起動直後の状態に戻ります。",
+                MessageDialogStyle.AffirmativeAndNegative);
+
+            if (result != MessageDialogResult.Affirmative)
+            {
+                return;
+            }
+
+            this.SharlayanStatus = string.Empty;
+            this.CurrentPlayerName = string.Empty;
+            this.ActiveProfileName = string.Empty;
+            this.DiscordBotStatus = string.Empty;
+
+            var t1 = Task.Run(() => SharlayanController.Instance.StartAsync());
+            var t2 = Task.Run(() => DiscordBotController.Instance.StartAsync());
+
+            await Task.WhenAll(t1, t2);
+
+            MessageBoxHelper.EnqueueSnackMessage("Subscribers restarted.");
         }
 
         private DelegateCommand<string> submitTestMessageCommand;

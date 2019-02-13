@@ -81,6 +81,17 @@
           HorizontalAlignment="Left"
           IsChecked="{Binding Config.IsMinimizeStartup, Mode=TwoWay}"
           Content="最小化状態で起動する" />
+
+        <metro:MetroHeader Header="チャットログの購読間隔 (ms)" Margin="{DynamicResource ContentMargin}">
+          <metro:NumericUpDown
+            Margin="0 5 0 0"
+            Width="100"
+            HorizontalAlignment="Left"
+            Interval="1"
+            Maximum="999"
+            Minimum="1"
+            Value="{Binding Config.ChatLogPollingInterval, Mode=TwoWay}" />
+        </metro:MetroHeader>
       </StackPanel>
     </ScrollViewer>
   </Grid>

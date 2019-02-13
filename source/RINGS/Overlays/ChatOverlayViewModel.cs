@@ -33,16 +33,10 @@ namespace RINGS.Overlays
         {
             this.Name = name;
 
-            foreach (var page in this.ChatOverlaySettings.ChatPages)
-            {
-                page.CreateLogBuffer();
-                page.LogBuffer.ChatLogAdded += this.LogBuffer_ChatLogAdded;
-            }
-
-            this.SubscribeOverlaySettings();
-
             this.HideTimer.Tick += this.HideTimer_Tick;
             this.HideTimer.Start();
+
+            this.SubscribeOverlaySettings();
         }
 
         public void Dispose()
@@ -51,25 +45,18 @@ namespace RINGS.Overlays
             this.HideTimer.Tick -= this.HideTimer_Tick;
 
             this.UnsubscribeOverlaySettings();
-
-            if (this.ChatOverlaySettings != null)
-            {
-                foreach (var page in this.ChatOverlaySettings.ChatPages)
-                {
-                    if (page.LogBuffer != null)
-                    {
-                        page.LogBuffer.ChatLogAdded -= this.LogBuffer_ChatLogAdded;
-                    }
-
-                    page.DisposeLogBuffer();
-                }
-            }
         }
 
         private void SubscribeOverlaySettings()
         {
             if (this.ChatOverlaySettings != null)
             {
+                foreach (var page in this.ChatOverlaySettings.ChatPages)
+                {
+                    page.CreateLogBuffer();
+                    page.LogBuffer.ChatLogAdded += this.LogBuffer_ChatLogAdded;
+                }
+
                 this.ChatOverlaySettings.PropertyChanged += this.ChatOverlaySettings_PropertyChanged;
                 this.ChatOverlaySettings.ChatPages.CollectionChanged += this.ChatPages_CollectionChanged;
             }
@@ -81,6 +68,16 @@ namespace RINGS.Overlays
             {
                 this.ChatOverlaySettings.PropertyChanged -= this.ChatOverlaySettings_PropertyChanged;
                 this.ChatOverlaySettings.ChatPages.CollectionChanged -= this.ChatPages_CollectionChanged;
+
+                foreach (var page in this.ChatOverlaySettings.ChatPages)
+                {
+                    if (page.LogBuffer != null)
+                    {
+                        page.LogBuffer.ChatLogAdded -= this.LogBuffer_ChatLogAdded;
+                    }
+
+                    page.DisposeLogBuffer();
+                }
             }
         }
 

@@ -36,6 +36,21 @@ namespace RINGS.Controllers
 
         public async Task StartAsync() => await Task.Run(() =>
         {
+            if (this.initializeBotThread != null)
+            {
+                if (this.initializeBotThread.IsAlive)
+                {
+                    this.initializeBotThread.Abort();
+                }
+
+                this.initializeBotThread = null;
+            }
+
+            if (!this.Bots.IsEmpty)
+            {
+                this.Bots.Clear();
+            }
+
             this.initializeBotThread = new Thread(new ThreadStart(this.InitializeBot))
             {
                 IsBackground = true,
@@ -163,6 +178,11 @@ namespace RINGS.Controllers
 
             if (ulong.TryParse(linker.DiscordChannelID, out ulong uid))
             {
+                if (uid == 0)
+                {
+                    return;
+                }
+
                 var ch = bot.GetChannel(uid) as ISocketMessageChannel;
                 if (ch == null)
                 {
@@ -221,21 +241,17 @@ namespace RINGS.Controllers
                 return Task.CompletedTask;
             }
 
-            var model = default(ChatLogModel);
-            WPFHelper.Dispatcher.Invoke(() =>
-            {
-                model = ChatLogModel.FromDiscordLog(arg);
-                model.ChatCode = ch.ChatCode;
-                model.IsMe = model.OriginalSpeaker == SharlayanController.Instance.CurrentPlayer?.Name;
-
-                if (!model.IsMe)
-                {
-                    ChatLogsModel.AddToBuffers(model);
-                }
-            });
+            var model = ChatLogModel.FromDiscordLog(arg);
+            model.ChatCode = ch.ChatCode;
+            model.IsMe = model.OriginalSpeaker == SharlayanController.Instance.CurrentPlayer?.Name;
 
             if (!model.IsMe)
             {
+                WPFHelper.Dispatcher.Invoke(() =>
+                {
+                    ChatLogsModel.AddToBuffers(model);
+                });
+
                 var chName = !string.IsNullOrEmpty(ch.ChannelShortName) ?
                     ch.ChannelShortName :
                     ch.ChannelName;
@@ -261,9 +277,7 @@ namespace RINGS.Controllers
                 return this.cachedActiveChannels;
             }
 
-            var activeProfile = Config.Instance.CharacterProfileList
-                .FirstOrDefault(x => x.IsEnabled && x.IsActive);
-
+            var activeProfile = Config.Instance.ActiveProfile;
             if (activeProfile == null)
             {
                 this.cachedActiveChannels = null;
@@ -272,7 +286,9 @@ namespace RINGS.Controllers
             }
 
             var activeChannels = activeProfile.ChannelLinkerList
-                .Where(x => x.IsEnabled)
+                .Where(x =>
+                    x.IsEnabled &&
+                    !string.IsNullOrEmpty(x.DiscordChannelID))
                 .ToArray();
 
             this.cachedActiveChannels = activeChannels;
@@ -327,7 +343,9 @@ namespace RINGS.Controllers
             string channelID)
         {
             var ch = Config.Instance.DiscordChannelList.FirstOrDefault(x => x.ID == channelID);
-            return Config.Instance.DiscordBotList.FirstOrDefault(x => x.Name == ch?.HelperBotName);
+            return Config.Instance.DiscordBotList.FirstOrDefault(x =>
+                !string.IsNullOrEmpty(x.Token) &&
+                x.Name == ch?.HelperBotName);
         }
     }
 }

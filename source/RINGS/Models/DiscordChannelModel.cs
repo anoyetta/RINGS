@@ -28,7 +28,7 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.id, value);
         }
 
-        private string helperBotName;
+        private string helperBotName = Config.EmptyBotName;
 
         [JsonProperty(PropertyName = "helper_bot")]
         public string HelperBotName
