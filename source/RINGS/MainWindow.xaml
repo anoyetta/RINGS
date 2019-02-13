@@ -196,10 +196,30 @@
         <Setter Property="PaneForeground" Value="{DynamicResource TextBrush}" />
         <Setter Property="ShowSelectionIndicator" Value="True" />
       </Style>
+
+      <ContextMenu x:Key="NotifyIconMenu" MinWidth="200">
+        <ContextMenu.Resources>
+          <Style TargetType="MenuItem" BasedOn="{StaticResource MetroMenuItem}">
+            <Setter Property="Height" Value="30" />
+          </Style>
+        </ContextMenu.Resources>
+
+        <MenuItem Header="{Binding Config.AppNameWithVersion, Mode=OneWay}" Command="{Binding ShowCommand, Mode=OneWay}" FontWeight="Bold" FontSize="18" Height="36" IsHitTestVisible="False" />
+        <MenuItem Header="表示" Command="{Binding ShowCommand, Mode=OneWay}" />
+        <MenuItem Header="終了" Command="{Binding EndCommand, Mode=OneWay}" />
+      </ContextMenu>
     </ResourceDictionary>
   </metro:MetroWindow.Resources>
 
   <Grid>
+    <tb:TaskbarIcon
+      x:Name="NotifyIcon"
+      IconSource="RINGSApp.Logo.ico"
+      Visibility="Collapsed"
+      DoubleClickCommand="{Binding ShowCommand, Mode=OneWay}"
+      ContextMenu="{DynamicResource NotifyIconMenu}"
+      ToolTipText="{Binding Config.AppNameWithVersion, Mode=OneWay}" />
+
     <metro:HamburgerMenu
       x:Name="HamburgerMenuControl"
       IsPaneOpen="True"

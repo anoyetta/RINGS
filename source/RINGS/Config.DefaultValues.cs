@@ -15,7 +15,7 @@ namespace RINGS
             { nameof(X), 200 },
             { nameof(Y), 100 },
             { nameof(W), 1024 },
-            { nameof(H), 620 },
+            { nameof(H), 640 },
             { nameof(IsStartupWithWindows), false },
             { nameof(IsMinimizeStartup), false },
             { nameof(ChatLogPollingInterval), 10.0d },
