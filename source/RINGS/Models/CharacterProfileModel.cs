@@ -73,6 +73,15 @@ namespace RINGS.Models
         }
 #endif
 
+        private bool isFixedActivate = false;
+
+        [JsonProperty(PropertyName = "fixed_activate")]
+        public bool IsFixedActivate
+        {
+            get => this.isFixedActivate;
+            set => this.SetProperty(ref this.isFixedActivate, value);
+        }
+
         [JsonProperty(PropertyName = "channel_linker_settings")]
         public ObservableCollection<ChannelLinkerModel> ChannelLinkerList
         {

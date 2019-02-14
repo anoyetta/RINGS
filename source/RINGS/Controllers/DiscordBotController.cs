@@ -71,9 +71,7 @@ namespace RINGS.Controllers
 
                 try
                 {
-                    var activeProfile = Config.Instance.CharacterProfileList
-                        .FirstOrDefault(x => x.IsEnabled && x.IsActive);
-
+                    var activeProfile = Config.Instance.ActiveProfile;
                     if (activeProfile == null)
                     {
                         this.ClearBots();

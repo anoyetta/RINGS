@@ -186,8 +186,7 @@ namespace RINGS.ViewModels
                 Message = message,
             };
 
-            var alias = Config.Instance.CharacterProfileList
-                .FirstOrDefault(x => x.IsEnabled && x.IsActive)?
+            var alias = Config.Instance.ActiveProfile?
                 .CharacterName ?? string.Empty;
 
             ChatLogsModel.AddToBuffers(model);
