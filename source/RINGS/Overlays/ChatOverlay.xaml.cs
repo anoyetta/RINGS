@@ -74,6 +74,21 @@ namespace RINGS.Overlays
 
                 this.ViewModel.Dispose();
             };
+
+            this.MouseDoubleClick += (_, __) =>
+            {
+                this.MinimizeIcon.Visibility = Visibility.Visible;
+                this.ChatPanel.Visibility = Visibility.Collapsed;
+            };
+
+            this.MinimizeIcon.PreviewMouseDoubleClick += (_, e) =>
+            {
+                this.MinimizeIcon.Visibility = Visibility.Collapsed;
+                this.ChatPanel.Visibility = Visibility.Visible;
+                e.Handled = true;
+            };
+
+            this.MinimizeIcon.Visibility = Visibility.Collapsed;
         }
 
         public ChatOverlayViewModel ViewModel => this.DataContext as ChatOverlayViewModel;
