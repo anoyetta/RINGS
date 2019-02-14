@@ -1,2 +1,2 @@
 # RINGS
-Chat communication enhancer for FFXIV
+A chat communication enhancer for FFXIV
