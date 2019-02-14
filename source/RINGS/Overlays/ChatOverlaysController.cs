@@ -82,8 +82,6 @@ namespace RINGS.Overlays
 
         public bool IsEditing { get; set; }
 
-        private bool isActive;
-
         public void RefreshOverlays(
             bool force = false)
         {
@@ -121,24 +119,19 @@ namespace RINGS.Overlays
                 overlays = this.OverlayDictionary.Values.ToArray();
             }
 
-            var isActiveNew = GetFFXIVIsActive();
-            if (this.isActive != isActiveNew)
+            RefreshFFXIVIsActive();
+            foreach (var overlay in overlays)
             {
-                this.isActive = isActiveNew;
-
-                foreach (var overlay in overlays)
-                {
-                    overlay.Visibility = this.isActive ?
-                        Visibility.Visible :
-                        Visibility.Collapsed;
-                }
+                overlay.Visibility = IsFFXIVActive ?
+                    Visibility.Visible :
+                    Visibility.Collapsed;
             }
         }
 
-        private static bool GetFFXIVIsActive()
-        {
-            var isActive = true;
+        private static bool IsFFXIVActive;
 
+        private static void RefreshFFXIVIsActive()
+        {
             try
             {
                 // フォアグラウンドWindowのハンドルを取得する
@@ -164,19 +157,17 @@ namespace RINGS.Overlays
                         fileName.ToLower() == "ffxiv_dx11.exe" ||
                         fileName.ToLower() == entry.ToLower())
                     {
-                        isActive = true;
+                        IsFFXIVActive = true;
                     }
                     else
                     {
-                        isActive = false;
+                        IsFFXIVActive = false;
                     }
                 }
             }
             catch (Win32Exception)
             {
             }
-
-            return isActive;
         }
     }
 }

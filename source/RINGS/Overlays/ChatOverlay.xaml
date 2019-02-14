@@ -138,7 +138,7 @@
 
         <TabControl.ItemTemplate>
           <DataTemplate>
-            <TextBlock Text="{Binding Name, Mode=OneWay}" />
+            <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="14" />
           </DataTemplate>
         </TabControl.ItemTemplate>
 
