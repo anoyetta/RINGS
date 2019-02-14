@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -138,8 +137,7 @@ namespace RINGS.Overlays
                 var hWnd = NativeMethods.GetForegroundWindow();
 
                 // プロセスIDに変換する
-                uint pid;
-                NativeMethods.GetWindowThreadProcessId(hWnd, out pid);
+                NativeMethods.GetWindowThreadProcessId(hWnd, out uint pid);
 
                 // メインモジュールのファイル名を取得する
                 var p = Process.GetProcessById((int)pid);
@@ -148,14 +146,12 @@ namespace RINGS.Overlays
                     var fileName = Path.GetFileName(
                         p.MainModule.FileName);
 
-                    var actFileName = Path.GetFileName(
+                    var currentProcessFileName = Path.GetFileName(
                         Process.GetCurrentProcess().MainModule.FileName);
-
-                    var entry = Path.GetFileName(Assembly.GetEntryAssembly().Location);
 
                     if (fileName.ToLower() == "ffxiv.exe" ||
                         fileName.ToLower() == "ffxiv_dx11.exe" ||
-                        fileName.ToLower() == entry.ToLower())
+                        fileName.ToLower() == currentProcessFileName.ToLower())
                     {
                         IsFFXIVActive = true;
                     }

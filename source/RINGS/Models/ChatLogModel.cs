@@ -1,12 +1,15 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using Discord.WebSocket;
 using Prism.Mvvm;
 using RINGS.Common;
@@ -17,11 +20,13 @@ namespace RINGS.Models
     public class ChatLogModel :
         BindableBase
     {
+        private static readonly Thickness ZeroMargin = new Thickness();
+
         private FlowDocument CreateChatDocument()
         {
             var doc = new FlowDocument();
 
-            var para1 = new Paragraph();
+            var para1 = new Paragraph() { Margin = ZeroMargin };
 
             if (this.IsExistChatCodeIndicator)
             {
@@ -54,8 +59,13 @@ namespace RINGS.Models
                 return doc;
             }
 
+            var headerBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fff1cf"));
+            var hyperLinkBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("##f8e58c"));
+            headerBrush.Freeze();
+            hyperLinkBrush.Freeze();
+
             var fontSize = this.ParentOverlaySettings != null ?
-                this.ParentOverlaySettings.Font.Size * 0.85 :
+                this.ParentOverlaySettings.Font.Size * 0.9 :
                 15;
 
             var contentWidth = this.ParentOverlaySettings != null ?
@@ -65,22 +75,10 @@ namespace RINGS.Models
             // Attachments
             foreach (var atta in this.discordLog.Attachments)
             {
-                var para = new Paragraph(new Run("File : "))
-                {
-                    FontSize = fontSize
-                };
-
-                var link = new Hyperlink();
-                link.Inlines.Add(new Run(atta.Filename));
-                link.NavigateUri = new Uri(atta.Url);
-                para.Inlines.Add(link);
-
+                var para = CreateSubParagraph();
+                AddHyperLink(para, "File", atta.Filename, atta.Url);
                 doc.Blocks.Add(para);
             }
-
-            var links = this.discordLog.Embeds
-                .Where(x => x.Url != null)
-                .Select(x => x.Url);
 
             var images = this.discordLog.Embeds
                 .Where(x => x.Image.HasValue)
@@ -90,71 +88,120 @@ namespace RINGS.Models
                 .Where(x => x.Video.HasValue)
                 .Select(x => x.Video.Value);
 
-            // Links
-            foreach (var url in links)
-            {
-                var para = new Paragraph(new Run("Link : "))
-                {
-                    FontSize = fontSize
-                };
-
-                var link = new Hyperlink();
-                link.Inlines.Add(new TextBlock()
-                {
-                    Text = url,
-                    MaxWidth = contentWidth,
-                    TextTrimming = TextTrimming.CharacterEllipsis,
-                });
-                link.NavigateUri = new Uri(url);
-                para.Inlines.Add(link);
-
-                doc.Blocks.Add(para);
-            }
+            var links = this.discordLog.Embeds
+                .Where(x =>
+                    x.Url != null &&
+                    !images.Any(image => image.Url == x.Url) &&
+                    !videos.Any(video => video.Url == x.Url))
+                .Select(x => x.Url);
 
             // Images
-            foreach (var image in images)
+            if (images.Any())
             {
-                var source = new BitmapImage();
-                source.BeginInit();
-                source.UriSource = new Uri(image.Url);
-                source.EndInit();
-
-                var view = new Viewbox()
+                var panel = new WrapPanel()
                 {
-                    Child = new Image()
-                    {
-                        Source = source,
-                    },
-                    MaxWidth = contentWidth,
+                    Orientation = Orientation.Horizontal
                 };
 
-                var con = new BlockUIContainer(view);
+                foreach (var image in images)
+                {
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(image.Url);
+                    bitmap.EndInit();
 
-                doc.Blocks.Add(con);
+                    var inline = new InlineUIContainer(new Image()
+                    {
+                        Source = bitmap
+                    });
+
+                    var hyperlink = new Hyperlink(inline)
+                    {
+                        NavigateUri = new Uri(image.Url),
+                    };
+
+                    hyperlink.RequestNavigate += this.HyperlinkElement_RequestNavigate;
+
+                    var view = new Viewbox()
+                    {
+                        Child = new TextBlock(hyperlink),
+                        MaxWidth = 250,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(0, 2, 4, 2)
+                    };
+
+                    panel.Children.Add(view);
+                }
+
+                doc.Blocks.Add(new BlockUIContainer(panel));
             }
 
             // Videos
             foreach (var video in videos)
             {
-                var para = new Paragraph(new Run("Video : "))
-                {
-                    FontSize = fontSize
-                };
+                var para = CreateSubParagraph();
+                AddHyperLink(para, "Video", video.Url, video.Url);
+                doc.Blocks.Add(para);
+            }
 
-                var link = new Hyperlink();
-                link.Inlines.Add(new TextBlock()
-                {
-                    Text = video.Url,
-                    MaxWidth = contentWidth,
-                    TextTrimming = TextTrimming.CharacterEllipsis,
-                });
-                link.NavigateUri = new Uri(video.Url);
-                para.Inlines.Add(link);
-
+            // Links
+            foreach (var url in links)
+            {
+                var para = CreateSubParagraph();
+                AddHyperLink(para, "Link", url, url);
                 doc.Blocks.Add(para);
             }
 
             return doc;
+
+            Paragraph CreateSubParagraph()
+            {
+                return new Paragraph()
+                {
+                    FontSize = fontSize,
+                    Margin = ZeroMargin,
+                    FontFamily = new FontFamily("Consolas")
+                };
+            }
+
+            void AddHyperLink(
+                Paragraph para,
+                string header,
+                string text,
+                string url)
+            {
+                var headerElement = new Run(header + ": ")
+                {
+                    BaselineAlignment = BaselineAlignment.Subscript,
+                    Foreground = headerBrush
+                };
+
+                var hyperlinkElement = new Hyperlink()
+                {
+                    Foreground = hyperLinkBrush
+                };
+
+                hyperlinkElement.Inlines.Add(new TextBlock()
+                {
+                    Text = text,
+                    MaxWidth = contentWidth,
+                    TextTrimming = TextTrimming.CharacterEllipsis,
+                });
+
+                hyperlinkElement.NavigateUri = new Uri(url);
+                hyperlinkElement.RequestNavigate += this.HyperlinkElement_RequestNavigate;
+
+                para.Inlines.Add(headerElement);
+                para.Inlines.Add(hyperlinkElement);
+            }
+        }
+
+        private void HyperlinkElement_RequestNavigate(
+            object sender,
+            RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
 
         private static volatile int CurrentID = 1;

@@ -61,6 +61,8 @@ namespace RINGS
 
             AppLogger.Write("RINGS is a chat communication enhancer for FFXIV developed by anoyetta and best friends.");
             AppLogger.Write($"{c.AppNameWithVersion} Start.");
+
+            new SandboxWindow().Show();
         }
 
         private void App_Exit(object sender, ExitEventArgs e)

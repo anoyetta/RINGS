@@ -186,6 +186,7 @@
                       <Style TargetType="fw:BindableRichTextBox">
                         <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="IsReadOnly" Value="True" />
+                        <Setter Property="IsDocumentEnabled" Value="True" />
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="Foreground" Value="{Binding ChannelSettings.ColorBrush, Mode=OneWay}" />
                         <Style.Triggers>
