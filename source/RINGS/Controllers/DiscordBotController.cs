@@ -283,13 +283,21 @@ namespace RINGS.Controllers
                 return null;
             }
 
-            var activeChannels = activeProfile.ChannelLinkerList
-                .Where(x =>
+            var activeChannels = new List<ChannelLinkerModel>();
+            foreach (var chatCode in ChatCodes.LinkableChannels)
+            {
+                var linker = activeProfile.ChannelLinkerList.FirstOrDefault(x =>
                     x.IsEnabled &&
-                    !string.IsNullOrEmpty(x.DiscordChannelID))
-                .ToArray();
+                    !string.IsNullOrEmpty(x.DiscordChannelID) &&
+                    x.ChatCode == chatCode);
 
-            this.cachedActiveChannels = activeChannels;
+                if (linker != null)
+                {
+                    activeChannels.Add(linker);
+                }
+            }
+
+            this.cachedActiveChannels = activeChannels.ToArray();
             this.cachedActiveChannelsTimestamp = DateTime.Now;
             return this.cachedActiveChannels;
         }

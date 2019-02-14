@@ -75,15 +75,18 @@ namespace RINGS.Models
                 this.ParentOverlaySettings.W * 0.8 :
                 350;
 
+            var files = this.discordLog.Attachments.Where(x => !x.Url.IsImage());
+            var imagesAtta = this.discordLog.Attachments.Where(x => x.Url.IsImage());
+
             // Attachments
-            foreach (var atta in this.discordLog.Attachments)
+            foreach (var atta in files)
             {
                 var para = CreateSubParagraph();
                 AddHyperLink(para, "File", atta.Filename, atta.Url);
                 doc.Blocks.Add(para);
             }
 
-            var images = this.discordLog.Embeds
+            var imagesEmbeds = this.discordLog.Embeds
                 .Where(x => x.Image.HasValue)
                 .Select(x => x.Image.Value);
 
@@ -94,19 +97,60 @@ namespace RINGS.Models
             var links = this.discordLog.Embeds
                 .Where(x =>
                     x.Url != null &&
-                    !images.Any(image => image.Url == x.Url) &&
+                    !imagesEmbeds.Any(image => image.Url == x.Url) &&
                     !videos.Any(video => video.Url == x.Url))
                 .Select(x => x.Url);
 
-            // Images
-            if (images.Any())
+            // Attachments Images
+            if (imagesAtta.Any())
             {
                 var panel = new WrapPanel()
                 {
                     Orientation = Orientation.Horizontal
                 };
 
-                foreach (var image in images)
+                foreach (var image in imagesAtta)
+                {
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(image.Url);
+                    bitmap.EndInit();
+
+                    var inline = new InlineUIContainer(new Image()
+                    {
+                        Source = bitmap
+                    });
+
+                    var hyperlink = new Hyperlink(inline)
+                    {
+                        NavigateUri = new Uri(image.Url),
+                    };
+
+                    hyperlink.RequestNavigate += this.HyperlinkElement_RequestNavigate;
+
+                    var view = new Viewbox()
+                    {
+                        Child = new TextBlock(hyperlink),
+                        MaxWidth = 250,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(0, 2, 4, 2)
+                    };
+
+                    panel.Children.Add(view);
+                }
+
+                doc.Blocks.Add(new BlockUIContainer(panel));
+            }
+
+            // Embeds Images
+            if (imagesEmbeds.Any())
+            {
+                var panel = new WrapPanel()
+                {
+                    Orientation = Orientation.Horizontal
+                };
+
+                foreach (var image in imagesEmbeds)
                 {
                     var bitmap = new BitmapImage();
                     bitmap.BeginInit();
@@ -453,12 +497,10 @@ namespace RINGS.Models
                     log.OriginalSpeaker.Contains(x));
             }
 
+            log.message = FomartCharacterNames(log.message);
+
             return log;
         }
-
-        private static readonly Regex SpeakerRegex = new Regex(
-            @"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+@?[a-zA-Z]*) \((?<alias>.+)\)",
-            RegexOptions.Compiled);
 
         public static ChatLogModel FromDiscordLog(
             SocketMessage discordLog)
@@ -506,8 +548,30 @@ namespace RINGS.Models
             }
 
             log.Message = message.ToString();
+            log.message = FomartCharacterNames(log.message);
 
             return log;
+        }
+
+        private static readonly Regex SpeakerRegex = new Regex(
+            @"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+@?[a-zA-Z]*) \((?<alias>.+)\)",
+            RegexOptions.Compiled);
+
+        private static readonly Regex CharacterNameWithServerRegex = new Regex(
+            $@"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+)(?<server>{string.Join("|", Servers.Names)})?)",
+            RegexOptions.Compiled);
+
+        private static string FomartCharacterNames(
+            string message)
+        {
+            var matches = CharacterNameWithServerRegex.Matches(message);
+            foreach (Match match in matches)
+            {
+                var replacement = $"{match.Groups["name"]}@{match.Groups["server"]}";
+                message.Replace(match.Value, replacement);
+            }
+
+            return message;
         }
 
         private static readonly Regex[] SpecialCharRegexList = new[]

@@ -57,9 +57,13 @@ namespace RINGS.ViewModels
                     .Where(x => x.IsEnabled)
                     .Select(x => x.ChannelShortName);
 
+                var fix = prof.IsFixedActivate ?
+                    " [FIXED]" :
+                    string.Empty;
+
                 this.ActiveProfileName = links.Any() ?
-                    $"{prof.CharacterName} - {string.Join(",", links)}" :
-                    $"{prof.CharacterName} - NO LINK";
+                    $"{prof.CharacterName}{fix} - {string.Join(",", links)}" :
+                    $"{prof.CharacterName}{fix} - NO LINK";
             }
 
             var bots = DiscordBotController.Instance.GetBots();
@@ -186,8 +190,7 @@ namespace RINGS.ViewModels
                 Message = message,
             };
 
-            var alias = Config.Instance.ActiveProfile?
-                .CharacterName ?? string.Empty;
+            var alias = Config.Instance.ActiveProfile?.Alias ?? string.Empty;
 
             ChatLogsModel.AddToBuffers(model);
             DiscordBotController.Instance.SendMessage(
@@ -195,7 +198,13 @@ namespace RINGS.ViewModels
                 speaker,
                 alias,
                 model.Message);
-            ChatLogger.Write(model.ChannelShortName, speaker, alias, model.Message);
+
+            ChatLogger.Write(
+                model.ChannelShortName,
+                speaker,
+                alias,
+                model.Message);
+            ChatLogger.Flush();
 
             this.TestMessage = string.Empty;
             this.RaisePropertyChanged(nameof(this.TestMessage));

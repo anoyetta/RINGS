@@ -48,13 +48,14 @@
     <!-- Status -->
     <metro:MetroHeader Grid.Row="0" Header="Status" metro:ControlsHelper.HeaderFontSize="20">
       <metro:MetroHeader.Resources>
-        <SolidColorBrush x:Key="IndicatorBrush" Color="#c3d825" />
+        <Color x:Key="IndicatorColor">#c3d825</Color>
+        <SolidColorBrush x:Key="IndicatorBrush" Color="{DynamicResource IndicatorColor}" />
         <DropShadowEffect
           x:Key="IndicatorEffect"
           Direction="0"
           ShadowDepth="0"
           BlurRadius="6"
-          Color="#c3d825" />
+          Color="{DynamicResource IndicatorColor}" />
       </metro:MetroHeader.Resources>
 
       <StackPanel Margin="10 0 0 0" TextElement.FontSize="16">

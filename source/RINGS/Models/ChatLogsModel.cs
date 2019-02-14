@@ -158,20 +158,53 @@ namespace RINGS.Models
             }
         }
 
+        private string[] duplicateCheckBuffer = new string[4];
+        private volatile int duplicateCheckIndex = 0;
+
         private bool IsDuplicate(
             ChatLogModel chatLog)
-            => this.Buffer.Any(x =>
+        {
+            var key = $"{chatLog.ChatCode}-{NormalizeSpeaker(chatLog.Speaker)}-{chatLog.Message}";
+
+            var result = this.duplicateCheckBuffer.Any(x => x == key);
+
+            if (!result)
             {
-                var time = (chatLog.Timestamp - x.Timestamp).TotalSeconds;
-                if (time <= 0.5)
+                if (this.duplicateCheckIndex > this.duplicateCheckBuffer.GetUpperBound(0))
                 {
-                    return
-                        x.ChatCode == chatLog.ChatCode &&
-                        x.Message == chatLog.Message;
+                    this.duplicateCheckIndex = 0;
                 }
 
-                return false;
-            });
+                this.duplicateCheckBuffer[this.duplicateCheckIndex] = key;
+                this.duplicateCheckIndex++;
+            }
+
+            return result;
+        }
+
+        private static string NormalizeSpeaker(
+            string speaker)
+        {
+            var normal = speaker;
+            if (string.IsNullOrEmpty(normal))
+            {
+                return normal;
+            }
+
+            var delimiterIndex = normal.IndexOf("@");
+            if (delimiterIndex > 0)
+            {
+                normal = normal.Substring(0, delimiterIndex);
+            }
+
+            var parts = normal.Split(' ');
+            if (parts.Length >= 2)
+            {
+                normal = $"{parts[0].Substring(0, 1)}{parts[1].Substring(0, 1)}";
+            }
+
+            return normal;
+        }
 
         public void Garbage()
         {

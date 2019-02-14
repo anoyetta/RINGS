@@ -94,9 +94,9 @@ namespace RINGS.Common
 
         public static readonly IEnumerable<string> LinkableChannels = new[]
         {
-            Linkshell1, Linkshell2, Linkshell3, Linkshell4, Linkshell5, Linkshell6, Linkshell7, Linkshell8,
             CrossWorldLinkshell,
             FreeCompany,
+            Linkshell1, Linkshell2, Linkshell3, Linkshell4, Linkshell5, Linkshell6, Linkshell7, Linkshell8,
         };
     }
 

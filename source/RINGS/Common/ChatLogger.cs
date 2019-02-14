@@ -15,17 +15,27 @@ namespace RINGS.Common
             string speakerAlias,
             string message)
         {
-            if (!string.IsNullOrEmpty(speakerAlias))
+            if (!string.IsNullOrEmpty(speaker))
             {
-                LazyLogger.Value.Info(
-                    $"[{channel}]:{speaker}({speakerAlias}):{message}");
+                if (!string.IsNullOrEmpty(speakerAlias))
+                {
+                    LazyLogger.Value.Info(
+                        $"[{channel}]:{speaker}({speakerAlias}):{message}");
+                }
+                else
+                {
+                    LazyLogger.Value.Info(
+                        $"[{channel}]:{speaker}:{message}");
+                }
             }
             else
             {
                 LazyLogger.Value.Info(
-                    $"[{channel}]:{speaker}:{message}");
+                    $"[{channel}]::{message}");
             }
         }
+
+        public static void Flush() => LogManager.Flush();
 
         public static OnWriteEventHandler OnWrite;
 

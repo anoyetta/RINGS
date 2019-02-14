@@ -177,14 +177,17 @@ namespace RINGS.Controllers
 
                 AppLogger.Write($"Current player is {this.currentPlayer?.Name}");
 
-                Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
-                var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
-                    x.IsEnabled &&
-                    x.CharacterName == this.currentPlayer.Name);
-                if (prof != null)
+                if (!Config.Instance.CharacterProfileList.Any(x => x.IsFixedActivate))
                 {
-                    prof.IsActive = true;
-                    AppLogger.Write($"\"{prof.CharacterName}\"'s chat link profile activated.");
+                    Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
+                    var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
+                        x.IsEnabled &&
+                        x.CharacterName == this.currentPlayer.Name);
+                    if (prof != null)
+                    {
+                        prof.IsActive = true;
+                        AppLogger.Write($"\"{prof.CharacterName}\"'s chat link profile activated.");
+                    }
                 }
             }
         }
