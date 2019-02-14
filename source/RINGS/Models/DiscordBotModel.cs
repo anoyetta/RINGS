@@ -6,6 +6,7 @@ using Discord.WebSocket;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
+using RINGS.Controllers;
 
 namespace RINGS.Models
 {
@@ -87,7 +88,12 @@ namespace RINGS.Models
                 return;
             }
 
-            await ch.SendMessageAsync("ping!");
+            var speaker = SharlayanController.Instance.CurrentPlayer?.Name ?? string.Empty;
+            var message = string.IsNullOrEmpty(speaker) ?
+                "ping!" :
+                $"{speaker}:ping!";
+
+            await ch.SendMessageAsync(message);
             MessageBoxHelper.EnqueueSnackMessage("SUCCESS! Your bot said ping!");
 
             await this.testBot.LogoutAsync();
