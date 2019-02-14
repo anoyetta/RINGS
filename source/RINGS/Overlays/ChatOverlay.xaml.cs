@@ -102,6 +102,11 @@ namespace RINGS.Overlays
 
         public void StartFadeout()
         {
+            if (!this.OverlayVisible)
+            {
+                return;
+            }
+
             Timeline.SetDesiredFrameRate(this.FadeoutAnimation, 30);
 
             lock (this)
