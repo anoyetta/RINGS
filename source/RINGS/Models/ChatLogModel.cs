@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -60,12 +63,12 @@ namespace RINGS.Models
             }
 
             var headerBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fff1cf"));
-            var hyperLinkBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("##f8e58c"));
+            var hyperLinkBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#f8e58c"));
             headerBrush.Freeze();
             hyperLinkBrush.Freeze();
 
             var fontSize = this.ParentOverlaySettings != null ?
-                this.ParentOverlaySettings.Font.Size * 0.9 :
+                this.ParentOverlaySettings.Font.Size * 1.0 :
                 15;
 
             var contentWidth = this.ParentOverlaySettings != null ?
@@ -170,7 +173,7 @@ namespace RINGS.Models
                 string text,
                 string url)
             {
-                var headerElement = new Run(header + ": ")
+                var headerElement = new Run($" {header}: ")
                 {
                     BaselineAlignment = BaselineAlignment.Subscript,
                     Foreground = headerBrush
@@ -536,6 +539,50 @@ namespace RINGS.Models
             }
 
             return text;
+        }
+    }
+
+    public static class UriExtensions
+    {
+        private static IEnumerable<string> GetFileNameExtensions(
+            ImageCodecInfo ici)
+        {
+            foreach (var s in ici.FilenameExtension.Split(';'))
+            {
+                yield return s.Substring(s.IndexOf('.'));
+            }
+        }
+
+        public static string GetImageFormat(
+            string ext)
+        {
+            ext = ext.Replace(".", string.Empty);
+
+            foreach (var ici in ImageCodecInfo.GetImageDecoders())
+            {
+                foreach (var s in GetFileNameExtensions(ici))
+                {
+                    if (s.ToUpper() == ext.ToUpper())
+                    {
+                        return ici.FormatDescription;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static bool IsImage(
+            this string uri)
+        {
+            var ext = Path.GetExtension(uri);
+            if (string.IsNullOrEmpty(ext))
+            {
+                return false;
+            }
+
+            var format = GetImageFormat(ext);
+            return !string.IsNullOrEmpty(format);
         }
     }
 }
