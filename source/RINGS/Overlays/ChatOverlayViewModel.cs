@@ -21,7 +21,7 @@ namespace RINGS.Overlays
 
         private readonly DispatcherTimer HideTimer = new DispatcherTimer(DispatcherPriority.ContextIdle)
         {
-            Interval = TimeSpan.FromSeconds(0.5),
+            Interval = TimeSpan.FromSeconds(1.0),
         };
 
         public ChatOverlayViewModel() : this(Config.DefaultChatOverlayName)
@@ -140,8 +140,11 @@ namespace RINGS.Overlays
                 return;
             }
 
-            this.lastLogAddedTimestamp = DateTime.Now;
-            this.ShowCallback?.Invoke();
+            lock (this)
+            {
+                this.lastLogAddedTimestamp = DateTime.Now;
+                this.ShowCallback?.Invoke();
+            }
 
             if (this.ChatOverlaySettings.IsAutoActivatePage)
             {
@@ -153,17 +156,20 @@ namespace RINGS.Overlays
             object sender,
             EventArgs e)
         {
-            if (this.ChatOverlaySettings.IsAutoHide)
+            lock (this)
             {
-                if ((DateTime.Now - this.lastLogAddedTimestamp).TotalSeconds >
-                    this.ChatOverlaySettings.TimeToHide)
+                if (this.ChatOverlaySettings.IsAutoHide)
                 {
-                    this.HideCallback?.Invoke();
+                    if ((DateTime.Now - this.lastLogAddedTimestamp).TotalSeconds >
+                        this.ChatOverlaySettings.TimeToHide)
+                    {
+                        this.HideCallback?.Invoke();
+                    }
                 }
-            }
-            else
-            {
-                this.ShowCallback?.Invoke();
+                else
+                {
+                    this.ShowCallback?.Invoke();
+                }
             }
         }
 

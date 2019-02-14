@@ -54,7 +54,7 @@ namespace RINGS.Models
                 para1.Inlines.Add(new Run(": "));
             }
 
-            para1.Inlines.Add($"{this.Message}");
+            para1.Inlines.Add(new Run($"{this.Message}"));
             doc.Blocks.Add(para1);
 
             if (this.discordLog == null)
@@ -489,6 +489,7 @@ namespace RINGS.Models
             }
             else
             {
+                log.OriginalSpeaker = string.Empty;
                 log.Message = xivLog.Line;
             }
 
@@ -498,7 +499,7 @@ namespace RINGS.Models
                     log.OriginalSpeaker.Contains(x));
             }
 
-            log.message = FomartCharacterNames(log.message);
+            log.Message = FomartCharacterNames(log.message);
 
             return log;
         }

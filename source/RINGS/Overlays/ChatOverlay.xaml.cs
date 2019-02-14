@@ -104,18 +104,24 @@ namespace RINGS.Overlays
         {
             Timeline.SetDesiredFrameRate(this.FadeoutAnimation, 30);
 
-            this.BeginAnimation(
-                Window.OpacityProperty,
-                this.FadeoutAnimation,
-                HandoffBehavior.SnapshotAndReplace);
+            lock (this)
+            {
+                this.BeginAnimation(
+                    Window.OpacityProperty,
+                    this.FadeoutAnimation,
+                    HandoffBehavior.SnapshotAndReplace);
+            }
         }
 
         public void StopFadeout()
         {
-            this.BeginAnimation(
-                Window.OpacityProperty,
-                null,
-                HandoffBehavior.SnapshotAndReplace);
+            lock (this)
+            {
+                this.BeginAnimation(
+                    Window.OpacityProperty,
+                    null,
+                    HandoffBehavior.SnapshotAndReplace);
+            }
         }
 
         #region IOverlay
