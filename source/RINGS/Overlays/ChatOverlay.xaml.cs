@@ -85,7 +85,9 @@ namespace RINGS.Overlays
             switch (e.PropertyName)
             {
                 case nameof(ChatOverlaySettingsModel.IsEnabled):
-                    this.OverlayVisible = this.ViewModel.ChatOverlaySettings.IsEnabled;
+                    this.Visibility = this.ViewModel.ChatOverlaySettings.IsEnabled ?
+                        Visibility.Visible :
+                        Visibility.Collapsed;
                     break;
 
                 case nameof(ChatOverlaySettingsModel.IsLock):
