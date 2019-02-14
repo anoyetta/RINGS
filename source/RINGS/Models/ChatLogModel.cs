@@ -106,7 +106,8 @@ namespace RINGS.Models
             {
                 var panel = new WrapPanel()
                 {
-                    Orientation = Orientation.Horizontal
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 5, 0, 0),
                 };
 
                 foreach (var image in imagesAtta)
@@ -558,7 +559,7 @@ namespace RINGS.Models
             RegexOptions.Compiled);
 
         private static readonly Regex CharacterNameWithServerRegex = new Regex(
-            $@"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+)(?<server>{string.Join("|", Servers.Names)})?)",
+            $@"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+)(?<server>{string.Join("|", Servers.Names)})?",
             RegexOptions.Compiled);
 
         private static string FomartCharacterNames(
@@ -613,7 +614,9 @@ namespace RINGS.Models
         {
             foreach (var s in ici.FilenameExtension.Split(';'))
             {
-                yield return s.Substring(s.IndexOf('.'));
+                yield return s
+                    .Replace("*", string.Empty)
+                    .Replace(".", string.Empty);
             }
         }
 
