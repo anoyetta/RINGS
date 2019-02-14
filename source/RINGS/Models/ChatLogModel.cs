@@ -559,7 +559,7 @@ namespace RINGS.Models
             RegexOptions.Compiled);
 
         private static readonly Regex CharacterNameWithServerRegex = new Regex(
-            $@"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+)(?<server>{string.Join("|", Servers.Names)})?",
+            $@"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+)(?<server>{string.Join("|", Servers.Names)})",
             RegexOptions.Compiled);
 
         private static string FomartCharacterNames(
@@ -568,7 +568,12 @@ namespace RINGS.Models
             var matches = CharacterNameWithServerRegex.Matches(message);
             foreach (Match match in matches)
             {
-                var replacement = $"{match.Groups["name"]}@{match.Groups["server"]}";
+                var replacement = $"{match.Groups["name"].Value}";
+                if (match.Groups["server"].Success)
+                {
+                    replacement += $"@{match.Groups["server"]}";
+                }
+
                 message.Replace(match.Value, replacement);
             }
 
