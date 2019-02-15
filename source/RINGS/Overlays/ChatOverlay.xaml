@@ -162,7 +162,8 @@
                 Focusable="False"
                 IsTabStop="False"
                 HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Auto">
+                VerticalScrollBarVisibility="Auto"
+                Loaded="ScrollViewer_Loaded">
 
                 <ItemsControl
                   Focusable="False"

@@ -177,6 +177,17 @@ namespace RINGS.Overlays
             }
         }
 
+        private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            var scrollViewer = sender as ScrollViewer;
+
+            var bar = scrollViewer.Template.FindName("PART_VerticalScrollBar", scrollViewer);
+            if (bar != null)
+            {
+                (bar as dynamic).Width = 5;
+            }
+        }
+
         #region IOverlay
 
         private bool overlayVisible;
