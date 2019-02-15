@@ -19,6 +19,7 @@ namespace RINGS
             { nameof(IsStartupWithWindows), false },
             { nameof(IsMinimizeStartup), false },
             { nameof(ChatLogPollingInterval), 10.0d },
+            { nameof(ChatLogScrollBarWidth), 6.0d },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },

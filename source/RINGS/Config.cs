@@ -177,6 +177,15 @@ namespace RINGS
             set => this.SetProperty(ref this.chatLogPollingInterval, value);
         }
 
+        private double chatLogScrollBarWidth = 6.0d;
+
+        [JsonProperty(PropertyName = "chatlog_scrollbar_width")]
+        public double ChatLogScrollBarWidth
+        {
+            get => this.chatLogScrollBarWidth;
+            set => this.SetProperty(ref this.chatLogScrollBarWidth, value);
+        }
+
         private readonly Dictionary<string, ChatOverlaySettingsModel> chatOverlaySettings = new Dictionary<string, ChatOverlaySettingsModel>();
 
         [JsonProperty(PropertyName = "chat_overlays", DefaultValueHandling = DefaultValueHandling.Include)]

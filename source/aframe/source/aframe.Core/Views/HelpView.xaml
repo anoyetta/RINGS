@@ -109,13 +109,16 @@
         <metro:MetroHeader.Header>
           <Label Content="Help Menu" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
         </metro:MetroHeader.Header>
-        <StackPanel Margin="10 0 0 0">
-          <StackPanel.Resources>
-            <Thickness x:Key="MenuMargin">0 0 0 5</Thickness>
+        <WrapPanel
+          Orientation="Vertical"
+          Margin="10 0 0 0"
+          MaxHeight="130">
+          <WrapPanel.Resources>
+            <Thickness x:Key="MenuMargin">0 0 35 5</Thickness>
             <Style TargetType="Hyperlink">
               <Setter Property="FontSize" Value="16" />
             </Style>
-          </StackPanel.Resources>
+          </WrapPanel.Resources>
 
           <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
             <Hyperlink Command="{Binding OpenOfficialSiteCommand, Mode=OneWay}">オフィシャルサイトを開く</Hyperlink>
@@ -132,7 +135,7 @@
           <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
             <Hyperlink Command="{Binding SaveLogCommand, Mode=OneWay}">ログを保存する</Hyperlink>
           </TextBlock>
-        </StackPanel>
+        </WrapPanel>
       </metro:MetroHeader>
     </StackPanel>
 

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media.Animation;
@@ -39,8 +40,11 @@ namespace RINGS.Overlays
             this.ViewModel.HideCallback = () => this.StartFadeout();
             this.ViewModel.ShowCallback = () =>
             {
-                this.StopFadeout();
-                this.OverlayVisible = true;
+                if (!this.OverlayVisible)
+                {
+                    this.StopFadeout();
+                    this.OverlayVisible = true;
+                }
             };
 
             this.ViewModel.ChangeActivePageCallback = (pageName) =>
@@ -181,10 +185,11 @@ namespace RINGS.Overlays
         {
             var scrollViewer = sender as ScrollViewer;
 
-            var bar = scrollViewer.Template.FindName("PART_VerticalScrollBar", scrollViewer);
-            if (bar != null)
+            var obj = scrollViewer.Template.FindName("PART_VerticalScrollBar", scrollViewer);
+            if (obj != null &&
+                obj is ScrollBar bar)
             {
-                (bar as dynamic).Width = 5;
+                bar.Width = Config.Instance.ChatLogScrollBarWidth;
             }
         }
 
