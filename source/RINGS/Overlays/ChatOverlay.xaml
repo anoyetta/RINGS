@@ -55,7 +55,7 @@
       HorizontalAlignment="Left"
       Kind="MessageText"
       Foreground="White"
-      Background="Transparent"
+      Background="#01000000"
       Width="30"
       Height="30"
       Opacity="0.9"
@@ -211,6 +211,34 @@
                             </DataTrigger>
                           </Style.Triggers>
                         </Style>
+
+                        <ContextMenu
+                          x:Key="LogContextMenu"
+                          BorderThickness="0"
+                          HasDropShadow="False"
+                          Padding="0">
+                          <MenuItem
+                            Header="ログをコピー"
+                            Padding="4"
+                            Command="{Binding CopyLogCommand, Mode=OneWay}"
+                            CommandParameter="{Binding}" />
+                          <MenuItem
+                            Header="発言者をコピー"
+                            Padding="4"
+                            Command="{Binding CopyPeakerCommand, Mode=OneWay}"
+                            CommandParameter="{Binding}" />
+                          <MenuItem
+                            Margin="0 5 0 0"
+                            Header="パーティに勧誘する (/pcmd add)"
+                            Padding="4"
+                            Command="{Binding InvitePartyCommand, Mode=OneWay}"
+                            CommandParameter="{Binding}" />
+                          <MenuItem
+                            Header="パーティから除外する (/pcmd kick)"
+                            Padding="4"
+                            Command="{Binding KickPartyCommand, Mode=OneWay}"
+                            CommandParameter="{Binding}" />
+                        </ContextMenu>
                       </DataTemplate.Resources>
 
                       <fw:BindableRichTextBox
@@ -224,8 +252,9 @@
                         TextOptions.TextRenderingMode="Aliased"
                         TextOptions.TextFormattingMode="Ideal"
                         TextOptions.TextHintingMode="Auto"
-                        ContextMenu="{x:Null}"
-                        Document="{Binding ChatDocument, Mode=OneWay}" />
+                        ContextMenu="{StaticResource LogContextMenu}"
+                        Document="{Binding ChatDocument, Mode=OneWay}"
+                        PreviewMouseLeftButtonDown="BindableRichTextBox_PreviewMouseLeftButtonDown" />
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
                 </ItemsControl>

@@ -165,7 +165,7 @@ namespace RINGS.Models
         private bool IsDuplicate(
             ChatLogModel chatLog)
         {
-            if ((DateTime.Now - this.duplicateCheckTimestamp).TotalSeconds > 1.0d)
+            if ((DateTime.Now - this.duplicateCheckTimestamp).TotalSeconds > 0.2d)
             {
                 for (int i = 0; i < this.duplicateCheckBuffer.Length; i++)
                 {

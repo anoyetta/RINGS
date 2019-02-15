@@ -3,8 +3,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media.Animation;
+using aframe;
 using RINGS.Models;
 
 namespace RINGS.Overlays
@@ -75,13 +77,16 @@ namespace RINGS.Overlays
                 this.ViewModel.Dispose();
             };
 
-            this.MouseDoubleClick += (_, __) =>
+            this.MouseLeftButtonDown += (_, e) =>
             {
-                this.MinimizeIcon.Visibility = Visibility.Visible;
-                this.ChatPanel.Visibility = Visibility.Collapsed;
+                if (e.ClickCount == 3)
+                {
+                    this.MinimizeIcon.Visibility = Visibility.Visible;
+                    this.ChatPanel.Visibility = Visibility.Collapsed;
+                }
             };
 
-            this.MinimizeIcon.PreviewMouseDoubleClick += (_, e) =>
+            this.MinimizeIcon.PreviewMouseDown += (_, e) =>
             {
                 this.MinimizeIcon.Visibility = Visibility.Collapsed;
                 this.ChatPanel.Visibility = Visibility.Visible;
@@ -114,6 +119,7 @@ namespace RINGS.Overlays
         }
 
         private readonly DoubleAnimation FadeoutAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromSeconds(1)));
+        private DateTime lastFadeoutTimestamp = DateTime.MinValue;
 
         public void StartFadeout()
         {
@@ -122,14 +128,19 @@ namespace RINGS.Overlays
                 return;
             }
 
+            if ((DateTime.Now - this.lastFadeoutTimestamp).TotalSeconds <= 1.2d)
+            {
+                return;
+            }
+
+            this.lastFadeoutTimestamp = DateTime.Now;
             Timeline.SetDesiredFrameRate(this.FadeoutAnimation, 30);
 
             lock (this)
             {
                 this.BeginAnimation(
                     Window.OpacityProperty,
-                    this.FadeoutAnimation,
-                    HandoffBehavior.SnapshotAndReplace);
+                    this.FadeoutAnimation);
             }
         }
 
@@ -141,6 +152,28 @@ namespace RINGS.Overlays
                     Window.OpacityProperty,
                     null,
                     HandoffBehavior.SnapshotAndReplace);
+            }
+        }
+
+        private void BindableRichTextBox_PreviewMouseLeftButtonDown(
+            object sender,
+            MouseButtonEventArgs e)
+        {
+            var tb = sender as BindableRichTextBox;
+
+            switch (e.ClickCount)
+            {
+                case 2:
+                    tb.SelectAll();
+                    e.Handled = true;
+                    break;
+
+                case 3:
+                    // チャットオーバーレイを最小化する
+                    this.MinimizeIcon.Visibility = Visibility.Visible;
+                    this.ChatPanel.Visibility = Visibility.Collapsed;
+                    e.Handled = true;
+                    break;
             }
         }
 

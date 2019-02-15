@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Discord.WebSocket;
+using Prism.Commands;
 using Prism.Mvvm;
 using RINGS.Common;
 using Sharlayan.Core;
@@ -611,6 +612,81 @@ namespace RINGS.Models
 
             return text;
         }
+
+        #region Context Menu Commands
+
+        private DelegateCommand<ChatLogModel> copyLogCommand;
+
+        public DelegateCommand<ChatLogModel> CopyLogCommand =>
+            this.copyLogCommand ?? (this.copyLogCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopyLogCommand));
+
+        private void ExecuteCopyLogCommand(
+            ChatLogModel model)
+        {
+            var sb = new StringBuilder();
+
+            var block = model.ChatDocument.Blocks.FirstOrDefault();
+            if (block != null &&
+                block is Paragraph para)
+            {
+                foreach (var i in para.Inlines)
+                {
+                    if (i is Run run)
+                    {
+                        sb.Append(run.Text);
+                    }
+                }
+            }
+
+            if (sb.Length > 0)
+            {
+                Clipboard.SetDataObject(sb.ToString());
+            }
+        }
+
+        private DelegateCommand<ChatLogModel> copyPeakerCommand;
+
+        public DelegateCommand<ChatLogModel> CopyPeakerCommand =>
+            this.copyPeakerCommand ?? (this.copyPeakerCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopyPeakerCommand));
+
+        private void ExecuteCopyPeakerCommand(
+            ChatLogModel model)
+        {
+            if (!string.IsNullOrEmpty(model.OriginalSpeaker))
+            {
+                Clipboard.SetDataObject(model.OriginalSpeaker);
+            }
+        }
+
+        private DelegateCommand<ChatLogModel> invitePartyCommand;
+
+        public DelegateCommand<ChatLogModel> InvitePartyCommand =>
+            this.invitePartyCommand ?? (this.invitePartyCommand = new DelegateCommand<ChatLogModel>(this.ExecuteInvitePartyCommand));
+
+        private void ExecuteInvitePartyCommand(
+            ChatLogModel model)
+        {
+            if (!string.IsNullOrEmpty(model.OriginalSpeaker))
+            {
+                Clipboard.SetDataObject($"/pcmd add \"{model.OriginalSpeaker}\"");
+            }
+        }
+
+        private DelegateCommand<ChatLogModel> kickPartyCommand;
+
+        public DelegateCommand<ChatLogModel> KickPartyCommand =>
+            this.kickPartyCommand ?? (this.kickPartyCommand = new DelegateCommand<ChatLogModel>(this.ExecuteKickPartyCommand));
+
+        private void ExecuteKickPartyCommand(
+            ChatLogModel model)
+        {
+            if (!string.IsNullOrEmpty(model.OriginalSpeaker))
+            {
+                Clipboard.SetDataObject($"/pcmd kick \"{model.OriginalSpeaker}\"");
+            }
+        }
+
+        #endregion Context Menu Commands
     }
 
     public static class UriExtensions
