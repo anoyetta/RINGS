@@ -181,7 +181,9 @@ namespace RINGS.Overlays
             }
         }
 
-        private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
+        private void ScrollViewer_Loaded(
+            object sender,
+            RoutedEventArgs e)
         {
             var scrollViewer = sender as ScrollViewer;
 

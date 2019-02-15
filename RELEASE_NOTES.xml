@@ -12,12 +12,12 @@
   -->
 
   <note>
-    <version>0.0.0.5</version>
-    <channel>Alpha</channel>
-    <timestamp>2019-03-01</timestamp>
-    <uri></uri>
+    <version>0.0.1.#BuildNo#</version>
+    <channel>Beta</channel>
+    <timestamp>#Timestamp#</timestamp>
+    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/#Tag#/#ArchiveFileName#</uri>
     <description>
-      * first release
+    * first release
     </description>
   </note>
 </release_notes>
