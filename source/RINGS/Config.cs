@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using aframe;
+using aframe.Updater;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using RINGS.Models;
@@ -61,6 +62,37 @@ namespace RINGS
         }
 
         public void Save() => this.Save(FileName);
+
+        #region Update Checker
+
+        private string updateSourceUri = DefaultUpdateSourceUri;
+
+        [JsonProperty(PropertyName = "update_source_uri")]
+        public string UpdateSourceUri
+        {
+            get => this.updateSourceUri;
+            set => this.SetProperty(ref this.updateSourceUri, value);
+        }
+
+        private ReleaseChannels updateChannel = ReleaseChannels.Stable;
+
+        [JsonProperty(PropertyName = "update_channel")]
+        public ReleaseChannels UpdateChannel
+        {
+            get => this.updateChannel;
+            set => this.SetProperty(ref this.updateChannel, value);
+        }
+
+        private DateTimeOffset lastUpdateTimestamp = DateTimeOffset.MinValue;
+
+        [JsonProperty(PropertyName = "last_update_timestamp")]
+        public DateTimeOffset LastUpdateTimestamp
+        {
+            get => this.lastUpdateTimestamp;
+            set => this.SetProperty(ref this.lastUpdateTimestamp, value);
+        }
+
+        #endregion Update Checker
 
         #region Data
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using aframe;
+using aframe.Updater;
 using RINGS.Common;
 using RINGS.Models;
 
@@ -9,8 +10,13 @@ namespace RINGS
 {
     public partial class Config
     {
+        private readonly static string DefaultUpdateSourceUri = "https://raw.githubusercontent.com/anoyetta/RINGS/master/RELEASE_NOTES.xml";
+
         public override Dictionary<string, object> DefaultValues => new Dictionary<string, object>()
         {
+            { nameof(UpdateSourceUri), DefaultUpdateSourceUri },
+            { nameof(UpdateChannel), ReleaseChannels.Stable },
+
             { nameof(Scale), 1.0d },
             { nameof(X), 200 },
             { nameof(Y), 100 },

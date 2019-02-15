@@ -27,7 +27,7 @@ if (!$isDebug) {
 
 # target
 $targetClientDirectory = Get-Item .\source\RINGS
-$targetDirectories = @($targetClientDirectory, $targetServerDirectory)
+$targetDirectories = @($targetClientDirectory)
 $depolyDirectory = ".\source\deploy"
 
 # tools
@@ -45,8 +45,7 @@ if ($isDebug) {
     }
 }
 $releaseNotesXML = [xml] (Get-Content .\RELEASE_NOTES.xml -Encoding utf8)
-if (($releaseNotesXML -eq $null) -Or
-    ($releaseNotesXML.release_notes.note.Length -lt 1)) {
+if ($releaseNotesXML -eq $null) {
     EndMake
 }
 $lastestNote = $releaseNotesXML.release_notes.note | Select-Object -Last 1
@@ -96,6 +95,11 @@ $target = Get-Item .\source\*.sln
 & $msbuild $target /nologo /v:minimal /t:Clean /p:Configuration=Release
 Start-Sleep -m 100
 
+'-> Build Client'
+$target = Get-Item $targetClientDirectory\*.csproj
+& $msbuild $target /nologo /v:minimal /t:Build /p:Configuration=Release | Write-Output
+Start-Sleep -m 100
+
 # Successed? build
 foreach ($d in $targetDirectories) {
     $out = Join-Path $d "bin\Release"
@@ -130,7 +134,9 @@ Copy-Item -Force -Recurse $targetClientDirectory\bin\Release\* $deployClient
 
 # client をアーカイブする
 '-> Archive Client'
-Compress-Archive -Force $deployClient\* $deployBase\$archiveFileName
+Compress-Archive -Force $deployClient\* $deployBase\..\$archiveFileName
+Get-ChildItem -Path $deployBase -Recurse | Remove-Item -Force -Recurse
+Remove-Item -Recurse -Force $deployBase
 
 if (!$isDebug) {
     if (Test-Path .\RELEASE_NOTES.bak) {

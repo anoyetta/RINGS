@@ -12,10 +12,10 @@
   -->
 
   <note>
-    <version>0.0.1.#BuildNo#</version>
+    <version>0.0.1.3615</version>
     <channel>Beta</channel>
-    <timestamp>#Timestamp#</timestamp>
-    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <timestamp>2019-02-15T15:39:37.5332405+09:00</timestamp>
+    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/v0.0.1.3615-Beta/RINGS_v0_0_1_3615_Beta.zip</uri>
     <description>
     * first release
     </description>

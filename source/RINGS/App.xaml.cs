@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using aframe;
+using aframe.Updater;
 using aframe.ViewModels;
 using RINGS.Controllers;
 using RINGS.Overlays;
@@ -65,6 +66,23 @@ namespace RINGS
             /*
             new SandboxWindow().Show();
             */
+
+            // アップデートを確認する
+            UpdateChecker.UpdateSourceUri = Config.Instance.UpdateSourceUri;
+            UpdateChecker.LastUpdateCheckCallback = (lastUpdateTimestamp) =>
+            {
+                Config.Instance.LastUpdateTimestamp = lastUpdateTimestamp;
+                Config.Instance.Save(Config.FileName);
+            };
+
+            await this.Dispatcher.InvokeAsync(async () =>
+            {
+                await Task.Delay(TimeSpan.FromSeconds(0.1));
+                await UpdateChecker.IsUpdateAsync(
+                    Config.Instance.LastUpdateTimestamp,
+                    Config.Instance.UpdateChannel);
+            },
+            DispatcherPriority.ApplicationIdle);
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
