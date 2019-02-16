@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
-[assembly: AssemblyVersion("0.0.1.3615")]
+[assembly: AssemblyVersion("0.0.0.3711")]
 [assembly: AssemblyConfiguration("Beta")]
