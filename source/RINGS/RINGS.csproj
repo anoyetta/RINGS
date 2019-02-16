@@ -276,7 +276,6 @@ if $(ConfigurationName)==Release (
 
   mkdir $(TargetDir)bin
   move $(TargetDir)*.dll $(TargetDir)bin\
-  move $(TargetDir)aframe.Updater.exe $(TargetDir)bin\
 )</PostBuildEvent>
   </PropertyGroup>
 </Project>

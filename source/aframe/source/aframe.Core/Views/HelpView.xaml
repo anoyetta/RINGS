@@ -34,114 +34,126 @@
 
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="60*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="40*" />
     </Grid.RowDefinitions>
 
-    <StackPanel
-      Grid.Row="0">
-      <!-- Version Information -->
-      <metro:MetroHeader>
-        <metro:MetroHeader.Header>
-          <DockPanel>
-            <Label DockPanel.Dock="Left" Content="Version Infomation" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
-            <Label
-              DockPanel.Dock="Right"
-              HorizontalAlignment="Right"
-              Content="[DEBUG BUILD]"
-              VerticalContentAlignment="Center"
-              Foreground="{DynamicResource BlackBrush}"
-              FontWeight="Bold"
-              Visibility="{Binding IsDebugBuild, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" />
-          </DockPanel>
-        </metro:MetroHeader.Header>
+    <!-- Version Information -->
+    <metro:MetroHeader Grid.Row="0">
+      <metro:MetroHeader.Header>
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Content="Version Infomation" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
+          <Label
+            DockPanel.Dock="Right"
+            HorizontalAlignment="Right"
+            Content="[DEBUG BUILD]"
+            VerticalContentAlignment="Center"
+            Foreground="{DynamicResource BlackBrush}"
+            FontWeight="Bold"
+            Visibility="{Binding IsDebugBuild, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" />
+        </DockPanel>
+      </metro:MetroHeader.Header>
 
-        <ScrollViewer
-          Focusable="False"
-          IsTabStop="False"
-          HorizontalScrollBarVisibility="Disabled"
-          VerticalScrollBarVisibility="Auto">
-          <ItemsControl
-            ItemsSource="{Binding VersionInfos, Mode=OneWay}"
-            Margin="10 0 0 0"
-            Focusable="False"
-            IsTabStop="False">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <WrapPanel Orientation="Horizontal" />
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <Border
-                  BorderThickness="0"
-                  Padding="8"
-                  Margin="0 0 15 10">
-                  <Border.Resources>
-                    <Style TargetType="Label" BasedOn="{StaticResource MetroLabel}">
-                      <Setter Property="FontFamily" Value="Consolas" />
-                    </Style>
-                  </Border.Resources>
-
-                  <StackPanel>
-                    <Label Padding="0" Content="{Binding Title.Value, Mode=OneWay}" FontSize="21" />
-                    <Label Padding="0" Margin="0 2 0 0" Content="{Binding EndPointUri.Value, Mode=OneWay}" FontSize="14" />
-                    <StackPanel Margin="3 8 0 0" Orientation="Horizontal">
-                      <Label Padding="0" Content="{Binding Version.Value, Mode=OneWay}" ContentStringFormat="v{0}" FontSize="16" />
-                      <Label Padding="0" Margin="8 0 0 0" Content="{Binding ReleaseChannel.Value, Mode=OneWay}" FontSize="16" />
-                    </StackPanel>
-                    <StackPanel Margin="4 5 0 0">
-                      <Label Padding="0" Content="{Binding Timestamp.Value, Mode=OneWay}" ContentStringFormat="{}{0:yyyy-MM-dd HH:mm}" FontSize="12" />
-                      <Label Padding="0" Content="{Binding Copyright.Value, Mode=OneWay}" FontSize="12" />
-                    </StackPanel>
-                  </StackPanel>
-                </Border>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </ScrollViewer>
-      </metro:MetroHeader>
-
-      <!-- Help Commands -->
-      <metro:MetroHeader Margin="0 5 0 0">
-        <metro:MetroHeader.Header>
-          <Label Content="Help Menu" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
-        </metro:MetroHeader.Header>
-        <WrapPanel
-          Orientation="Vertical"
+      <ScrollViewer
+        Focusable="False"
+        IsTabStop="False"
+        HorizontalScrollBarVisibility="Disabled"
+        VerticalScrollBarVisibility="Auto">
+        <ItemsControl
+          ItemsSource="{Binding VersionInfos, Mode=OneWay}"
           Margin="10 0 0 0"
-          MaxHeight="130">
-          <WrapPanel.Resources>
-            <Thickness x:Key="MenuMargin">0 0 35 5</Thickness>
-            <Style TargetType="Hyperlink">
-              <Setter Property="FontSize" Value="16" />
-            </Style>
-          </WrapPanel.Resources>
+          Focusable="False"
+          IsTabStop="False">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
 
-          <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
-            <Hyperlink Command="{Binding OpenOfficialSiteCommand, Mode=OneWay}">オフィシャルサイトを開く</Hyperlink>
-          </TextBlock>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border
+                BorderThickness="0"
+                Padding="8"
+                Margin="0 0 15 10">
+                <Border.Resources>
+                  <Style TargetType="Label" BasedOn="{StaticResource MetroLabel}">
+                    <Setter Property="FontFamily" Value="Consolas" />
+                  </Style>
+                </Border.Resources>
 
-          <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
-            <Hyperlink Command="{Binding CheckUpdateCommand, Mode=OneWay}">アップデートを確認する</Hyperlink>
-          </TextBlock>
+                <StackPanel>
+                  <Label Padding="0" Content="{Binding Title.Value, Mode=OneWay}" FontSize="21" />
+                  <Label Padding="0" Margin="0 2 0 0" Content="{Binding EndPointUri.Value, Mode=OneWay}" FontSize="14" />
+                  <StackPanel Margin="3 8 0 0" Orientation="Horizontal">
+                    <Label Padding="0" Content="{Binding Version.Value, Mode=OneWay}" ContentStringFormat="v{0}" FontSize="16" />
+                    <Label Padding="0" Margin="8 0 0 0" Content="{Binding ReleaseChannel.Value, Mode=OneWay}" FontSize="16" />
+                  </StackPanel>
+                  <StackPanel Margin="4 5 0 0">
+                    <Label Padding="0" Content="{Binding Timestamp.Value, Mode=OneWay}" ContentStringFormat="{}{0:yyyy-MM-dd HH:mm}" FontSize="12" />
+                    <Label Padding="0" Content="{Binding Copyright.Value, Mode=OneWay}" FontSize="12" />
+                  </StackPanel>
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </metro:MetroHeader>
 
-          <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
-            <Hyperlink Command="{Binding OpenLogCommand, Mode=OneWay}">ログを開く</Hyperlink>
-          </TextBlock>
+    <!-- Current Release Channel -->
+    <metro:MetroHeader Margin="0 5 0 0" Grid.Row="1">
+      <metro:MetroHeader.Header>
+        <Label Content="Current Release Channel" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
+      </metro:MetroHeader.Header>
+      <ComboBox
+        HorizontalAlignment="Left"
+        Margin="10 0 0 0"
+        Width="100"
+        ItemsSource="{Binding ReleaseChannelList, Mode=OneWay}"
+        SelectedItem="{Binding CurrentReleaseChannel, Mode=TwoWay}" />
+    </metro:MetroHeader>
 
-          <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
-            <Hyperlink Command="{Binding SaveLogCommand, Mode=OneWay}">ログを保存する</Hyperlink>
-          </TextBlock>
-        </WrapPanel>
-      </metro:MetroHeader>
-    </StackPanel>
+    <!-- Help Commands -->
+    <metro:MetroHeader Margin="0 5 0 0" Grid.Row="2">
+      <metro:MetroHeader.Header>
+        <Label Content="Help Menu" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
+      </metro:MetroHeader.Header>
+      <WrapPanel
+        Orientation="Vertical"
+        Margin="10 0 0 0"
+        MaxHeight="130">
+        <WrapPanel.Resources>
+          <Thickness x:Key="MenuMargin">0 0 35 5</Thickness>
+          <Style TargetType="Hyperlink">
+            <Setter Property="FontSize" Value="16" />
+          </Style>
+        </WrapPanel.Resources>
 
-    <GridSplitter Grid.Row="1" Height="3" HorizontalAlignment="Stretch" Background="{DynamicResource GrayBrush10}" />
+        <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
+          <Hyperlink Command="{Binding OpenOfficialSiteCommand, Mode=OneWay}">オフィシャルサイトを開く</Hyperlink>
+        </TextBlock>
 
-    <metro:MetroHeader Grid.Row="2">
+        <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
+          <Hyperlink Command="{Binding CheckUpdateCommand, Mode=OneWay}">アップデートを確認する</Hyperlink>
+        </TextBlock>
+
+        <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
+          <Hyperlink Command="{Binding OpenLogCommand, Mode=OneWay}">ログを開く</Hyperlink>
+        </TextBlock>
+
+        <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
+          <Hyperlink Command="{Binding SaveLogCommand, Mode=OneWay}">ログを保存する</Hyperlink>
+        </TextBlock>
+      </WrapPanel>
+    </metro:MetroHeader>
+
+    <GridSplitter Grid.Row="3" Height="3" Margin="0 10 0 0" HorizontalAlignment="Stretch" Background="{DynamicResource GrayBrush10}" />
+
+    <metro:MetroHeader Grid.Row="4">
       <!-- Log -->
       <metro:MetroHeader.Header>
         <Label Content="Log" FontSize="20" Foreground="{DynamicResource BlackBrush}" />
@@ -176,12 +188,12 @@
       </ScrollViewer>
     </metro:MetroHeader>
 
-    <DockPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="8">
+    <DockPanel Grid.Row="4" VerticalAlignment="Bottom" Margin="8">
       <!-- ボタンパネルL -->
       <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
         <Button
-          Width="45"
-          Height="45"
+          Width="35"
+          Height="35"
           Style="{DynamicResource IconButtonStyle}"
           Command="{Binding RefreshCommand, Mode=OneWay}">
           <iconPacks:PackIconMaterial Kind="Refresh" Foreground="{DynamicResource IdealForegroundColorBrush}" />

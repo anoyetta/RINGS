@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -62,6 +63,29 @@ namespace aframe.ViewModels
                 DispatcherPriority.ContextIdle);
 
         public Uri OfficialSiteUri { get; set; }
+
+        public Func<ReleaseChannels> GetReleaseChannelCallback { get; set; }
+
+        public Action<ReleaseChannels> SetReleaseChannelCallback { get; set; }
+
+        public IEnumerable<ReleaseChannels> ReleaseChannelList
+            => Enum.GetValues(typeof(ReleaseChannels)).Cast<ReleaseChannels>();
+
+        public void RaiseCurrentReleaseChannelChanged()
+            => this.RaisePropertyChanged(nameof(this.CurrentReleaseChannel));
+
+        public ReleaseChannels CurrentReleaseChannel
+        {
+            get => this.GetReleaseChannelCallback?.Invoke() ?? ReleaseChannels.Stable;
+            set
+            {
+                if (this.GetReleaseChannelCallback?.Invoke() != value)
+                {
+                    this.SetReleaseChannelCallback?.Invoke(value);
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
 
         private static readonly SaveFileDialog SaveLogFileDialog = new SaveFileDialog()
         {
@@ -154,7 +178,7 @@ namespace aframe.ViewModels
             var existNewer = await UpdateChecker.IsUpdateAsync();
             if (!existNewer)
             {
-                MessageBoxHelper.EnqueueSnackMessage("アプリケーションは最新です。");
+                MessageBoxHelper.EnqueueSnackMessage("This application is up-to-date.");
             }
         }
     }

@@ -85,19 +85,15 @@ namespace RINGS.Overlays
             {
                 if (e.ClickCount == 3)
                 {
-                    this.MinimizeIcon.Visibility = Visibility.Visible;
-                    this.ChatPanel.Visibility = Visibility.Collapsed;
+                    this.MinimizeChatPanel();
                 }
             };
 
             this.MinimizeIcon.PreviewMouseDown += (_, e) =>
             {
-                this.MinimizeIcon.Visibility = Visibility.Collapsed;
-                this.ChatPanel.Visibility = Visibility.Visible;
+                this.ShowChatPanel();
                 e.Handled = true;
             };
-
-            this.MinimizeIcon.Visibility = Visibility.Collapsed;
         }
 
         public ChatOverlayViewModel ViewModel => this.DataContext as ChatOverlayViewModel;
@@ -173,9 +169,7 @@ namespace RINGS.Overlays
                     break;
 
                 case 3:
-                    // チャットオーバーレイを最小化する
-                    this.MinimizeIcon.Visibility = Visibility.Visible;
-                    this.ChatPanel.Visibility = Visibility.Collapsed;
+                    this.MinimizeChatPanel();
                     e.Handled = true;
                     break;
             }
@@ -193,6 +187,20 @@ namespace RINGS.Overlays
             {
                 bar.Width = Config.Instance.ChatLogScrollBarWidth;
             }
+        }
+
+        private void MinimizeChatPanel()
+        {
+            this.MinimizeIcon.Visibility = Visibility.Visible;
+            this.BackgroundBorder.Visibility = Visibility.Collapsed;
+            this.ChatPagesTabControl.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowChatPanel()
+        {
+            this.MinimizeIcon.Visibility = Visibility.Collapsed;
+            this.BackgroundBorder.Visibility = Visibility.Visible;
+            this.ChatPagesTabControl.Visibility = Visibility.Visible;
         }
 
         #region IOverlay

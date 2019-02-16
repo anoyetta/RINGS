@@ -50,220 +50,221 @@
         ScaleY="{Binding ChatOverlaySettings.Scale, Mode=OneWay}" />
     </Grid.LayoutTransform>
 
-    <iconPacks:PackIconMaterial
-      x:Name="MinimizeIcon"
-      HorizontalAlignment="Left"
-      Kind="MessageText"
-      Foreground="White"
-      Background="#01000000"
-      Width="30"
-      Height="30"
-      Opacity="0.9"
-      ToolTip="{Binding Title, Mode=OneWay}" />
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
 
-    <Grid
-      x:Name="ChatPanel">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition />
-      </Grid.RowDefinitions>
+    <Label
+      x:Name="TitleLabel"
+      Grid.Row="0"
+      Panel.ZIndex="1"
+      Content="{Binding Title, Mode=OneWay}"
+      Background="#A0FFFFFF"
+      Foreground="Black"
+      Padding="15 3"
+      Margin="0 0 0 9">
+      <Label.Style>
+        <Style TargetType="Label">
+          <Style.Triggers>
+            <Trigger Property="IsMouseOver"  Value="True">
+              <Setter Property="Opacity" Value="0.9" />
+            </Trigger>
+            <Trigger Property="IsMouseOver"  Value="False">
+              <Setter Property="Opacity" Value="0.004" />
+            </Trigger>
+          </Style.Triggers>
+        </Style>
+      </Label.Style>
+    </Label>
 
-      <Label
-        x:Name="TitleLabel"
+    <Grid Grid.Row="1">
+      <!-- Minimize Icon -->
+      <iconPacks:PackIconMaterial
+        x:Name="MinimizeIcon"
         Grid.Row="0"
-        Content="{Binding Title, Mode=OneWay}"
-        Background="#F0FFFFFF"
-        Foreground="Black"
-        Padding="15 3"
-        Margin="0 0 0 9">
-        <Label.Style>
-          <Style TargetType="Label">
-            <Style.Triggers>
-              <Trigger Property="IsMouseOver"  Value="True">
-                <Setter Property="Opacity" Value="0.90" />
-              </Trigger>
-              <Trigger Property="IsMouseOver"  Value="False">
-                <Setter Property="Opacity" Value="0" />
-              </Trigger>
-            </Style.Triggers>
+        Panel.ZIndex="3"
+        HorizontalAlignment="Left"
+        Kind="MessageText"
+        Foreground="White"
+        Background="#01000000"
+        Width="30"
+        Height="30"
+        Visibility="Collapsed"
+        ToolTip="{Binding Title, Mode=OneWay}" />
+
+      <!-- Backgroud -->
+      <Border
+        x:Name="BackgroundBorder"
+        Panel.ZIndex="-1"
+        Background="{Binding ChatOverlaySettings.BackgroundBrush, Mode=OneWay}"
+        CornerRadius="6">
+        <Border.Effect>
+          <DropShadowEffect
+            Opacity="{Binding ChatOberlaySettings.Opacity, Mode=OneWay}"
+            Color="{Binding ChatOberlaySettings.BackgroundBrush.Color, Mode=OneWay}"
+            Direction="0"
+            ShadowDepth="0"
+            BlurRadius="8" />
+        </Border.Effect>
+      </Border>
+
+      <!-- Pages -->
+      <TabControl
+        x:Name="ChatPagesTabControl"
+        BorderThickness="0"
+        Background="Transparent"
+        Focusable="False"
+        TabStripPlacement="Bottom"
+        ItemsSource="{Binding ChatOverlaySettings.ChatPages, Mode=OneWay}">
+
+        <TabControl.Resources>
+          <Style TargetType="{x:Type TabItem}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                  <Grid MinWidth="60">
+                    <Border
+                      Name="Border"
+                      Background="Transparent">
+                      <ContentPresenter
+                        x:Name="ContentSite"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        ContentSource="Header"
+                        Margin="12 2 12 2"
+                        RecognizesAccessKey="True" />
+                    </Border>
+                  </Grid>
+                  <ControlTemplate.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                      <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource GrayBrush4}" />
+                    </Trigger>
+                    <Trigger Property="IsSelected" Value="False">
+                      <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource GrayBrush8}" />
+                    </Trigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
           </Style>
-        </Label.Style>
-      </Label>
+        </TabControl.Resources>
 
-      <Grid Grid.Row="1">
+        <TabControl.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="14" />
+          </DataTemplate>
+        </TabControl.ItemTemplate>
 
-        <!-- Backgroud -->
-        <Border
-          Panel.ZIndex="-1"
-          Background="{Binding ChatOverlaySettings.BackgroundBrush, Mode=OneWay}"
-          CornerRadius="6">
-          <Border.Effect>
-            <DropShadowEffect
-              Opacity="{Binding ChatOberlaySettings.Opacity, Mode=OneWay}"
-              Color="{Binding ChatOberlaySettings.BackgroundBrush.Color, Mode=OneWay}"
-              Direction="0"
-              ShadowDepth="0"
-              BlurRadius="8" />
-          </Border.Effect>
-        </Border>
+        <TabControl.ContentTemplate>
+          <DataTemplate>
+            <ScrollViewer
+              fw:ScrollViewerHelper.AutoScroll="True"
+              Focusable="False"
+              IsTabStop="False"
+              HorizontalScrollBarVisibility="Disabled"
+              VerticalScrollBarVisibility="Auto"
+              Loaded="ScrollViewer_Loaded">
 
-        <!-- Pages -->
-        <TabControl
-          x:Name="ChatPagesTabControl"
-          BorderThickness="0"
-          Background="Transparent"
-          Focusable="False"
-          TabStripPlacement="Bottom"
-          ItemsSource="{Binding ChatOverlaySettings.ChatPages, Mode=OneWay}">
-
-          <TabControl.Resources>
-            <Style TargetType="{x:Type TabItem}">
-              <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-              <Setter Property="Template">
-                <Setter.Value>
-                  <ControlTemplate TargetType="{x:Type TabItem}">
-                    <Grid MinWidth="60">
-                      <Border
-                        Name="Border"
-                        Background="Transparent">
-                        <ContentPresenter
-                          x:Name="ContentSite"
-                          VerticalAlignment="Center"
-                          HorizontalAlignment="Center"
-                          ContentSource="Header"
-                          Margin="12 2 12 2"
-                          RecognizesAccessKey="True" />
-                      </Border>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                      <Trigger Property="IsSelected" Value="True">
-                        <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource GrayBrush4}" />
-                      </Trigger>
-                      <Trigger Property="IsSelected" Value="False">
-                        <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource GrayBrush8}" />
-                      </Trigger>
-                    </ControlTemplate.Triggers>
-                  </ControlTemplate>
-                </Setter.Value>
-              </Setter>
-            </Style>
-          </TabControl.Resources>
-
-          <TabControl.ItemTemplate>
-            <DataTemplate>
-              <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="14" />
-            </DataTemplate>
-          </TabControl.ItemTemplate>
-
-          <TabControl.ContentTemplate>
-            <DataTemplate>
-              <ScrollViewer
-                fw:ScrollViewerHelper.AutoScroll="True"
+              <ItemsControl
                 Focusable="False"
                 IsTabStop="False"
-                HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Auto"
-                Loaded="ScrollViewer_Loaded">
+                BorderThickness="0"
+                Background="Transparent"
+                ItemsSource="{Binding LogBuffer.Buffer, Mode=OneWay}">
 
-                <ItemsControl
-                  Focusable="False"
-                  IsTabStop="False"
-                  BorderThickness="0"
-                  Background="Transparent"
-                  ItemsSource="{Binding LogBuffer.Buffer, Mode=OneWay}">
+                <ItemsControl.ItemContainerStyle>
+                  <Style TargetType="ContentPresenter">
+                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="0" />
+                  </Style>
+                </ItemsControl.ItemContainerStyle>
 
-                  <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ContentPresenter">
-                      <Setter Property="VerticalAlignment" Value="Stretch" />
-                      <Setter Property="HorizontalAlignment" Value="Stretch" />
-                      <Setter Property="Margin" Value="0" />
-                    </Style>
-                  </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <VirtualizingStackPanel VerticalAlignment="Bottom"  Orientation="Vertical" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-                  <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                      <VirtualizingStackPanel VerticalAlignment="Bottom"  Orientation="Vertical" />
-                    </ItemsPanelTemplate>
-                  </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate DataType="{x:Type model:ChatLogModel}">
+                    <DataTemplate.Resources>
+                      <DropShadowEffect
+                        x:Key="TextEffect"
+                        Direction="0"
+                        ShadowDepth="0"
+                        BlurRadius="{Binding ChannelSettings.BlurRadius, Mode=OneWay}"
+                        Color="{Binding ChannelSettings.ShadowColor, Mode=OneWay}"
+                        Opacity="{Binding ChannelSettings.ShadowOpacity, Mode=OneWay}" />
 
-                  <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type model:ChatLogModel}">
-                      <DataTemplate.Resources>
-                        <DropShadowEffect
-                          x:Key="TextEffect"
-                          Direction="0"
-                          ShadowDepth="0"
-                          BlurRadius="{Binding ChannelSettings.BlurRadius, Mode=OneWay}"
-                          Color="{Binding ChannelSettings.ShadowColor, Mode=OneWay}"
-                          Opacity="{Binding ChannelSettings.ShadowOpacity, Mode=OneWay}" />
+                      <Style TargetType="fw:BindableRichTextBox">
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="IsReadOnly" Value="True" />
+                        <Setter Property="IsDocumentEnabled" Value="True" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="{Binding ChannelSettings.ColorBrush, Mode=OneWay}" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="True">
+                            <Setter Property="Effect" Value="{DynamicResource TextEffect}" />
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="False">
+                            <Setter Property="Effect" Value="{x:Null}" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
 
-                        <Style TargetType="fw:BindableRichTextBox">
-                          <Setter Property="BorderThickness" Value="0" />
-                          <Setter Property="IsReadOnly" Value="True" />
-                          <Setter Property="IsDocumentEnabled" Value="True" />
-                          <Setter Property="Background" Value="Transparent" />
-                          <Setter Property="Foreground" Value="{Binding ChannelSettings.ColorBrush, Mode=OneWay}" />
-                          <Style.Triggers>
-                            <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="True">
-                              <Setter Property="Effect" Value="{DynamicResource TextEffect}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ChannelSettings.IsEnabledShadow}" Value="False">
-                              <Setter Property="Effect" Value="{x:Null}" />
-                            </DataTrigger>
-                          </Style.Triggers>
-                        </Style>
+                      <ContextMenu
+                        x:Key="LogContextMenu"
+                        BorderThickness="0"
+                        HasDropShadow="False"
+                        Padding="0">
+                        <MenuItem
+                          Header="ログをコピー"
+                          Padding="4"
+                          Command="{Binding CopyLogCommand, Mode=OneWay}"
+                          CommandParameter="{Binding}" />
+                        <MenuItem
+                          Header="発言者をコピー"
+                          Padding="4"
+                          Command="{Binding CopyPeakerCommand, Mode=OneWay}"
+                          CommandParameter="{Binding}" />
+                        <MenuItem
+                          Margin="0 5 0 0"
+                          Header="パーティに勧誘する (/pcmd add)"
+                          Padding="4"
+                          Command="{Binding InvitePartyCommand, Mode=OneWay}"
+                          CommandParameter="{Binding}" />
+                        <MenuItem
+                          Header="パーティから除外する (/pcmd kick)"
+                          Padding="4"
+                          Command="{Binding KickPartyCommand, Mode=OneWay}"
+                          CommandParameter="{Binding}" />
+                      </ContextMenu>
+                    </DataTemplate.Resources>
 
-                        <ContextMenu
-                          x:Key="LogContextMenu"
-                          BorderThickness="0"
-                          HasDropShadow="False"
-                          Padding="0">
-                          <MenuItem
-                            Header="ログをコピー"
-                            Padding="4"
-                            Command="{Binding CopyLogCommand, Mode=OneWay}"
-                            CommandParameter="{Binding}" />
-                          <MenuItem
-                            Header="発言者をコピー"
-                            Padding="4"
-                            Command="{Binding CopyPeakerCommand, Mode=OneWay}"
-                            CommandParameter="{Binding}" />
-                          <MenuItem
-                            Margin="0 5 0 0"
-                            Header="パーティに勧誘する (/pcmd add)"
-                            Padding="4"
-                            Command="{Binding InvitePartyCommand, Mode=OneWay}"
-                            CommandParameter="{Binding}" />
-                          <MenuItem
-                            Header="パーティから除外する (/pcmd kick)"
-                            Padding="4"
-                            Command="{Binding KickPartyCommand, Mode=OneWay}"
-                            CommandParameter="{Binding}" />
-                        </ContextMenu>
-                      </DataTemplate.Resources>
-
-                      <fw:BindableRichTextBox
-                        Margin="{Binding ParentOverlaySettings.LineMarginThickness, Mode=OneWay}"
-                        TextElement.FontFamily="{Binding ParentOverlaySettings.Font.FontFamily, Mode=OneWay}"
-                        TextElement.FontSize="{Binding ParentOverlaySettings.Font.Size, Mode=OneWay}"
-                        TextElement.FontStyle="{Binding ParentOverlaySettings.Font.Style, Mode=OneWay}"
-                        TextElement.FontWeight="{Binding ParentOverlaySettings.Font.Weight, Mode=OneWay}"
-                        TextElement.FontStretch="{Binding ParentOverlaySettings.Font.Stretch, Mode=OneWay}"
-                        TextElement.Foreground="{Binding ChannelSettings.ColorBrush, Mode=OneWay}"
-                        TextOptions.TextRenderingMode="Aliased"
-                        TextOptions.TextFormattingMode="Ideal"
-                        TextOptions.TextHintingMode="Auto"
-                        ContextMenu="{StaticResource LogContextMenu}"
-                        Document="{Binding ChatDocument, Mode=OneWay}"
-                        PreviewMouseLeftButtonDown="BindableRichTextBox_PreviewMouseLeftButtonDown" />
-                    </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-                </ItemsControl>
-              </ScrollViewer>
-            </DataTemplate>
-          </TabControl.ContentTemplate>
-        </TabControl>
-      </Grid>
+                    <fw:BindableRichTextBox
+                      Margin="{Binding ParentOverlaySettings.LineMarginThickness, Mode=OneWay}"
+                      TextElement.FontFamily="{Binding ParentOverlaySettings.Font.FontFamily, Mode=OneWay}"
+                      TextElement.FontSize="{Binding ParentOverlaySettings.Font.Size, Mode=OneWay}"
+                      TextElement.FontStyle="{Binding ParentOverlaySettings.Font.Style, Mode=OneWay}"
+                      TextElement.FontWeight="{Binding ParentOverlaySettings.Font.Weight, Mode=OneWay}"
+                      TextElement.FontStretch="{Binding ParentOverlaySettings.Font.Stretch, Mode=OneWay}"
+                      TextElement.Foreground="{Binding ChannelSettings.ColorBrush, Mode=OneWay}"
+                      TextOptions.TextRenderingMode="Aliased"
+                      TextOptions.TextFormattingMode="Ideal"
+                      TextOptions.TextHintingMode="Auto"
+                      ContextMenu="{StaticResource LogContextMenu}"
+                      Document="{Binding ChatDocument, Mode=OneWay}"
+                      PreviewMouseLeftButtonDown="BindableRichTextBox_PreviewMouseLeftButtonDown" />
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+          </DataTemplate>
+        </TabControl.ContentTemplate>
+      </TabControl>
     </Grid>
   </Grid>
 </Window>

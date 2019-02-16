@@ -58,6 +58,9 @@ namespace RINGS
                     {
                         HelpViewModel.Instance.AddVersionInfos(asm);
                     }
+
+                    HelpViewModel.Instance.GetReleaseChannelCallback = () => c.UpdateChannel;
+                    HelpViewModel.Instance.SetReleaseChannelCallback = value => c.UpdateChannel = value;
                 }));
 
             AppLogger.Write("RINGS is a chat communication enhancer for FFXIV developed by anoyetta and best friends.");

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using aframe;
 using aframe.Updater;
+using aframe.ViewModels;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using RINGS.Models;
@@ -80,7 +81,13 @@ namespace RINGS
         public ReleaseChannels UpdateChannel
         {
             get => this.updateChannel;
-            set => this.SetProperty(ref this.updateChannel, value);
+            set
+            {
+                if (this.SetProperty(ref this.updateChannel, value))
+                {
+                    HelpViewModel.Instance.RaiseCurrentReleaseChannelChanged();
+                }
+            }
         }
 
         private DateTimeOffset lastUpdateTimestamp = DateTimeOffset.MinValue;
