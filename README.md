@@ -1,2 +1,2 @@
 # RINGS
-for FFXIV, This application connects chat channel to Discord.
+A chat communication enhancer for FFXIV

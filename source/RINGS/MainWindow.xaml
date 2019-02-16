@@ -1,0 +1,293 @@
+<metro:MetroWindow
+  x:Class="RINGS.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:local="clr-namespace:RINGS"
+  xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
+  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+  xmlns:tb="http://www.hardcodet.net/taskbar"
+  xmlns:view="clr-namespace:RINGS.Views"
+  xmlns:vm="clr-namespace:RINGS.ViewModels"
+  mc:Ignorable="d"
+  GlowBrush="{DynamicResource AccentColorBrush}"
+  TextOptions.TextFormattingMode="Ideal"
+  TextOptions.TextRenderingMode="ClearType"
+  TextOptions.TextHintingMode="Auto"
+  RenderOptions.EdgeMode="Unspecified"
+  RenderOptions.BitmapScalingMode="Fant"
+  RenderOptions.ClearTypeHint="Enabled"
+  TextElement.FontWeight="Regular"
+  TitleCharacterCasing="Normal"
+  Title="{Binding Config.AppName, Mode=OneWay}"
+  Icon="RINGSApp.Logo.ico"
+  d:DataContext="{d:DesignInstance {x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=True}"
+  Top="{Binding Config.Y, Mode=TwoWay}"
+  Left="{Binding Config.X, Mode=TwoWay}"
+  Width="{Binding Config.W, Mode=TwoWay}"
+  Height="{Binding Config.H, Mode=TwoWay}">
+
+  <metro:MetroWindow.DataContext>
+    <vm:MainWindowViewModel />
+  </metro:MetroWindow.DataContext>
+
+  <metro:MetroWindow.LayoutTransform>
+    <ScaleTransform
+      ScaleX="{Binding Config.Scale, Mode=OneWay}"
+      ScaleY="{Binding Config.Scale, Mode=OneWay}" />
+  </metro:MetroWindow.LayoutTransform>
+
+  <d:DesignerProperties.DesignStyle>
+    <Style TargetType="{x:Type metro:MetroWindow}">
+      <Setter Property="Background" Value="Black" />
+    </Style>
+  </d:DesignerProperties.DesignStyle>
+
+  <metro:MetroWindow.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/HamburgerMenuTemplate.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+
+      <!--  This is the template for the menu items.  -->
+      <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type metro:HamburgerMenuIconItem}">
+        <Grid Height="48">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48" />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+          <ContentControl
+            Grid.Column="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content="{Binding Icon}"
+            Focusable="False"
+            IsTabStop="False" />
+          <TextBlock
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            FontSize="16"
+            Text="{Binding Label}" />
+        </Grid>
+      </DataTemplate>
+
+      <ObjectDataProvider x:Key="DisplayModeEnumValues" MethodName="GetValues" ObjectType="{x:Type metro:SplitViewDisplayMode}">
+        <ObjectDataProvider.MethodParameters>
+          <x:Type TypeName="metro:SplitViewDisplayMode" />
+        </ObjectDataProvider.MethodParameters>
+      </ObjectDataProvider>
+
+      <ObjectDataProvider x:Key="VisibilityEnumValues" MethodName="GetValues" ObjectType="{x:Type Visibility}">
+        <ObjectDataProvider.MethodParameters>
+          <x:Type TypeName="Visibility" />
+        </ObjectDataProvider.MethodParameters>
+      </ObjectDataProvider>
+
+      <materialDesignConverters:BrushRoundConverter x:Key="BrushRoundConverter" />
+
+      <Style
+        x:Key="HamburgerMenuCreatorsItemStyle"
+        BasedOn="{StaticResource HamburgerMenuItemStyle}"
+        TargetType="{x:Type ListBoxItem}">
+        <Setter Property="metro:ItemHelper.ActiveSelectionBackgroundBrush" Value="Transparent" />
+        <Setter Property="metro:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource AccentBaseColorBrush}" />
+        <Setter Property="metro:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource GrayNormalBrush}" />
+        <Setter Property="metro:ItemHelper.DisabledSelectedBackgroundBrush" Value="Transparent" />
+        <Setter Property="metro:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource GrayNormalBrush}" />
+        <Setter Property="metro:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource GrayBrush9}" />
+        <Setter Property="metro:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource GrayBrush9}" />
+        <Setter Property="metro:ItemHelper.SelectedBackgroundBrush" Value="Transparent" />
+        <Setter Property="metro:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource AccentBaseColorBrush}" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+              <Grid Background="{TemplateBinding Background}" RenderOptions.ClearTypeHint="{TemplateBinding RenderOptions.ClearTypeHint}">
+                <Border
+                  x:Name="Border"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                <Grid Margin="{TemplateBinding BorderThickness}">
+                  <Grid
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type metro:HamburgerMenu}}, Path=ShowSelectionIndicator, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Rectangle
+                      x:Name="SelectionIndicator"
+                      Width="{DynamicResource HamburgerMenuSelectionIndicatorThemeWidth}"
+                      Height="{DynamicResource HamburgerMenuSelectionIndicatorThemeHeight}"
+                      Fill="{TemplateBinding Foreground}"
+                      Focusable="False"
+                      Opacity="0.0" />
+                  </Grid>
+                  <materialDesign:Ripple
+                    Padding="{TemplateBinding Padding}"
+                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                    Content="{TemplateBinding Content}"
+                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                    Feedback="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"
+                    Focusable="False"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </Grid>
+              </Grid>
+
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                  <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(metro:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />
+                  <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(metro:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}" />
+                  <Setter TargetName="SelectionIndicator" Property="Opacity" Value="1.0" />
+                </Trigger>
+                <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True" />
+                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                  </MultiTrigger.Conditions>
+                  <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(metro:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
+                  <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(metro:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}" />
+                </MultiTrigger>
+
+                <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsSelected" Value="True" />
+                  </MultiTrigger.Conditions>
+                  <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(metro:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}" />
+                </MultiTrigger>
+                <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsSelected" Value="False" />
+                  </MultiTrigger.Conditions>
+                  <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(metro:ItemHelper.HoverBackgroundBrush), Mode=OneWay}" />
+                </MultiTrigger>
+
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(metro:ItemHelper.DisabledForegroundBrush), Mode=OneWay}" />
+                  <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(metro:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}" />
+                </Trigger>
+                <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                    <Condition Property="IsEnabled" Value="False" />
+                    <Condition Property="IsSelected" Value="True" />
+                  </MultiTrigger.Conditions>
+                  <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(metro:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
+                  <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(metro:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}" />
+                </MultiTrigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style
+        x:Key="HamburgerMenuCreatorsStyle"
+        BasedOn="{StaticResource {x:Type metro:HamburgerMenu}}"
+        TargetType="{x:Type metro:HamburgerMenu}">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource HamburgerMenuCreatorsItemStyle}" />
+        <Setter Property="OptionsItemContainerStyle" Value="{StaticResource HamburgerMenuCreatorsItemStyle}" />
+        <Setter Property="PaneBackground" Value="{DynamicResource WhiteBrush}" />
+        <Setter Property="PaneForeground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="ShowSelectionIndicator" Value="True" />
+      </Style>
+
+      <ContextMenu x:Key="NotifyIconMenu" MinWidth="200">
+        <ContextMenu.Resources>
+          <Style TargetType="MenuItem" BasedOn="{StaticResource MetroMenuItem}">
+            <Setter Property="Height" Value="30" />
+          </Style>
+        </ContextMenu.Resources>
+
+        <MenuItem Header="{Binding Config.AppNameWithVersion, Mode=OneWay}" Command="{Binding ShowCommand, Mode=OneWay}" FontWeight="Bold" FontSize="18" Height="36" IsHitTestVisible="False" />
+        <MenuItem Header="表示" Command="{Binding ShowCommand, Mode=OneWay}" />
+        <MenuItem Header="終了" Command="{Binding EndCommand, Mode=OneWay}" />
+      </ContextMenu>
+    </ResourceDictionary>
+  </metro:MetroWindow.Resources>
+
+  <Grid>
+    <tb:TaskbarIcon
+      x:Name="NotifyIcon"
+      IconSource="RINGSApp.Logo.ico"
+      Visibility="Collapsed"
+      DoubleClickCommand="{Binding ShowCommand, Mode=OneWay}"
+      ContextMenu="{DynamicResource NotifyIconMenu}"
+      ToolTipText="{Binding Config.AppNameWithVersion, Mode=OneWay}" />
+
+    <metro:HamburgerMenu
+      x:Name="HamburgerMenuControl"
+      IsPaneOpen="True"
+      HamburgerWidth="48"
+      OpenPaneLength="220"
+      ItemInvoked="HamburgerMenuControl_OnItemInvoked"
+      ItemTemplate="{StaticResource MenuItemTemplate}"
+      OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+      SelectedIndex="0"
+      Style="{StaticResource HamburgerMenuCreatorsStyle}"
+      VerticalScrollBarOnLeftSide="False">
+
+      <!-- Content -->
+      <metro:HamburgerMenu.ContentTemplate>
+        <DataTemplate DataType="{x:Type metro:HamburgerMenuIconItem}">
+          <Grid Margin="20 0 10 0">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock
+              Visibility="Collapsed"
+              Grid.Row="0"
+              Margin="0 15 0 5"
+              Padding="0"
+              FontFamily="{DynamicResource HeaderFontFamily}"
+              FontSize="{DynamicResource HeaderFontSize}"
+              Text="{Binding Label}" />
+            <ContentControl
+              Grid.Row="1"
+              Margin="0 5 0 10"
+              Content="{Binding Tag}"
+              Focusable="False" />
+          </Grid>
+        </DataTemplate>
+      </metro:HamburgerMenu.ContentTemplate>
+
+      <!-- Items -->
+      <metro:HamburgerMenu.ItemsSource>
+        <metro:HamburgerMenuItemCollection>
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Home}" Label="ホーム" Tag="{Binding HomeView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=MessageText}" Label="チャットオーバーレイ" Tag="{Binding ChatOverlaySettingsView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=LinkVariant}" Label="チャットリンク" Tag="{Binding ChatLinkSettingsView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:FontAwesome Kind=DiscordBrands}" Label="DISCORD Bot" Tag="{Binding DiscordBotSettingsView, Mode=OneWay}" />
+        </metro:HamburgerMenuItemCollection>
+      </metro:HamburgerMenu.ItemsSource>
+
+      <!-- Options -->
+      <metro:HamburgerMenu.OptionsItemsSource>
+        <metro:HamburgerMenuItemCollection>
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Settings}" Label="設定" Tag="{Binding ConfigView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Help}" Label="ヘルプ" Tag="{Binding HelpView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=ExitToApp}" Label="終了" Command="{Binding ExitCommand, Mode=OneWay}" />
+        </metro:HamburgerMenuItemCollection>
+      </metro:HamburgerMenu.OptionsItemsSource>
+    </metro:HamburgerMenu>
+
+    <materialDesign:Snackbar
+      x:Name="Snackbar"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Bottom"
+      HorizontalContentAlignment="Center"
+      VerticalContentAlignment="Center"
+      FontSize="{DynamicResource TabItemFontSize}"
+      Background="{DynamicResource GrayBrush8}"
+      Foreground="{DynamicResource BlackBrush}"
+      Opacity="0.95"
+      Margin="0 0 0 20"
+      MessageQueue="{materialDesign:MessageQueue}" />
+  </Grid>
+</metro:MetroWindow>

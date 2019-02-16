@@ -1,0 +1,46 @@
+<metro:MetroWindow
+  x:Class="aframe.Dialog"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:local="clr-namespace:aframe"
+  xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
+  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+  mc:Ignorable="d"
+  TextOptions.TextFormattingMode="Ideal"
+  TextOptions.TextHintingMode="Auto"
+  TextOptions.TextRenderingMode="ClearType"
+  WindowStartupLocation="CenterOwner"
+  ShowInTaskbar="True"
+  ResizeMode="CanResize"
+  Title="Dialog"
+  SizeToContent="WidthAndHeight">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition x:Name="ContentRow" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <Grid
+      Grid.Row="0"
+      Margin="10"
+      x:Name="ContentPanel">
+      <local:ColorDialogContent />
+    </Grid>
+
+    <StackPanel
+      Grid.Row="1"
+      Orientation="Horizontal"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Bottom"
+      Margin="10">
+      <Button x:Name="InnerOkButton" Content="OK" MinWidth="80" IsDefault="True" />
+      <Button x:Name="InnerCancelButton"  Margin="10 0 0 0" Content="Cancel" MinWidth="80" IsCancel="True" />
+    </StackPanel>
+  </Grid>
+</metro:MetroWindow>
