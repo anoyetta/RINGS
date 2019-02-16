@@ -96,7 +96,6 @@ Discordサーバにて、RINGSを通じたチャット発言先のチャンネ�
 > Botトークン
 > xxxxxxxxxxxxxxxxxxxxxxxx.yyyyyy.zzzzzzzzzzzzzzzzzzzzzzzzzzz
 
-
 # トラブルシューティング
 
 ## RINGSアプリケーション設定
