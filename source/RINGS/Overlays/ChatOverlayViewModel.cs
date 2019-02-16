@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Threading;
 using aframe;
+using Prism.Commands;
 using Prism.Mvvm;
 using RINGS.Models;
 
@@ -18,6 +19,8 @@ namespace RINGS.Overlays
         public Action ShowCallback { get; set; }
 
         public Action HideCallback { get; set; }
+
+        public Action MinimizeCallback { get; set; }
 
         private readonly DispatcherTimer HideTimer = new DispatcherTimer(DispatcherPriority.ContextIdle)
         {
@@ -201,5 +204,15 @@ namespace RINGS.Overlays
         public Config Config => Config.Instance;
 
         public ChatOverlaySettingsModel ChatOverlaySettings => Config.Instance.GetChatOverlaySettings(this.name);
+
+        private DelegateCommand minimizeCommand;
+
+        public DelegateCommand MinimizeCommand =>
+            this.minimizeCommand ?? (this.minimizeCommand = new DelegateCommand(this.ExecuteMinimizeCommand));
+
+        private void ExecuteMinimizeCommand()
+        {
+            this.MinimizeCallback?.Invoke();
+        }
     }
 }

@@ -79,10 +79,9 @@
     </Label>
 
     <Grid Grid.Row="1">
-      <!-- Minimize Icon -->
+      <!-- Miniming Icon -->
       <iconPacks:PackIconMaterial
         x:Name="MinimizeIcon"
-        Grid.Row="0"
         Panel.ZIndex="3"
         HorizontalAlignment="Left"
         Kind="MessageText"
@@ -92,6 +91,31 @@
         Height="30"
         Visibility="Collapsed"
         ToolTip="{Binding Title, Mode=OneWay}" />
+
+      <!-- Miniming Icon -->
+      <Button
+        x:Name="MinimizeButton"
+        Margin="2"
+        Padding="0"
+        Width="25"
+        Height="25"
+        Panel.ZIndex="3"
+        Foreground="White"
+        VerticalAlignment="Top"
+        HorizontalAlignment="Right"
+        BorderThickness="0"
+        Background="#01000000"
+        Focusable="False"
+        ToolTip="Minimize"
+        Command="{Binding MinimizeCommand, Mode=OneWay}">
+        <Button.LayoutTransform>
+          <ScaleTransform ScaleX="0.7" ScaleY="0.7" />
+        </Button.LayoutTransform>
+        <iconPacks:FontAwesome
+          Kind="MinusSquareSolid"
+          Width="15"
+          Height="15" />
+      </Button>
 
       <!-- Backgroud -->
       <Border
