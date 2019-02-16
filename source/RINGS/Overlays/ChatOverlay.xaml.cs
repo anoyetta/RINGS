@@ -37,6 +37,7 @@ namespace RINGS.Overlays
                 ResizeMode.CanResizeWithGrip;
 
             this.FadeoutAnimation.Completed += (_, __) => this.OverlayVisible = false;
+            this.ViewModel.MinimizeCallback = () => this.MinimizeChatPanel();
             this.ViewModel.HideCallback = () => this.StartFadeout();
             this.ViewModel.ShowCallback = () =>
             {
@@ -192,6 +193,7 @@ namespace RINGS.Overlays
         private void MinimizeChatPanel()
         {
             this.MinimizeIcon.Visibility = Visibility.Visible;
+            this.MinimizeButton.Visibility = Visibility.Collapsed;
             this.BackgroundBorder.Visibility = Visibility.Collapsed;
             this.ChatPagesTabControl.Visibility = Visibility.Collapsed;
         }
@@ -199,6 +201,7 @@ namespace RINGS.Overlays
         private void ShowChatPanel()
         {
             this.MinimizeIcon.Visibility = Visibility.Collapsed;
+            this.MinimizeButton.Visibility = Visibility.Visible;
             this.BackgroundBorder.Visibility = Visibility.Visible;
             this.ChatPagesTabControl.Visibility = Visibility.Visible;
         }
