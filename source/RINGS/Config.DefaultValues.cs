@@ -56,6 +56,7 @@ namespace RINGS
                     Name = "ALL",
                     ParentOverlaySettings = overlay,
                     HandledChannels = HandledChatChannelModel.CreateDefaultHandledChannels(true),
+                    IgnoreFilters = FilterModel.CreateDefualtIgnoreFilters(),
                 }
             };
 

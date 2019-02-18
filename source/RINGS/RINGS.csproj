@@ -70,6 +70,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\ChatCodes.cs" />
     <Compile Include="Common\ChatLogger.cs" />
+    <Compile Include="Common\FilterTypes.cs" />
     <Compile Include="Common\PCNameStyles.cs" />
     <Compile Include="Common\Servers.cs" />
     <Compile Include="Common\SpeakerTypes.cs" />

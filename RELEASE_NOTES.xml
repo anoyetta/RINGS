@@ -35,4 +35,14 @@
     * チャットオーバーレイを最小化するボタンを追加した
     </description>
   </note>
+
+  <note>
+    <version>0.0.3.3910</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-18T10:36:34.4710422+09:00</timestamp>
+    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/v0.0.3.3910-Beta/RINGS_v0_0_3_3910_Beta.zip</uri>
+    <description>
+    * 特定のキーワードのログを無視するフィルタを追加した
+    </description>
+  </note>
 </release_notes>
