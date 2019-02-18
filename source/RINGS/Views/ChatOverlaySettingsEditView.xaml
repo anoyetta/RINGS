@@ -328,45 +328,98 @@
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto" />
               <RowDefinition />
-              <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <metro:MetroHeader Header="ページ名" Grid.Row="0">
               <TextBox Text="{Binding Name, Mode=TwoWay}" />
             </metro:MetroHeader>
 
-            <metro:MetroHeader Header="ハンドルするチャットチャンネル" Margin="0 10 0 0" Grid.Row="1">
-              <ItemsControl
-                Focusable="False"
-                IsTabStop="False"
-                ItemsSource="{Binding HandledChannels, Mode=OneWay}">
+            <TabControl Margin="0 10 0 0" Grid.Row="1">
+              <!-- Channels -->
+              <TabItem Header="Channels" metro:ControlsHelper.HeaderFontSize="16">
+                <Grid Margin="0 5 0 0">
+                  <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                  </Grid.RowDefinitions>
+                  <ItemsControl
+                    Grid.Row="0"
+                    Focusable="False"
+                    IsTabStop="False"
+                    ItemsSource="{Binding HandledChannels, Mode=OneWay}">
 
-                <ItemsControl.ItemsPanel>
-                  <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Vertical" />
-                  </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Vertical" />
+                      </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate DataType="{x:Type model:HandledChatChannelModel}">
-                    <metro:ToggleSwitch
-                      Margin="0 0 20 3"
-                      HorizontalAlignment="Left"
-                      Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                      Content="{Binding ChannelName, Mode=OneWay}"
-                      IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-            </metro:MetroHeader>
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate DataType="{x:Type model:HandledChatChannelModel}">
+                        <metro:ToggleSwitch
+                          Margin="0 0 20 3"
+                          HorizontalAlignment="Left"
+                          Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                          Content="{Binding ChannelName, Mode=OneWay}"
+                          IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
 
-            <metro:ToggleSwitch
-              Grid.Row="2"
-              Margin="0 8 0 0"
-              HorizontalAlignment="Left"
-              Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-              IsChecked="{Binding IsEnabledAllChannels, Mode=TwoWay}"
-              Content="ALL" />
+                  <metro:ToggleSwitch
+                    Grid.Row="1"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                    IsChecked="{Binding IsEnabledAllChannels, Mode=TwoWay}"
+                    Content="ALL" />
+                </Grid>
+              </TabItem>
+
+              <!-- Ignores -->
+              <TabItem Header="Ignores" metro:ControlsHelper.HeaderFontSize="16">
+                <ScrollViewer
+                  Focusable="False"
+                  IsTabStop="False"
+                  HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
+                  Margin="0 5 0 0">
+                  <ItemsControl
+                    Margin="0 0 5 0"
+                    Focusable="False"
+                    IsTabStop="False"
+                    ItemsSource="{Binding IgnoreFilters, Mode=OneWay}">
+                    <ItemsControl.ItemContainerStyle>
+                      <Style TargetType="ContentPresenter">
+                        <Setter Property="VerticalAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                      </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate DataType="{x:Type model:FilterModel}">
+                        <Grid Margin="0 0 0 5">
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                          </Grid.ColumnDefinitions>
+                          <TextBox
+                            Grid.Column="0"
+                            Text="{Binding Keyword, Mode=OneWay}" />
+                          <ComboBox
+                            Grid.Column="1"
+                            Margin="2 0 0 0"
+                            Width="90"
+                            ItemsSource="{x:Static model:FilterModel.FilterTypeList}"
+                            DisplayMemberPath="Display"
+                            SelectedValuePath="Value"
+                            SelectedValue="{Binding FilterType, Mode=TwoWay}" />
+                        </Grid>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </ScrollViewer>
+              </TabItem>
+            </TabControl>
           </Grid>
         </Grid>
       </TabItem>
