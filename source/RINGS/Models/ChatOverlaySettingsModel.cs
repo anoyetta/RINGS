@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
 using aframe;
@@ -308,6 +309,15 @@ namespace RINGS.Models
             }
         }
 
+        private FilterModel[] ignoreFilters = FilterModel.CreateDefualtIgnoreFilters();
+
+        [JsonProperty(PropertyName = "ignores", DefaultValueHandling = DefaultValueHandling.Include)]
+        public FilterModel[] IgnoreFilters
+        {
+            get => this.ignoreFilters;
+            set => this.SetProperty(ref this.ignoreFilters, value);
+        }
+
         [JsonIgnore]
         public ChatLogsModel LogBuffer
         {
@@ -333,7 +343,8 @@ namespace RINGS.Models
                 this.parentOverlaySettings != null &&
                 this.parentOverlaySettings.IsEnabled &&
                 this.handledChatChannels.ContainsKey(chatLog.ChatCode ?? string.Empty) &&
-                this.handledChatChannels[chatLog.ChatCode ?? string.Empty].IsEnabled;
+                this.handledChatChannels[chatLog.ChatCode ?? string.Empty].IsEnabled &
+                !this.ignoreFilters.Any(x => x?.IsMatch(chatLog.Message) ?? false);
 
             this.RaisePropertyChanged(nameof(this.LogBuffer));
         }
@@ -388,6 +399,115 @@ namespace RINGS.Models
         {
             get => this.isEnabled;
             set => this.SetProperty(ref this.isEnabled, value);
+        }
+    }
+
+    public class FilterModel :
+        BindableBase
+    {
+        public static FilterModel[] CreateDefualtIgnoreFilters() =>
+            new[]
+            {
+                new FilterModel(),
+                new FilterModel(),
+                new FilterModel(),
+                new FilterModel(),
+                new FilterModel(),
+                new FilterModel(),
+                new FilterModel(),
+                new FilterModel(),
+            };
+
+        private string keyword = string.Empty;
+
+        [JsonProperty(PropertyName = "keyword", DefaultValueHandling = DefaultValueHandling.Include)]
+        public string Keyword
+        {
+            get => this.keyword;
+            set
+            {
+                if (this.SetProperty(ref this.keyword, value))
+                {
+                    this.RefreshFilterRegex();
+                }
+            }
+        }
+
+        private FilterTypes filterType = FilterTypes.FullMatch;
+
+        [JsonProperty(PropertyName = "type", DefaultValueHandling = DefaultValueHandling.Include)]
+        public FilterTypes FilterType
+        {
+            get => this.filterType;
+            set
+            {
+                if (this.SetProperty(ref this.filterType, value))
+                {
+                    this.RefreshFilterRegex();
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public static readonly IEnumerable<EnumContainer<FilterTypes>> FilterTypeList =
+            EnumConverter.ToEnumerableContainer<FilterTypes>();
+
+        private void RefreshFilterRegex()
+        {
+            if (!string.IsNullOrEmpty(this.Keyword) &&
+                this.FilterType == FilterTypes.Regex)
+            {
+                this.filterRegex = new Regex(
+                    this.keyword,
+                    RegexOptions.Compiled |
+                    RegexOptions.IgnoreCase);
+            }
+            else
+            {
+                this.filterRegex = null;
+            }
+        }
+
+        private Regex filterRegex;
+
+        public bool IsMatch(
+            string logMessage)
+        {
+            if (string.IsNullOrEmpty(logMessage) ||
+                string.IsNullOrEmpty(this.Keyword))
+            {
+                return false;
+            }
+
+            var result = false;
+
+            switch (this.filterType)
+            {
+                case FilterTypes.FullMatch:
+                    result = this.keyword.Equals(logMessage, StringComparison.OrdinalIgnoreCase);
+                    break;
+
+                case FilterTypes.Contains:
+                    result = logMessage.IndexOf(this.keyword, StringComparison.OrdinalIgnoreCase) > -1;
+                    break;
+
+                case FilterTypes.StartWith:
+                    result = logMessage.StartsWith(this.keyword, StringComparison.OrdinalIgnoreCase);
+                    break;
+
+                case FilterTypes.EndWith:
+                    result = logMessage.EndsWith(this.keyword, StringComparison.OrdinalIgnoreCase);
+                    break;
+
+                case FilterTypes.Regex:
+                    if (this.filterRegex != null)
+                    {
+                        result = this.filterRegex.IsMatch(logMessage);
+                    }
+                    break;
+            }
+
+            return result;
         }
     }
 
