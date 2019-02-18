@@ -46,6 +46,21 @@ namespace RINGS
                 foreach (var page in overlay.ChatPages)
                 {
                     page.ParentOverlaySettings = overlay;
+
+                    if (page.IgnoreFilters == null)
+                    {
+                        page.IgnoreFilters = FilterModel.CreateDefualtIgnoreFilters();
+                    }
+                    else
+                    {
+                        for (int i = 0; i < page.IgnoreFilters.Length; i++)
+                        {
+                            if (page.IgnoreFilters[i] == null)
+                            {
+                                page.IgnoreFilters[i] = new FilterModel();
+                            }
+                        }
+                    }
                 }
             }
 
