@@ -131,7 +131,7 @@ namespace aframe
             string fileName) where T : JsonConfigBase, new()
             => Load<T>(fileName, out bool b);
 
-        internal static string SwitchFileName(
+        public static string SwitchFileName(
             string baseFileName)
         {
 #if DEBUG
