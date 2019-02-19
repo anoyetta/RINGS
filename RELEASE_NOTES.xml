@@ -56,4 +56,14 @@
     * 古いバージョンの設定ファイルを最新バージョンに移行する処理を追加した
     </description>
   </note>
+
+  <note>
+    <version>0.0.5.4021</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-19T21:21:28.2465190+09:00</timestamp>
+    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/v0.0.5.4021-Beta/RINGS_v0_0_5_4021_Beta.zip</uri>
+    <description>
+    * ビギナー系チャンネルにシステムメッセージ系が混ざっていた不具合を修正した
+    </description>
+  </note>
 </release_notes>
