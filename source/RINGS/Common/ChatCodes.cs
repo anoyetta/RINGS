@@ -34,7 +34,6 @@ namespace RINGS.Common
 
         public static readonly string Beginners = "001B";
         public static readonly string BeginnersAnnounce = "0A4B";
-        public static readonly string BeginnersSystemMessage = "0839";
 
         public static readonly string StandardEmotes = "001D";
         public static readonly string CustomEmotes = "001C";
@@ -75,7 +74,6 @@ namespace RINGS.Common
 
             { Beginners, ("Beginners", "B") },
             { BeginnersAnnounce, ("Beginners - Announce", "B") },
-            { BeginnersSystemMessage, ("Beginners - System Message", "B") },
 
             { StandardEmotes, ("Standard Emotes", "") },
             { CustomEmotes, ("Custom Emotes", "") },
@@ -94,7 +92,7 @@ namespace RINGS.Common
             CrossWorldLinkshell,
             FreeCompany, FreeCompanyAnnounce, FreeCompanyLogInOut,
             PvPTeam, PvPTeamAnnounce, PvPTeamLogInOut,
-            Beginners, BeginnersAnnounce, BeginnersSystemMessage,
+            Beginners, BeginnersAnnounce,
             StandardEmotes, CustomEmotes,
             NPC, NPCAnnounce,
             SystemMessage, PartyRecruiting
