@@ -48,6 +48,11 @@ namespace aframe
                 WindowStartupLocation.CenterOwner :
                 WindowStartupLocation.CenterScreen;
 
+            if (owner != null)
+            {
+                dialog.Owner = owner;
+            }
+
             dialog.OkButton.Click += content.OKBUtton_Click;
 
             var result = dialog.ShowDialog();

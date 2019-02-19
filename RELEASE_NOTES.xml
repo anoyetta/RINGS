@@ -45,4 +45,15 @@
     * 特定のキーワードのログを無視するフィルタを追加した
     </description>
   </note>
+
+  <note>
+    <version>0.0.4.4011</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-19T11:54:10.3510463+09:00</timestamp>
+    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/v0.0.4.4011-Beta/RINGS_v0_0_4_4011_Beta.zip</uri>
+    <description>
+    * PvP Team関係, Beginner関係 のチャットチャンネルに対応した
+    * 古いバージョンの設定ファイルを最新バージョンに移行する処理を追加した
+    </description>
+  </note>
 </release_notes>
