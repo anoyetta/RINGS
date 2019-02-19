@@ -1,8 +1,8 @@
 # RINGS
 [![Downloads](https://img.shields.io/github/downloads/anoyetta/RINGS/total.svg)](https://github.com/anoyetta/RINGS/releases)
 [![License](https://img.shields.io/github/license/anoyetta/RINGS.svg)](https://github.com/anoyetta/RINGS)  
-A chat communication enhancer for FFXIV
 
+A chat communication enhancer for FFXIV
 Discord Botと連携して、ゲーム内チャット機能を拡張するアプリケーションです。
 
 ## できること
