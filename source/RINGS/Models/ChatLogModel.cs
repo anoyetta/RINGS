@@ -299,7 +299,7 @@ namespace RINGS.Models
             get => this.chatCode;
             set
             {
-                if (this.SetProperty(ref this.chatCode, value))
+                if (this.SetProperty(ref this.chatCode, value.ToUpper()))
                 {
                     this.RaisePropertyChanged(nameof(this.ChannelName));
                     this.RaisePropertyChanged(nameof(this.ChannelShortName));

@@ -91,6 +91,7 @@
     <Compile Include="Converters\CompanyNameOmitConverter.cs" />
     <Compile Include="Converters\CompanyNameToShortConverter.cs" />
     <Compile Include="Converters\EnumToDisplayNameConverter.cs" />
+    <Compile Include="Crypter.cs" />
     <Compile Include="Dialogs\Views\ColorDialog.cs" />
     <Compile Include="Dialogs\Views\ColorDialogContent.xaml.cs">
       <DependentUpon>ColorDialogContent.xaml</DependentUpon>
@@ -113,6 +114,7 @@
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TreeViewExtensions.cs" />
     <Compile Include="FontInfo.cs" />

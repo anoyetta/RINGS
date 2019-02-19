@@ -10,6 +10,7 @@ using aframe.Updater;
 using aframe.ViewModels;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using RINGS.Common;
 using RINGS.Models;
 
 namespace RINGS
@@ -36,6 +37,8 @@ namespace RINGS
 
         public static Config Load()
         {
+            MigrateConfig(FileName);
+
             var config = Config.Load<Config>(
                 FileName,
                 out bool isFirstLoad);
@@ -46,21 +49,6 @@ namespace RINGS
                 foreach (var page in overlay.ChatPages)
                 {
                     page.ParentOverlaySettings = overlay;
-
-                    if (page.IgnoreFilters == null)
-                    {
-                        page.IgnoreFilters = FilterModel.CreateDefualtIgnoreFilters();
-                    }
-                    else
-                    {
-                        for (int i = 0; i < page.IgnoreFilters.Length; i++)
-                        {
-                            if (page.IgnoreFilters[i] == null)
-                            {
-                                page.IgnoreFilters[i] = new FilterModel();
-                            }
-                        }
-                    }
                 }
             }
 
@@ -78,6 +66,144 @@ namespace RINGS
         }
 
         public void Save() => this.Save(FileName);
+
+        #region Migration
+
+        /// <summary>
+        /// バージョンアップ等による設定ファイルの追加、変更を反映する
+        /// </summary>
+        private static void MigrateConfig(
+            string fileName)
+        {
+            fileName = SwitchFileName(fileName);
+
+            if (!File.Exists(fileName))
+            {
+                return;
+            }
+
+            var config = Config.Load<Config>(
+                fileName);
+
+            var i = 0;
+
+            // チャットページのチャンネルを整備する
+            i = 0;
+            var channels = ChatCodes.All
+                .Select(x => new
+                {
+                    ChatCode = x,
+                    Order = i++,
+                })
+                .ToArray();
+
+            foreach (var overlay in config.ChatOverlaySettings)
+            {
+                foreach (var page in overlay.ChatPages)
+                {
+                    var handledChannels = new List<HandledChatChannelModel>(page.HandledChannels);
+
+                    handledChannels
+                        .Where(x => !ChatCodes.All.Contains(x.ChatCode))
+                        .ToArray()
+                        .Walk(x => handledChannels.Remove(x));
+
+                    handledChannels.AddRange(ChatCodes.All
+                        .Where(x => !handledChannels.Any(y => y.ChatCode == x))
+                        .Select(x => new HandledChatChannelModel()
+                        {
+                            ChatCode = x,
+                            IsEnabled = true,
+                        }));
+
+                    handledChannels.Sort((x, y) =>
+                    {
+                        var orderX = channels.FirstOrDefault(z => z.ChatCode == x.ChatCode)?.Order ?? int.MaxValue;
+                        var orderY = channels.FirstOrDefault(z => z.ChatCode == y.ChatCode)?.Order ?? int.MaxValue;
+                        return orderX - orderY;
+                    });
+
+                    page.HandledChannels = handledChannels.ToArray();
+
+                    // 除外フィルタを設定する
+                    if (page.IgnoreFilters == null)
+                    {
+                        page.IgnoreFilters = FilterModel.CreateDefualtIgnoreFilters();
+                    }
+                    else
+                    {
+                        for (int j = 0; j < page.IgnoreFilters.Length; j++)
+                        {
+                            if (page.IgnoreFilters[j] == null)
+                            {
+                                page.IgnoreFilters[j] = new FilterModel();
+                            }
+                        }
+                    }
+                }
+            }
+
+            // ログカラー設定を整備する
+            var colors = new List<ChatChannelSettingsModel>(config.ChatChannelsSettings);
+
+            colors
+                .Where(x => !ChatCodes.All.Contains(x.ChatCode))
+                .ToArray()
+                .Walk(x => colors.Remove(x));
+
+            colors.AddRange(ChatCodes.All
+                .Where(x => !colors.Any(y => y.ChatCode == x))
+                .Select(x => new ChatChannelSettingsModel()
+                {
+                    ChatCode = x,
+                }));
+
+            colors.Sort((x, y) =>
+            {
+                var orderX = channels.FirstOrDefault(z => z.ChatCode == x.ChatCode)?.Order ?? int.MaxValue;
+                var orderY = channels.FirstOrDefault(z => z.ChatCode == y.ChatCode)?.Order ?? int.MaxValue;
+                return orderX - orderY;
+            });
+
+            config.ChatChannelsSettings = colors.ToArray();
+
+            // キャラクタープロファイルを整備する
+            i = 0;
+            var linkers = ChatCodes.LinkableChannels
+                .Select(x => new
+                {
+                    ChatCode = x,
+                    Order = i++,
+                })
+                .ToArray();
+
+            foreach (var prof in config.CharacterProfileList)
+            {
+                prof.ChannelLinkerList
+                    .Where(x => !ChatCodes.LinkableChannels.Contains(x.ChatCode))
+                    .ToArray()
+                    .Walk(x => prof.ChannelLinkerList.Remove(x));
+
+                prof.ChannelLinkerList.AddRange(ChatCodes.LinkableChannels
+                    .Where(x => !prof.ChannelLinkerList.Any(y => y.ChatCode == x))
+                    .Select(x => new ChannelLinkerModel()
+                    {
+                        ChatCode = x,
+                    }));
+
+                prof.ChannelLinkerList.Sort((x, y) =>
+                {
+                    var orderX = linkers.FirstOrDefault(z => z.ChatCode == x.ChatCode)?.Order ?? int.MaxValue;
+                    var orderY = linkers.FirstOrDefault(z => z.ChatCode == y.ChatCode)?.Order ?? int.MaxValue;
+                    return orderX - orderY;
+                });
+            }
+
+            // 保存する
+            config.Save();
+        }
+
+        #endregion Migration
 
         #region Update Checker
 
@@ -107,11 +233,51 @@ namespace RINGS
 
         private DateTimeOffset lastUpdateTimestamp = DateTimeOffset.MinValue;
 
-        [JsonProperty(PropertyName = "last_update_timestamp")]
+        [JsonIgnore]
         public DateTimeOffset LastUpdateTimestamp
         {
             get => this.lastUpdateTimestamp;
             set => this.SetProperty(ref this.lastUpdateTimestamp, value);
+        }
+
+        [JsonProperty(PropertyName = "last_update_timestamp")]
+        public string LastUpdateTimestampCrypted
+        {
+            get => Crypter.EncryptString(this.lastUpdateTimestamp.ToString("o"));
+            set
+            {
+                DateTime d;
+                if (DateTime.TryParse(value, out d))
+                {
+                    if (d > DateTime.Now)
+                    {
+                        d = DateTime.Now;
+                    }
+
+                    this.lastUpdateTimestamp = d;
+                    return;
+                }
+
+                try
+                {
+                    var decrypt = Crypter.DecryptString(value);
+                    if (DateTime.TryParse(decrypt, out d))
+                    {
+                        if (d > DateTime.Now)
+                        {
+                            d = DateTime.Now;
+                        }
+
+                        this.lastUpdateTimestamp = d;
+                        return;
+                    }
+                }
+                catch (Exception)
+                {
+                }
+
+                this.lastUpdateTimestamp = DateTime.MinValue;
+            }
         }
 
         #endregion Update Checker

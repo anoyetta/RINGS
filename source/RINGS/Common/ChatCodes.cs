@@ -12,8 +12,6 @@ namespace RINGS.Common
 
         public static readonly string Party = "000E";
         public static readonly string Alliance = "000F";
-        public static readonly string Beginners = "UNKNOWN-1";
-        public static readonly string PvP = "UNKNOWN-2";
 
         public static readonly string Linkshell1 = "0010";
         public static readonly string Linkshell2 = "0011";
@@ -30,13 +28,21 @@ namespace RINGS.Common
         public static readonly string FreeCompanyAnnounce = "0245";
         public static readonly string FreeCompanyLogInOut = "2246";
 
+        public static readonly string PvPTeam = "0024";
+        public static readonly string PvPTeamAnnounce = "224D";
+        public static readonly string PvPTeamLogInOut = "224E";
+
+        public static readonly string Beginners = "001B";
+        public static readonly string BeginnersAnnounce = "0A4B";
+        public static readonly string BeginnersSystemMessage = "0839";
+
         public static readonly string StandardEmotes = "001D";
         public static readonly string CustomEmotes = "001C";
 
-        public static readonly string SystemMessage = "0039";
         public static readonly string NPC = "0043";
         public static readonly string NPCAnnounce = "0044";
 
+        public static readonly string SystemMessage = "0039";
         public static readonly string PartyRecruiting = "0048";
 
         public static readonly IDictionary<string, (string DisplayName, string ShortName)> DisplayNames = new Dictionary<string, (string DisplayName, string ShortName)>()
@@ -48,8 +54,7 @@ namespace RINGS.Common
             { TellIn, ("Tell - In", "") },
             { Party, ("Party", "") },
             { Alliance, ("Alliance", "") },
-            { Beginners, ("Beginners", "") },
-            { PvP, ("PvP Team", "") },
+
             { Linkshell1, ("Linkshell 1", "LS1") },
             { Linkshell2, ("Linkshell 2", "LS2") },
             { Linkshell3, ("Linkshell 3", "LS3") },
@@ -59,14 +64,26 @@ namespace RINGS.Common
             { Linkshell7, ("Linkshell 7", "LS7") },
             { Linkshell8, ("Linkshell 8", "LS8") },
             { CrossWorldLinkshell, ("Cross World Linkshell", "CWLS") },
+
             { FreeCompany, ("Free Company", "FC") },
             { FreeCompanyAnnounce, ("Free Company - Announce", "FC") },
             { FreeCompanyLogInOut, ("Free Company - Login/Logout", "FC") },
+
+            { PvPTeam, ("PvP Team", "PvP") },
+            { PvPTeamAnnounce, ("PvP Team - Announce", "PvP") },
+            { PvPTeamLogInOut, ("PvP Team - Login/Logout", "PvP") },
+
+            { Beginners, ("Beginners", "B") },
+            { BeginnersAnnounce, ("Beginners - Announce", "B") },
+            { BeginnersSystemMessage, ("Beginners - System Message", "B") },
+
             { StandardEmotes, ("Standard Emotes", "") },
             { CustomEmotes, ("Custom Emotes", "") },
-            { SystemMessage, ("System Message", "") },
+
             { NPC, ("NPC", "") },
             { NPCAnnounce, ("NPC - Announce", "") },
+
+            { SystemMessage, ("System Message", "") },
             { PartyRecruiting, ("Party Recruiting", "") },
         };
 
@@ -76,9 +93,11 @@ namespace RINGS.Common
             Linkshell1, Linkshell2, Linkshell3, Linkshell4, Linkshell5, Linkshell6, Linkshell7, Linkshell8,
             CrossWorldLinkshell,
             FreeCompany, FreeCompanyAnnounce, FreeCompanyLogInOut,
+            PvPTeam, PvPTeamAnnounce, PvPTeamLogInOut,
+            Beginners, BeginnersAnnounce, BeginnersSystemMessage,
             StandardEmotes, CustomEmotes,
-            SystemMessage, NPC, NPCAnnounce,
-            PartyRecruiting
+            NPC, NPCAnnounce,
+            SystemMessage, PartyRecruiting
         };
 
         public static readonly IEnumerable<string> Publics = new[]
