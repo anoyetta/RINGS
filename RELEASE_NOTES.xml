@@ -66,4 +66,14 @@
     * ビギナー系チャンネルにシステムメッセージ系が混ざっていた不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>0.0.6.4113</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-20T13:51:34.4968248+09:00</timestamp>
+    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/v0.0.6.4113-Beta/RINGS_v0_0_6_4113_Beta.zip</uri>
+    <description>
+    * 添付画像の最大表示幅をより広くした
+    </description>
+  </note>
 </release_notes>
