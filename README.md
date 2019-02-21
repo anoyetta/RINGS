@@ -1,4 +1,4 @@
-# RINGS
+# [![RINGS](https://github.com/anoyetta/RINGS/blob/master/images/RINGS.Banner.png?raw=true)]
 [![Downloads](https://img.shields.io/github/downloads/anoyetta/RINGS/total.svg)](https://github.com/anoyetta/RINGS/releases)
 [![License](https://img.shields.io/github/license/anoyetta/RINGS.svg)](https://github.com/anoyetta/RINGS)  
 
