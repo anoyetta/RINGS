@@ -16,7 +16,7 @@ Discord Botと連携して、ゲーム内チャット機能を拡張するアプ
 * キャラクターごとのプロファイル切り替えに対応しています
 
 ## 最新リリース
-<span style="font-size: 150%;">[Lastest-Releases](https://github.com/anoyetta/RINGS/releases)</span>
+**[Lastest-Releases](https://github.com/anoyetta/RINGS/releases)**
 
 ## インストール
 インストールは不要です。
