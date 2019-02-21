@@ -12,7 +12,7 @@ namespace RINGS.Experience
     public class Program
     {
         private const string BotToken = "** Your BOT Token **";
-        private const ulong TestChannelID = 492187710572724244;
+        private const ulong TestChannelID = 000000000000000000;
 
         public static class FFXIVChatLogCodes
         {
