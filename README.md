@@ -1,4 +1,4 @@
-# <img src="https://github.com/anoyetta/RINGS/blob/master/images/RINGS.Banner.png?raw=true" alt="RINGS Banner" title="RINGS" width="500" />
+# <a href="https://github.com/anoyetta/RINGS"><img src="https://github.com/anoyetta/RINGS/blob/master/images/RINGS.Banner.png?raw=true" alt="RINGS Banner" title="RINGS" width="500" /></a>
 [![Downloads](https://img.shields.io/github/downloads/anoyetta/RINGS/total.svg)](https://github.com/anoyetta/RINGS/releases)
 [![License](https://img.shields.io/github/license/anoyetta/RINGS.svg)](https://github.com/anoyetta/RINGS)  
 
