@@ -40,14 +40,12 @@ namespace aframe.Views
         public UpdateCheckerView()
         {
             this.InitializeComponent();
+            this.ViewModel.CloseViewCallback = () => this.Close();
         }
 
         public UpdateCheckerViewModel ViewModel => this.DataContext as UpdateCheckerViewModel;
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
-            => this.Close();
-
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
             => this.Close();
     }
 }

@@ -133,7 +133,9 @@ namespace RINGS.Models
                     var view = new Viewbox()
                     {
                         Child = new TextBlock(hyperlink),
-                        MaxWidth = 250,
+                        MaxWidth = this.ParentOverlaySettings != null ?
+                            this.ParentOverlaySettings.W * 0.7d :
+                            250.0d,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(0, 2, 4, 2)
                     };
@@ -299,7 +301,7 @@ namespace RINGS.Models
             get => this.chatCode;
             set
             {
-                if (this.SetProperty(ref this.chatCode, value))
+                if (this.SetProperty(ref this.chatCode, value.ToUpper()))
                 {
                     this.RaisePropertyChanged(nameof(this.ChannelName));
                     this.RaisePropertyChanged(nameof(this.ChannelShortName));

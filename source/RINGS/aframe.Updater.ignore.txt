@@ -1,0 +1,3 @@
+logs\
+aframe.Updater.ignore.txt
+RINGS.config.json

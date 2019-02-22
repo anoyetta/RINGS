@@ -12,14 +12,15 @@
   xmlns:local="clr-namespace:aframe.Views"
   xmlns:vm="clr-namespace:aframe.ViewModels"
   mc:Ignorable="d"
-  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-  TextElement.FontWeight="Regular"
-  TextOptions.TextFormattingMode="Ideal"
-  TextOptions.TextRenderingMode="Auto"
-  Background="{DynamicResource MaterialDesignPaper}"
-  FontFamily="{DynamicResource MaterialDesignFont}"
-  FontSize="16"
   GlowBrush="{DynamicResource AccentColorBrush}"
+  TextOptions.TextFormattingMode="Ideal"
+  TextOptions.TextRenderingMode="ClearType"
+  TextOptions.TextHintingMode="Auto"
+  RenderOptions.EdgeMode="Unspecified"
+  RenderOptions.BitmapScalingMode="Fant"
+  RenderOptions.ClearTypeHint="Enabled"
+  TextElement.FontWeight="Regular"
+  FontSize="16"
   prism:ViewModelLocator.AutoWireViewModel="True"
   d:DataContext="{d:DesignInstance Type={x:Type vm:UpdateCheckerViewModel}, IsDesignTimeCreatable=True}"
   Icon="/aframe.Core;component/Updater.ico"
@@ -39,7 +40,7 @@
       <StackPanel Grid.Row="0">
         <Label
           Content="{Binding Message.Value, Mode=OneWay}"
-          Foreground="{DynamicResource AccentColorBrush}"
+          Foreground="{DynamicResource BlackBrush}"
           FontSize="24" />
 
         <Label Margin="0 15 0 0" Content="{Binding AppName.Value, Mode=OneWay}" FontSize="22" />
@@ -63,10 +64,11 @@
         IsTabStop="False"
         VerticalScrollBarVisibility="Auto"
         FontSize="14"
+        Background="Transparent"
         Text="{Binding Description.Value, Mode=OneWay}" />
 
       <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-        <Button Margin="0 0 15 0" Content="Update" Width="100" Click="UpdateButton_Click" Command="{Binding UpdateCommand, Mode=OneWay}" IsDefault="True" />
+        <Button Margin="0 0 15 0" Content="Update" Width="100" Command="{Binding UpdateCommand, Mode=OneWay}" IsDefault="True" />
         <Button Margin="15 0 0 0" Content="Cancel" Width="100" Click="CancelButton_Click" IsCancel="True" />
       </StackPanel>
     </Grid>
@@ -76,10 +78,22 @@
       VerticalAlignment="Center"
       Padding="20 30"
       CornerRadius="10"
-      Background="#A0FFFFFF"
+      Background="{DynamicResource WhiteBrush}"
+      BorderBrush="{DynamicResource AccentColorBrush}"
+      BorderThickness="2"
       Visibility="{Binding InProgress.Value, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+      <Border.Effect>
+        <DropShadowEffect
+          Direction="0"
+          ShadowDepth="0"
+          Color="{DynamicResource AccentColor}"
+          BlurRadius="8" />
+      </Border.Effect>
+
       <StackPanel>
-        <TextBlock Text="{Binding CurrentProgressMessage.Value, Mode=OneWay}" />
+        <TextBlock
+          Foreground="{DynamicResource BlackBrush}"
+          Text="{Binding CurrentProgressMessage.Value, Mode=OneWay}" />
         <ProgressBar
           Margin="0 10 0 0"
           Width="400"

@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using Microsoft.VisualBasic.FileIO;
@@ -27,6 +30,7 @@ namespace aframe.Updater
                 var source = args[1];
                 var destination = args[2];
 
+                WriteLogLine("Updater start.");
                 Update(targetProcessName, source, destination);
             }
             catch (Exception ex)
@@ -34,6 +38,10 @@ namespace aframe.Updater
                 WriteLogLine("Update Failed. Unhandled exception.");
                 WriteLogLine("予期しない例外が発生しました。アップデート作業を中止します。");
                 WriteLogLine(ex.ToString());
+            }
+            finally
+            {
+                WriteLogLine("Updater end.");
             }
         }
 
@@ -64,8 +72,23 @@ namespace aframe.Updater
 
                 foreach (var p in ps)
                 {
-                    p.CloseMainWindow();
-                    p.WaitForExit();
+                    if (!p.HasExited)
+                    {
+                        p.WaitForExit(200);
+                    }
+
+                    if (!p.HasExited)
+                    {
+                        p.CloseMainWindow();
+                        p.WaitForExit(500);
+                    }
+
+                    if (!p.HasExited)
+                    {
+                        p.Kill();
+                        p.WaitForExit(500);
+                    }
+
                     p.Dispose();
                 }
             }
@@ -74,6 +97,12 @@ namespace aframe.Updater
             Thread.Sleep(Interval * 30);
 
             WriteLogLine("Update Application...");
+
+            if (!Directory.Exists(source))
+            {
+                WriteLogLine("Update Failed. Missing source folder.");
+                return;
+            }
 
             if (Directory.Exists(destination))
             {
@@ -94,19 +123,23 @@ namespace aframe.Updater
                     CompressionLevel.Optimal,
                     false);
 
+                var ignores = GetIgnoreList(destination);
+
                 foreach (var f in Directory.GetFiles(
                     destination,
                     "*",
                     System.IO.SearchOption.AllDirectories))
                 {
-                    File.Delete(f);
+                    if (!ignores.Any(ignore =>
+                        f.IndexOf(ignore, StringComparison.OrdinalIgnoreCase) > -1))
+                    {
+                        File.Delete(f);
+                    }
+                    else
+                    {
+                        WriteLogLine($"ignore: {Path.GetFileName(f)}");
+                    }
                 }
-            }
-
-            if (!Directory.Exists(source))
-            {
-                WriteLogLine("Update Failed. Missing source folder.");
-                return;
             }
 
             FileSystem.CopyDirectory(
@@ -124,8 +157,6 @@ namespace aframe.Updater
             {
                 WorkingDirectory = Path.GetDirectoryName(targetProcessName)
             });
-
-            WriteLogLine("Update all finished. bye!");
         }
 
         private static string logFileName;
@@ -151,6 +182,45 @@ namespace aframe.Updater
                 LogFileName,
                 $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] {message}\n",
                 new UTF8Encoding(false));
+        }
+
+        private static IEnumerable<string> GetIgnoreList(
+            string destinationDirectory)
+        {
+            var list = new List<string>();
+
+            var location = Assembly.GetExecutingAssembly().Location;
+            var directory = Path.GetDirectoryName(location);
+
+            var destinationIgnoreFileName = Path.Combine(
+                destinationDirectory,
+                $"{Path.GetFileNameWithoutExtension(location)}.ignore.txt");
+
+            var sourceIgnoreFileName = Path.Combine(
+                directory,
+                $"{Path.GetFileNameWithoutExtension(location)}.ignore.txt");
+
+            if (File.Exists(destinationIgnoreFileName))
+            {
+                var lines = File.ReadAllLines(destinationIgnoreFileName, new UTF8Encoding(false));
+                if (lines.Length > 0)
+                {
+                    list.AddRange(lines.Where(x => !x.StartsWith("#")));
+                }
+            }
+            else
+            {
+                if (File.Exists(sourceIgnoreFileName))
+                {
+                    var lines = File.ReadAllLines(sourceIgnoreFileName, new UTF8Encoding(false));
+                    if (lines.Length > 0)
+                    {
+                        list.AddRange(lines.Where(x => !x.StartsWith("#")));
+                    }
+                }
+            }
+
+            return list;
         }
     }
 }

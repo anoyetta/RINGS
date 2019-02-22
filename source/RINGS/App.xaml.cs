@@ -24,8 +24,13 @@ namespace RINGS
             typeof(Discord.IApplication).Assembly,
         };
 
+        public static App Instance;
+
+        public Action CloseMainWindowCallback { get; set; }
+
         public App()
         {
+            Instance = this;
             AppLogger.Init("RINGSLogger");
 
             ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls;
@@ -63,7 +68,7 @@ namespace RINGS
                     HelpViewModel.Instance.SetReleaseChannelCallback = value => c.UpdateChannel = value;
                 }));
 
-            AppLogger.Write("RINGS is a chat communication enhancer for FFXIV developed by anoyetta and best friends.");
+            AppLogger.Write("RINGS is chat communication enhancer for FFXIV, developed by anoyetta and best friends.");
             AppLogger.Write($"{c.AppNameWithVersion} Start.");
 
             /*
@@ -71,6 +76,7 @@ namespace RINGS
             */
 
             // アップデートを確認する
+            UpdateChecker.ShutdownCallback = () => WPFHelper.Dispatcher.Invoke(() => this.CloseMainWindowCallback?.Invoke());
             UpdateChecker.UpdateSourceUri = Config.Instance.UpdateSourceUri;
             UpdateChecker.LastUpdateCheckCallback = (lastUpdateTimestamp) =>
             {
@@ -81,9 +87,26 @@ namespace RINGS
             await this.Dispatcher.InvokeAsync(async () =>
             {
                 await Task.Delay(TimeSpan.FromSeconds(0.1));
+
+#if !DEBUG
                 await UpdateChecker.IsUpdateAsync(
                     Config.Instance.LastUpdateTimestamp,
                     Config.Instance.UpdateChannel);
+#else
+#if false
+                await UpdateChecker.IsUpdateAsync(
+                    Config.Instance.LastUpdateTimestamp,
+                    Config.Instance.UpdateChannel);
+#else
+                // デバッグ用
+                // 強制的に最新バージョンを取得する
+                await UpdateChecker.IsUpdateAsync(
+                    Config.Instance.LastUpdateTimestamp,
+                    Config.Instance.UpdateChannel,
+                    UpdateChecker.DefaultUpdateCheckInterval,
+                    true);
+#endif
+#endif
             },
             DispatcherPriority.ApplicationIdle);
         }

@@ -70,6 +70,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\ChatCodes.cs" />
     <Compile Include="Common\ChatLogger.cs" />
+    <Compile Include="Common\FilterTypes.cs" />
     <Compile Include="Common\PCNameStyles.cs" />
     <Compile Include="Common\Servers.cs" />
     <Compile Include="Common\SpeakerTypes.cs" />
@@ -191,6 +192,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="aframe.Updater.ignore.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="nlog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

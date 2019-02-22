@@ -15,7 +15,7 @@
     <version>0.0.1.3711</version>
     <channel>Beta</channel>
     <timestamp>2019-02-16T11:41:15.7929806+09:00</timestamp>
-    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/v0.0.1.3711-Beta/RINGS_v0_0_1_3711_Beta.zip</uri>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.1.3711-Beta/RINGS_v0_0_1_3711_Beta.zip</uri>
     <description>
     * アップデートチェック機能、アップデート機能を搭載した
     * チャットオーバーレイをトリプルクリックすると最小化する機能を追加した
@@ -30,9 +30,62 @@
     <version>0.0.2.3801</version>
     <channel>Beta</channel>
     <timestamp>2019-02-17T01:20:39.7898034+09:00</timestamp>
-    <uri>https://github.com/anoyetta/ACT.Hojoring/releases/download/v0.0.2.3801-Beta/RINGS_v0_0_2_3801_Beta.zip</uri>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.2.3801-Beta/RINGS_v0_0_2_3801_Beta.zip</uri>
     <description>
     * チャットオーバーレイを最小化するボタンを追加した
+    </description>
+  </note>
+
+  <note>
+    <version>0.0.3.3910</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-18T10:36:34.4710422+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.3.3910-Beta/RINGS_v0_0_3_3910_Beta.zip</uri>
+    <description>
+    * 特定のキーワードのログを無視するフィルタを追加した
+    </description>
+  </note>
+
+  <note>
+    <version>0.0.4.4011</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-19T11:54:10.3510463+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.4.4011-Beta/RINGS_v0_0_4_4011_Beta.zip</uri>
+    <description>
+    * PvP Team関係, Beginner関係 のチャットチャンネルに対応した
+    * 古いバージョンの設定ファイルを最新バージョンに移行する処理を追加した
+    </description>
+  </note>
+
+  <note>
+    <version>0.0.5.4021</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-19T21:21:28.2465190+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.5.4021-Beta/RINGS_v0_0_5_4021_Beta.zip</uri>
+    <description>
+    * ビギナー系チャンネルにシステムメッセージ系が混ざっていた不具合を修正した
+    </description>
+  </note>
+
+  <note>
+    <version>0.0.6.4113</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-20T13:51:34.4968248+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.6.4113-Beta/RINGS_v0_0_6_4113_Beta.zip</uri>
+    <description>
+    * 添付画像の最大表示幅をより広くした
+    * アップデート通知Windowの見た目を調整した
+    * Release Notesに記載されているURLが間違っていた不具合を修正した
+    </description>
+  </note>
+
+  <note>
+    <version>0.0.7.4319</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-22T19:45:57.1489087+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.7.4319-Beta/RINGS_v0_0_7_4319_Beta.zip</uri>
+    <description>
+    * アップデートが実施できなかった不具合を修正した
     </description>
   </note>
 </release_notes>
