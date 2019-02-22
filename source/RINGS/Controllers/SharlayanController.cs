@@ -177,16 +177,21 @@ namespace RINGS.Controllers
 
                 AppLogger.Write($"Current player is {this.currentPlayer?.Name}");
 
-                if (!Config.Instance.CharacterProfileList.Any(x => x.IsFixedActivate))
+                lock (Config.Instance.CharacterProfileList)
                 {
-                    Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
-                    var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
-                        x.IsEnabled &&
-                        x.CharacterName == this.currentPlayer.Name);
-                    if (prof != null)
+                    DiscordBotController.Instance.ClearBots();
+
+                    if (!Config.Instance.CharacterProfileList.Any(x => x.IsFixedActivate))
                     {
-                        prof.IsActive = true;
-                        AppLogger.Write($"\"{prof.CharacterName}\"'s chat link profile activated.");
+                        Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
+                        var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
+                            x.IsEnabled &&
+                            x.CharacterName == this.currentPlayer.Name);
+                        if (prof != null)
+                        {
+                            prof.IsActive = true;
+                            AppLogger.Write($"\"{prof.CharacterName}\"'s chat link profile activated.");
+                        }
                     }
                 }
             }
