@@ -175,7 +175,10 @@ namespace aframe.ViewModels
 
         private async Task CheckUpdateAsync()
         {
-            var existNewer = await UpdateChecker.IsUpdateAsync();
+            var existNewer = await UpdateChecker.IsUpdateAsync(
+                DateTime.MinValue,
+                this.CurrentReleaseChannel);
+
             if (!existNewer)
             {
                 MessageBoxHelper.EnqueueSnackMessage("This application is up-to-date.");

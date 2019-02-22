@@ -22,34 +22,36 @@ namespace aframe.Updater
 
         public static ReleaseChannels LastCheckedUpdateChannel { get; private set; } = ReleaseChannels.Stable;
 
+        public static Action ShutdownCallback { get; set; }
+
         public static async Task<bool> IsUpdateAsync(
             DateTimeOffset lastUpdateCheckDateTime,
             ReleaseChannels updateChannel = ReleaseChannels.Stable,
-            double updateCheckInterval = DefaultUpdateCheckInterval)
+            double updateCheckInterval = DefaultUpdateCheckInterval,
+            bool isForce = false)
         {
             // アップデートChannelを保存する
             LastCheckedUpdateChannel = updateChannel;
 
-#if !DEBUG
-            // チェック間隔にランダムなゆらぎを与える
-            var rnd = new Random((int)DateTime.Now.Ticks);
-            var adjust = rnd.Next(-2, 2);
-            updateCheckInterval += adjust;
-
-            if ((DateTimeOffset.Now - lastUpdateCheckDateTime).TotalHours <= updateCheckInterval)
+            if (!isForce)
             {
-                return false;
-            }
-#endif
+                // チェック間隔にランダムなゆらぎを与える
+                var rnd = new Random((int)DateTime.Now.Ticks);
+                var adjust = rnd.Next(-2, 2);
+                updateCheckInterval += adjust;
 
-            return await IsUpdateAsync(updateChannel);
+                if ((DateTimeOffset.Now - lastUpdateCheckDateTime).TotalHours <= updateCheckInterval)
+                {
+                    return false;
+                }
+            }
+
+            return await IsUpdateAsync(updateChannel, isForce);
         }
 
-        public static async Task<bool> IsUpdateAsync()
-            => await IsUpdateAsync(LastCheckedUpdateChannel);
-
-        public static async Task<bool> IsUpdateAsync(
-            ReleaseChannels updateChannel)
+        private static async Task<bool> IsUpdateAsync(
+            ReleaseChannels updateChannel,
+            bool isForce = false)
         {
             SetupSSL();
 
@@ -77,7 +79,8 @@ namespace aframe.Updater
                 // より新しいバージョンがあるか？
                 var newer = notes.GetNewerVersion(
                     targetAssembly,
-                    updateChannel);
+                    updateChannel,
+                    isForce);
                 if (newer == null)
                 {
                     AppLogger.Write("Update checker. this version is up-to-date.");

@@ -78,4 +78,14 @@
     * Release Notesに記載されているURLが間違っていた不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>0.0.7.#BuildNo#</version>
+    <channel>Beta</channel>
+    <timestamp>#Timestamp#</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <description>
+    * アップデートが実施できなかった不具合を修正した
+    </description>
+  </note>
 </release_notes>

@@ -68,7 +68,7 @@
         Text="{Binding Description.Value, Mode=OneWay}" />
 
       <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-        <Button Margin="0 0 15 0" Content="Update" Width="100" Click="UpdateButton_Click" Command="{Binding UpdateCommand, Mode=OneWay}" IsDefault="True" />
+        <Button Margin="0 0 15 0" Content="Update" Width="100" Command="{Binding UpdateCommand, Mode=OneWay}" IsDefault="True" />
         <Button Margin="15 0 0 0" Content="Cancel" Width="100" Click="CancelButton_Click" IsCancel="True" />
       </StackPanel>
     </Grid>
@@ -78,10 +78,22 @@
       VerticalAlignment="Center"
       Padding="20 30"
       CornerRadius="10"
-      Background="#A0FFFFFF"
+      Background="{DynamicResource WhiteBrush}"
+      BorderBrush="{DynamicResource AccentColorBrush}"
+      BorderThickness="2"
       Visibility="{Binding InProgress.Value, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+      <Border.Effect>
+        <DropShadowEffect
+          Direction="0"
+          ShadowDepth="0"
+          Color="{DynamicResource AccentColor}"
+          BlurRadius="8" />
+      </Border.Effect>
+
       <StackPanel>
-        <TextBlock Text="{Binding CurrentProgressMessage.Value, Mode=OneWay}" />
+        <TextBlock
+          Foreground="{DynamicResource BlackBrush}"
+          Text="{Binding CurrentProgressMessage.Value, Mode=OneWay}" />
         <ProgressBar
           Margin="0 10 0 0"
           Width="400"

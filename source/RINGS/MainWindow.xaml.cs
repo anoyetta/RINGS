@@ -53,6 +53,8 @@ namespace RINGS
                     DispatcherPriority.ApplicationIdle);
                 };
             }
+
+            App.Instance.CloseMainWindowCallback = () => this.ToEnd();
         }
 
         public MainWindowViewModel ViewModel => this.DataContext as MainWindowViewModel;
@@ -110,10 +112,12 @@ namespace RINGS
             this.NotifyIcon.Visibility = Visibility.Collapsed;
         }
 
-        public void ToHide()
+        public async void ToHide()
         {
             this.NotifyIcon.Visibility = Visibility.Visible;
             this.Hide();
+
+            await Task.Run(() => Config.Instance.Save());
         }
 
         public void ToEnd()

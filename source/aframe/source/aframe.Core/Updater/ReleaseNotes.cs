@@ -129,7 +129,8 @@ namespace aframe.Updater
 
         public ReleaseNote GetNewerVersion(
             Assembly currentAssembly,
-            ReleaseChannels channel = ReleaseChannels.Stable)
+            ReleaseChannels channel = ReleaseChannels.Stable,
+            bool isForce = false)
         {
             var currentVersion = currentAssembly.GetVersion();
 
@@ -157,10 +158,13 @@ namespace aframe.Updater
                 return null;
             }
 
-            if (note.VersionInfo == currentVersion &&
-                note.ReleaseChannel == currentChannel)
+            if (!isForce)
             {
-                return null;
+                if (note.VersionInfo == currentVersion &&
+                    note.ReleaseChannel == currentChannel)
+                {
+                    return null;
+                }
             }
 
             return note;
