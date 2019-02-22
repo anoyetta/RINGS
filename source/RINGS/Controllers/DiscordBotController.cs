@@ -46,10 +46,7 @@ namespace RINGS.Controllers
                 this.initializeBotThread = null;
             }
 
-            if (!this.Bots.IsEmpty)
-            {
-                this.Bots.Clear();
-            }
+            this.ClearBots();
 
             this.initializeBotThread = new Thread(new ThreadStart(this.InitializeBot))
             {
@@ -133,7 +130,7 @@ namespace RINGS.Controllers
             }
         }
 
-        private async void ClearBots(
+        public async void ClearBots(
             IEnumerable<string> keys = null)
         {
             if (keys == null)

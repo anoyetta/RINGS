@@ -329,17 +329,20 @@ namespace RINGS
         {
             get
             {
-                var fixedProf = this.CharacterProfileList.FirstOrDefault(x =>
-                    x.IsEnabled &&
-                    x.IsFixedActivate);
-                if (fixedProf != null)
+                lock (this.CharacterProfileList)
                 {
-                    return fixedProf;
-                }
+                    var fixedProf = this.CharacterProfileList.FirstOrDefault(x =>
+                        x.IsEnabled &&
+                        x.IsFixedActivate);
+                    if (fixedProf != null)
+                    {
+                        return fixedProf;
+                    }
 
-                return this.CharacterProfileList.FirstOrDefault(x =>
-                    x.IsEnabled &&
-                    x.IsActive);
+                    return this.CharacterProfileList.FirstOrDefault(x =>
+                        x.IsEnabled &&
+                        x.IsActive);
+                }
             }
         }
 
