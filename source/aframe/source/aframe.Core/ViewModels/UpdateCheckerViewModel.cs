@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using aframe.Updater;
@@ -87,6 +88,8 @@ namespace aframe.ViewModels
         public DelegateCommand UpdateCommand =>
             this.updateCommand ?? (this.updateCommand = new DelegateCommand(this.ExecuteUpdate));
 
+        public Action CloseViewCallback { get; set; }
+
         private async void ExecuteUpdate()
         {
             var model = this.Model.Value;
@@ -132,6 +135,12 @@ namespace aframe.ViewModels
                 // 準備完了
                 this.CurrentProgressMessage.Value = "Update Ready.";
                 await Task.Delay(100);
+
+                if (this.CloseViewCallback != null)
+                {
+                    WPFHelper.Dispatcher.Invoke(this.CloseViewCallback);
+                    await Task.Delay(50);
+                }
 
                 // 最後の確認？
                 result = await MessageBoxHelper.ShowMessageAsync(
@@ -184,6 +193,12 @@ namespace aframe.ViewModels
             };
 
             Process.Start(pi);
+
+            if (UpdateChecker.ShutdownCallback != null)
+            {
+                Thread.Sleep(50);
+                UpdateChecker.ShutdownCallback.Invoke();
+            }
         }
     }
 }

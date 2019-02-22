@@ -78,4 +78,14 @@
     * Release Notesに記載されているURLが間違っていた不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>0.0.7.4319</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-22T19:45:57.1489087+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.7.4319-Beta/RINGS_v0_0_7_4319_Beta.zip</uri>
+    <description>
+    * アップデートが実施できなかった不具合を修正した
+    </description>
+  </note>
 </release_notes>
