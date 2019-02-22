@@ -90,10 +90,10 @@
   </note>
 
   <note>
-    <version>0.0.8.#BuildNo#</version>
+    <version>0.0.8.4401</version>
     <channel>Beta</channel>
-    <timestamp>#Timestamp#</timestamp>
-    <uri>https://github.com/anoyetta/RINGS/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <timestamp>2019-02-23T01:17:09.5262006+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.8.4401-Beta/RINGS_v0_0_8_4401_Beta.zip</uri>
     <description>
     * Current Player が変更されたときにアクティブプロファイルが正しく切り替わらない不具合を修正した
     </description>
