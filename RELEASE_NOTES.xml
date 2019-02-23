@@ -98,4 +98,14 @@
     * Current Player が変更されたときにアクティブプロファイルが正しく切り替わらない不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>0.0.9.4415</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-23T15:57:36.7321812+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.9.4415-Beta/RINGS_v0_0_9_4415_Beta.zip</uri>
+    <description>
+    * Current Player が変更されたときにアクティブプロファイルが正しく切り替わらない不具合を修正した
+    </description>
+  </note>
 </release_notes>

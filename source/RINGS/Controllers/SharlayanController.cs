@@ -164,7 +164,8 @@ namespace RINGS.Controllers
             }
 
             var newPlayer = result.CurrentPlayer;
-            if (this.currentPlayer?.Name != newPlayer.Name)
+            if (newPlayer != null &&
+                this.currentPlayer?.Name != newPlayer.Name)
             {
                 this.currentPlayer = newPlayer;
                 this.currentPlayerNames = new[]
@@ -179,10 +180,10 @@ namespace RINGS.Controllers
 
                 lock (Config.Instance.CharacterProfileList)
                 {
-                    DiscordBotController.Instance.ClearBots();
-
                     if (!Config.Instance.CharacterProfileList.Any(x => x.IsFixedActivate))
                     {
+                        DiscordBotController.Instance.ClearBots();
+
                         Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
                         var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
                             x.IsEnabled &&
@@ -199,15 +200,20 @@ namespace RINGS.Controllers
 
         private void ClearActiveProfile()
         {
-            Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
-            this.currentPlayer = null;
-            this.currentPlayerNames = new string[0];
+            lock (Config.Instance.CharacterProfileList)
+            {
+                Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
+                this.currentPlayer = null;
+                this.currentPlayerNames = new string[0];
+            }
         }
 
         private void SubscribeChatLog()
         {
             Thread.Sleep(TimeSpan.FromSeconds(DetectProcessInterval));
             AppLogger.Write("FFXIV chat log subscriber started.");
+
+            var previousCharacterName = string.Empty;
 
             while (true)
             {
@@ -220,6 +226,13 @@ namespace RINGS.Controllers
                     {
                         Thread.Sleep(TimeSpan.FromSeconds(DetectProcessInterval));
                         continue;
+                    }
+
+                    if (previousCharacterName != this.CurrentPlayer?.Name)
+                    {
+                        previousCharacterName = this.CurrentPlayer?.Name;
+                        this.previousArrayIndex = 0;
+                        this.previousOffset = 0;
                     }
 
                     var result = Reader.GetChatLog(this.previousArrayIndex, this.previousOffset);
