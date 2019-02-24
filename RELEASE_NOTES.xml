@@ -108,4 +108,14 @@
     * Current Player が変更されたときにアクティブプロファイルが正しく切り替わらない不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>0.0.10.4519</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-24T19:10:46.9300361+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.10.4519-Beta/RINGS_v0_0_10_4519_Beta.zip</uri>
+    <description>
+    * 任意にアップデートをチェックをすると例外になる不具合を修正した
+    </description>
+  </note>
 </release_notes>
