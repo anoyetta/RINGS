@@ -173,10 +173,12 @@ namespace aframe.ViewModels
             HelpView.SendScrollToEndLog();
         }
 
+        private static readonly DateTimeOffset DummyLastUpdateTimestamp = new DateTimeOffset(DateTime.Parse("1900/1/1"));
+
         private async Task CheckUpdateAsync()
         {
             var existNewer = await UpdateChecker.IsUpdateAsync(
-                DateTime.MinValue,
+                DummyLastUpdateTimestamp,
                 this.CurrentReleaseChannel);
 
             if (!existNewer)
