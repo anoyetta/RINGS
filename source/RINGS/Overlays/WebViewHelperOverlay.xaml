@@ -1,0 +1,25 @@
+<Window
+  x:Class="RINGS.Overlays.WebViewHelperOverlay"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:local="clr-namespace:RINGS.Overlays"
+  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  mc:Ignorable="d"
+  Background="Transparent"
+  AllowsTransparency="True"
+  WindowStyle="None"
+  ShowInTaskbar="False"
+  Title="WebViewHelperOverlay"
+  SizeToContent="WidthAndHeight">
+  <Button
+    x:Name="CloseButton"
+    Height="40"
+    Width="40"
+    HorizontalAlignment="Right"
+    Style="{DynamicResource IconButtonStyle}"
+    Command="{Binding AddOverlaySettingsCommand, Mode=OneWay}">
+    <iconPacks:PackIconMaterial Kind="Close" Foreground="{DynamicResource IdealForegroundColorBrush}" />
+  </Button>
+</Window>

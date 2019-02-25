@@ -1,0 +1,51 @@
+<Window
+  x:Class="RINGS.Overlays.WebViewOverlay"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:local="clr-namespace:RINGS.Overlays"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+  xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
+  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+  xmlns:fw="clr-namespace:aframe;assembly=aframe.Core"
+  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  xmlns:model="clr-namespace:RINGS.Models"
+  mc:Ignorable="d"
+  Title="RINGS - WebViewer"
+  RenderOptions.BitmapScalingMode="Fant"
+  RenderOptions.ClearTypeHint="Enabled"
+  RenderOptions.EdgeMode="Unspecified"
+  TextOptions.TextFormattingMode="Ideal"
+  TextOptions.TextHintingMode="Auto"
+  TextOptions.TextRenderingMode="ClearType"
+  ShowInTaskbar="True"
+  ResizeMode="NoResize"
+  WindowStartupLocation="Manual"
+  Height="450"
+  Width="800">
+  <Grid>
+    <WebBrowser x:Name="WebView" />
+
+    <Border x:Name="ImageBorder" BorderThickness="0" Margin="10">
+      <Viewbox>
+        <Image
+          x:Name="ImageView"
+          MouseLeftButtonDown="ImageView_MouseLeftButtonDown"
+          MouseMove="ImageView_MouseMove"
+          MouseLeftButtonUp="ImageView_MouseLeftButtonUp"
+          RenderTransformOrigin="0.5 0.5">
+          <Image.RenderTransform>
+            <TransformGroup>
+              <ScaleTransform />
+              <TranslateTransform />
+            </TransformGroup>
+          </Image.RenderTransform>
+        </Image>
+      </Viewbox>
+    </Border>
+  </Grid>
+</Window>

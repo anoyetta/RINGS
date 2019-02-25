@@ -82,7 +82,42 @@
           IsChecked="{Binding Config.IsMinimizeStartup, Mode=TwoWay}"
           Content="最小化状態で起動する" />
 
-        <metro:MetroHeader Header="チャットログの購読間隔 (ms)" Margin="{DynamicResource ContentMargin}">
+        <metro:ToggleSwitch
+          Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+          Margin="{DynamicResource ContentMargin}"
+          HorizontalAlignment="Left"
+          IsChecked="{Binding Config.IsUseBuiltInBrowser, Mode=TwoWay}"
+          Content="リンクをビルトインブラウザで開く" />
+
+        <metro:MetroHeader Header="ビルトインブラウザのサイズ" Margin="{DynamicResource ContentMargin}" Visibility="{Binding Config.IsUseBuiltInBrowser, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+          <Grid Margin="0 5 0 0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Slider
+              Grid.Column="0"
+              Value="{Binding Config.BuiltinBrowserSize, Mode=TwoWay}"
+              Minimum="10"
+              Maximum="100"
+              LargeChange="1"
+              SmallChange="1"
+              TickFrequency="5"
+              TickPlacement="Both"
+              metro:SliderHelper.ChangeValueBy="LargeChange"
+              metro:SliderHelper.EnableMouseWheel="MouseHover"
+              Style="{DynamicResource MahApps.Metro.Styles.Slider.Win10}" />
+
+            <TextBlock
+              Grid.Column="1"
+              TextAlignment="Right"
+              Text="{Binding Config.BuiltinBrowserSize, Mode=OneWay}"
+              Width="50" />
+          </Grid>
+        </metro:MetroHeader>
+
+        <metro:MetroHeader Header="チャットログの購読間隔 (ms)" Margin="0 15 0 0">
           <metro:NumericUpDown
             Margin="0 5 0 0"
             Width="100"

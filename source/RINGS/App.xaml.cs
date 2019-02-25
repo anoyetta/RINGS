@@ -52,6 +52,9 @@ namespace RINGS
             var c = Config.Instance;
             c.SetStartup(c.IsStartupWithWindows);
 
+            // WebBrowser のIEを最新版に指定する
+            WebBrowserHelper.SetUseNewestWebBrowser();
+
             await Task.WhenAll(
                 ChatOverlaysController.Instance.StartAsync(),
                 SharlayanController.Instance.StartAsync(),
@@ -74,6 +77,9 @@ namespace RINGS
             /*
             new SandboxWindow().Show();
             */
+            WebViewOverlay.Instance.ShowUrl(
+                this.MainWindow,
+                @"https://www.jma.go.jp/jp/gms/imgs/0/infrared/1/201902251650-00.png");
 
             // アップデートを確認する
             UpdateChecker.ShutdownCallback = () => WPFHelper.Dispatcher.Invoke(() => this.CloseMainWindowCallback?.Invoke());

@@ -29,6 +29,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -92,6 +93,12 @@
     <Compile Include="Overlays\SandboxWindow.xaml.cs">
       <DependentUpon>SandboxWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Overlays\WebViewHelperOverlay.xaml.cs">
+      <DependentUpon>WebViewHelperOverlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Overlays\WebViewOverlay.xaml.cs">
+      <DependentUpon>WebViewOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Version.cs" />
     <Compile Include="ViewModels\HelpViewModel.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
@@ -141,6 +148,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Overlays\SandboxWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Overlays\WebViewHelperOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Overlays\WebViewOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
