@@ -118,4 +118,16 @@
     * 任意にアップデートをチェックをすると例外になる不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>0.0.11.4615</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-25T15:58:46.8211642+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.11.4615-Beta/RINGS_v0_0_11_4615_Beta.zip</uri>
+    <description>
+    * 埋込みブラウザを搭載した
+    * チャットの埋込みリンクを開く動作を埋込みブラウザにできるようにした
+    * チャットの埋込みリンクを開く動作を埋込みブラウザをデフォルトにした
+    </description>
+  </note>
 </release_notes>

@@ -388,6 +388,24 @@ namespace RINGS
             set => this.SetProperty(ref this.isMinimizeStartup, value);
         }
 
+        private bool isUseBuiltInBrowser = true;
+
+        [JsonProperty(PropertyName = "use_builtin_browser", DefaultValueHandling = DefaultValueHandling.Include)]
+        public bool IsUseBuiltInBrowser
+        {
+            get => this.isUseBuiltInBrowser;
+            set => this.SetProperty(ref this.isUseBuiltInBrowser, value);
+        }
+
+        private double builtinBrowserSize = 80.0d;
+
+        [JsonProperty(PropertyName = "builtin_browser_size", DefaultValueHandling = DefaultValueHandling.Include)]
+        public double BuiltinBrowserSize
+        {
+            get => this.builtinBrowserSize;
+            set => this.SetProperty(ref this.builtinBrowserSize, value);
+        }
+
         private double chatLogPollingInterval = 10.0d;
 
         [JsonProperty(PropertyName = "chatlog_polling_interval")]

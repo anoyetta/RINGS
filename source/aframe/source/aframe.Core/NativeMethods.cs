@@ -138,7 +138,9 @@ namespace aframe
         [DllImport("user32.dll", EntryPoint = "GetWindowLong", SetLastError = true)]
         public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
+        public const int GWL_STYLE = -16;
         public const int GWL_EXSTYLE = -20;
+        public const int WS_CAPTION = 0xC00000;
         public const int WS_EX_TRANSPARENT = 0x00000020;
         public const int WS_EX_TOOLWINDOW = 0x00000080;
         public const int WS_EX_NOACTIVATE = 0x08000000;
@@ -208,8 +210,10 @@ namespace aframe
         public static readonly IntPtr HWND_TOP = new IntPtr(0);
         public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
 
+        public const uint SWP_FRAMECHANGED = 0x20;
         public const uint SWP_NOSIZE = 0x0001;
         public const uint SWP_NOMOVE = 0x0002;
+        public const uint SWP_NOZORDER = 0x0004;
         public const uint SWP_NOACTIVATE = 0x0010;
 
         [DllImport("user32.dll", SetLastError = true)]

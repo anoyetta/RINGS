@@ -13,6 +13,8 @@ namespace RINGS.Overlays
     public interface IOverlay
     {
         bool OverlayVisible { get; set; }
+
+        int ZOrder { get; }
     }
 
     public static class OverlayExtensions
@@ -186,6 +188,7 @@ namespace RINGS.Overlays
                     return;
                 }
 
+                var targets = ToCorrectOverlays.OrderBy(x => x.ZOrder);
                 foreach (var overlay in ToCorrectOverlays)
                 {
                     Thread.Yield();

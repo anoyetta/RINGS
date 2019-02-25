@@ -208,6 +208,8 @@ namespace RINGS.Overlays
 
         #region IOverlay
 
+        public int ZOrder => 0;
+
         private bool overlayVisible;
 
         public bool OverlayVisible

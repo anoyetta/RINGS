@@ -17,6 +17,7 @@ using Discord.WebSocket;
 using Prism.Commands;
 using Prism.Mvvm;
 using RINGS.Common;
+using RINGS.Overlays;
 using Sharlayan.Core;
 
 namespace RINGS.Models
@@ -25,6 +26,7 @@ namespace RINGS.Models
         BindableBase
     {
         private static readonly Thickness ZeroMargin = new Thickness();
+        private static readonly double AttachmentImageWidthRatio = 0.9d;
 
         private FlowDocument CreateChatDocument()
         {
@@ -108,7 +110,7 @@ namespace RINGS.Models
                 var panel = new WrapPanel()
                 {
                     Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(0, 5, 0, 0),
+                    Margin = new Thickness(0, 5, 0, 2),
                 };
 
                 foreach (var image in imagesAtta)
@@ -134,7 +136,7 @@ namespace RINGS.Models
                     {
                         Child = new TextBlock(hyperlink),
                         MaxWidth = this.ParentOverlaySettings != null ?
-                            this.ParentOverlaySettings.W * 0.7d :
+                            this.ParentOverlaySettings.W * AttachmentImageWidthRatio :
                             250.0d,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(0, 2, 4, 2)
@@ -251,7 +253,19 @@ namespace RINGS.Models
             object sender,
             RequestNavigateEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            if (!Config.Instance.IsUseBuiltInBrowser)
+            {
+                Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            }
+            else
+            {
+                var hyperlink = sender as Hyperlink;
+                var window = Window.GetWindow(hyperlink);
+                WebViewOverlay.Instance.ShowUrl(
+                    window,
+                    e.Uri.AbsoluteUri);
+            }
+
             e.Handled = true;
         }
 
