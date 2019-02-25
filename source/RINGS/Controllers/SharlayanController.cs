@@ -133,6 +133,7 @@ namespace RINGS.Controllers
                             this.handledProcessID = ffxiv.Id;
                             this.previousArrayIndex = 0;
                             this.previousOffset = 0;
+                            this.currentPlayer = null;
 
                             AppLogger.Write("Attached to FFXIV.");
                         }
@@ -236,6 +237,11 @@ namespace RINGS.Controllers
 
                     lock (this)
                     {
+                        if (this.CurrentPlayer == null)
+                        {
+                            continue;
+                        }
+
                         if (previousCharacterName != this.CurrentPlayer?.Name)
                         {
                             previousCharacterName = this.CurrentPlayer?.Name;
