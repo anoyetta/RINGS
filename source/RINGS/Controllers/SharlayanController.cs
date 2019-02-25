@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -102,39 +103,42 @@ namespace RINGS.Controllers
 
                 try
                 {
-                    var processes = Process.GetProcessesByName("ffxiv_dx11");
-                    if (processes.Length < 1)
+                    lock (this)
                     {
-                        if (this.IsAttached)
+                        var processes = Process.GetProcessesByName("ffxiv_dx11");
+                        if (processes.Length < 1)
                         {
-                            this.handledProcessID = 0;
+                            if (this.IsAttached)
+                            {
+                                this.handledProcessID = 0;
+                            }
+
+                            this.ClearActiveProfile();
+                            continue;
                         }
 
-                        this.ClearActiveProfile();
-                        continue;
+                        var ffxiv = processes[0];
+
+                        if (!MemoryHandler.Instance.IsAttached ||
+                            this.handledProcessID != ffxiv.Id)
+                        {
+                            MemoryHandler.Instance.SetProcess(
+                                new ProcessModel
+                                {
+                                    Process = ffxiv,
+                                    IsWin64 = true
+                                },
+                                language);
+
+                            this.handledProcessID = ffxiv.Id;
+                            this.previousArrayIndex = 0;
+                            this.previousOffset = 0;
+
+                            AppLogger.Write("Attached to FFXIV.");
+                        }
+
+                        this.RefreshActiveProfile();
                     }
-
-                    var ffxiv = processes[0];
-
-                    if (!MemoryHandler.Instance.IsAttached ||
-                        this.handledProcessID != ffxiv.Id)
-                    {
-                        MemoryHandler.Instance.SetProcess(
-                            new ProcessModel
-                            {
-                                Process = ffxiv,
-                                IsWin64 = true
-                            },
-                            language);
-
-                        this.handledProcessID = ffxiv.Id;
-                        this.previousArrayIndex = 0;
-                        this.previousOffset = 0;
-
-                        AppLogger.Write("Attached to FFXIV.");
-                    }
-
-                    this.RefreshActiveProfile();
                 }
                 catch (ThreadAbortException)
                 {
@@ -228,26 +232,31 @@ namespace RINGS.Controllers
                         continue;
                     }
 
-                    if (previousCharacterName != this.CurrentPlayer?.Name)
+                    var targetLogs = default(IEnumerable<ChatLogItem>);
+
+                    lock (this)
                     {
-                        previousCharacterName = this.CurrentPlayer?.Name;
-                        this.previousArrayIndex = 0;
-                        this.previousOffset = 0;
+                        if (previousCharacterName != this.CurrentPlayer?.Name)
+                        {
+                            previousCharacterName = this.CurrentPlayer?.Name;
+                            this.previousArrayIndex = 0;
+                            this.previousOffset = 0;
+                        }
+
+                        var result = Reader.GetChatLog(this.previousArrayIndex, this.previousOffset);
+                        if (result == null)
+                        {
+                            continue;
+                        }
+
+                        this.previousArrayIndex = result.PreviousArrayIndex;
+                        this.previousOffset = result.PreviousOffset;
+
+                        targetLogs = result.ChatLogItems
+                            .Where(x => ChatCodes.All.Contains(x.Code));
+
+                        isExistLogs = targetLogs.Any();
                     }
-
-                    var result = Reader.GetChatLog(this.previousArrayIndex, this.previousOffset);
-                    if (result == null)
-                    {
-                        continue;
-                    }
-
-                    this.previousArrayIndex = result.PreviousArrayIndex;
-                    this.previousOffset = result.PreviousOffset;
-
-                    var targetLogs = result.ChatLogItems
-                        .Where(x => ChatCodes.All.Contains(x.Code));
-
-                    isExistLogs = targetLogs.Any();
 
                     if (isExistLogs)
                     {
