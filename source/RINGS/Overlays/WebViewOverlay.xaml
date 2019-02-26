@@ -26,17 +26,30 @@
   ResizeMode="NoResize"
   WindowStartupLocation="Manual"
   Height="450"
-  Width="800">
+  Width="800"
+  DataContext="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}">
+
   <Grid>
+    <Grid.Resources>
+      <ContextMenu x:Key="ImageContextMenu">
+        <MenuItem Header="名前を付けて保存する" Command="{Binding DownLoadImageCommand, Mode=OneWay}" />
+      </ContextMenu>
+    </Grid.Resources>
+
     <WebBrowser x:Name="WebView" />
 
-    <Border x:Name="ImageBorder" BorderThickness="0" Margin="10">
-      <Viewbox>
+    <Viewbox x:Name="ImageBox" Margin="10">
+      <Border
+        x:Name="ImageBorder"
+        BorderThickness="0"
+        Background="Transparent">
         <Image
           x:Name="ImageView"
+          ContextMenu="{StaticResource ImageContextMenu}"
           MouseLeftButtonDown="ImageView_MouseLeftButtonDown"
           MouseMove="ImageView_MouseMove"
           MouseLeftButtonUp="ImageView_MouseLeftButtonUp"
+          RenderOptions.BitmapScalingMode="Fant"
           RenderTransformOrigin="0.5 0.5">
           <Image.RenderTransform>
             <TransformGroup>
@@ -45,7 +58,20 @@
             </TransformGroup>
           </Image.RenderTransform>
         </Image>
-      </Viewbox>
-    </Border>
+      </Border>
+    </Viewbox>
+
+    <materialDesign:Snackbar
+      x:Name="Snackbar"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Bottom"
+      HorizontalContentAlignment="Center"
+      VerticalContentAlignment="Center"
+      FontSize="{DynamicResource TabItemFontSize}"
+      Background="{DynamicResource GrayBrush8}"
+      Foreground="{DynamicResource BlackBrush}"
+      Opacity="0.95"
+      Margin="0 0 0 20"
+      MessageQueue="{materialDesign:MessageQueue}" />
   </Grid>
 </Window>

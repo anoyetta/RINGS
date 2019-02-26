@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,6 +10,8 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using aframe;
+using Microsoft.Win32;
+using Prism.Commands;
 using RINGS.Models;
 
 namespace RINGS.Overlays
@@ -47,10 +51,14 @@ namespace RINGS.Overlays
             };
         }
 
+        public string Url { get; private set; } = string.Empty;
+
         public void ShowUrl(
             Window parent,
             string url)
         {
+            this.Url = url;
+
             var interopHelper = new WindowInteropHelper(parent);
             var currentScreen = System.Windows.Forms.Screen.FromHandle(interopHelper.Handle);
 
@@ -61,28 +69,32 @@ namespace RINGS.Overlays
             this.Top = (currentScreen.Bounds.Height - this.Height) / 2d;
 
             this.WebView.Visibility = Visibility.Collapsed;
-            this.ImageView.Visibility = Visibility.Collapsed;
+            this.ImageBox.Visibility = Visibility.Collapsed;
             this.Show();
 
             if (!url.IsImage())
             {
                 this.WebView.Navigate(url);
-                this.WebView.Visibility = Visibility.Visible;
 
                 this.ImageView.MouseWheel -= this.Image_MouseWheel;
                 this.MouseWheel -= this.Image_MouseWheel;
+
+                this.WebView.Visibility = Visibility.Visible;
             }
             else
             {
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.UriSource = new Uri(url);
                 bitmap.EndInit();
                 this.ImageView.Source = bitmap;
-                this.ImageView.Visibility = Visibility.Visible;
+                this.ImageView.ToolTip = url;
 
                 this.ImageView.MouseWheel += this.Image_MouseWheel;
                 this.MouseWheel += this.Image_MouseWheel;
+
+                this.ImageBox.Visibility = Visibility.Visible;
             }
 
             this.Activate();
@@ -163,6 +175,64 @@ namespace RINGS.Overlays
                 NativeMethods.SWP_NOZORDER |
                 NativeMethods.SWP_NOSIZE);
         }
+
+        private static readonly (string Title, string Filter)[] ImageSaveDialogFilters = new[]
+        {
+            ("BMP Files (*.bmp)", "*.bmp"),
+            ("JPEG Files (*.jpeg; *.jpg)", "*.jpeg; *.jpg"),
+            ("GIF Files (*.gif)", "*.gif"),
+            ("PNG Files (*.png)", "*.png"),
+            ("All Files (*.*)", "*.*"),
+        };
+
+        private static readonly SaveFileDialog SaveFileDialog = new SaveFileDialog()
+        {
+            Filter = string.Join("|", ImageSaveDialogFilters.Select(x => $"{x.Title}|{x.Filter}")),
+            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
+            RestoreDirectory = true,
+        };
+
+        private DelegateCommand downLoadImageCommand;
+
+        public DelegateCommand DownLoadImageCommand =>
+            this.downLoadImageCommand ?? (this.downLoadImageCommand = new DelegateCommand(this.ExecuteDownLoadImageCommand));
+
+        private async void ExecuteDownLoadImageCommand() => await WPFHelper.Dispatcher.InvokeAsync(() =>
+        {
+            var fileName = string.Empty;
+
+            SaveFileDialog.FileName = Path.GetFileName(this.Url);
+            SaveFileDialog.DefaultExt = Path.GetExtension(this.Url).ToLower();
+            SaveFileDialog.FilterIndex = ImageSaveDialogFilters.Length;
+
+            for (int i = 0; i < ImageSaveDialogFilters.Length; i++)
+            {
+                var f = ImageSaveDialogFilters[i];
+                if (f.Filter.Contains(SaveFileDialog.DefaultExt))
+                {
+                    SaveFileDialog.FilterIndex = i + 1;
+                    break;
+                }
+            }
+
+            if (SaveFileDialog.ShowDialog(this) ?? false)
+            {
+                fileName = SaveFileDialog.FileName;
+
+                this.Snackbar.MessageQueue.Enqueue(
+                    "Donwloading...",
+                    true);
+
+                using (var wc = new WebClient())
+                {
+                    wc.DownloadFileAsync(new Uri(this.Url), fileName);
+                }
+
+                this.Snackbar.MessageQueue.Enqueue(
+                    "Download Completed.",
+                    true);
+            }
+        });
 
         #region IOverlay
 
