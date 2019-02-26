@@ -1,3 +1,6 @@
 logs\
+back\
+backup\
+.bak
 aframe.Updater.ignore.txt
 RINGS.config.json

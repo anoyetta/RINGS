@@ -130,4 +130,18 @@
     * チャットの埋込みリンクを開く動作を埋込みブラウザをデフォルトにした
     </description>
   </note>
+
+  <note>
+    <version>0.0.12.4709</version>
+    <channel>Beta</channel>
+    <timestamp>2019-02-26T09:02:17.7090609+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.12.4709-Beta/RINGS_v0_0_12_4709_Beta.zip</uri>
+    <description>
+    * 埋込みブラウザを搭載した
+    * チャットの埋込みリンクを開く動作を埋込みブラウザにできるようにした
+    * チャットの埋込みリンクを開く動作を埋込みブラウザをデフォルトにした
+    * 埋込みブラウザから画像を保存できるようにした
+    * ログイン直後のチャットログが二重に表示されてしまう場合がある不具合を修正した
+    </description>
+  </note>
 </release_notes>
