@@ -132,10 +132,10 @@
   </note>
 
   <note>
-    <version>0.0.12.4709</version>
+    <version>0.0.13.4807</version>
     <channel>Beta</channel>
-    <timestamp>2019-02-26T09:02:17.7090609+09:00</timestamp>
-    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.12.4709-Beta/RINGS_v0_0_12_4709_Beta.zip</uri>
+    <timestamp>2019-02-27T07:44:16.7276084+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.0.13.4807-Beta/RINGS_v0_0_13_4807_Beta.zip</uri>
     <description>
     * 埋込みブラウザを搭載した
     * チャットの埋込みリンクを開く動作を埋込みブラウザにできるようにした
