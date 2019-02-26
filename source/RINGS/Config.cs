@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using aframe;
 using aframe.Updater;
 using aframe.ViewModels;
@@ -332,7 +333,13 @@ namespace RINGS
         public double W
         {
             get => this.w;
-            set => this.SetProperty(ref this.w, Math.Round(value, 1));
+            set
+            {
+                if (App.Current.MainWindow?.WindowState != WindowState.Minimized)
+                {
+                    this.SetProperty(ref this.w, Math.Round(value, 1));
+                }
+            }
         }
 
         private double h;
@@ -341,7 +348,13 @@ namespace RINGS
         public double H
         {
             get => this.h;
-            set => this.SetProperty(ref this.h, Math.Round(value, 1));
+            set
+            {
+                if (App.Current.MainWindow?.WindowState != WindowState.Minimized)
+                {
+                    this.SetProperty(ref this.h, Math.Round(value, 1));
+                }
+            }
         }
 
         private bool isStartupWithWindows;

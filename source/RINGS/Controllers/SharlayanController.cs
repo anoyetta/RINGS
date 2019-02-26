@@ -170,6 +170,7 @@ namespace RINGS.Controllers
 
             var newPlayer = result.CurrentPlayer;
             if (newPlayer != null &&
+                !string.IsNullOrEmpty(newPlayer.Name) &&
                 this.currentPlayer?.Name != newPlayer.Name)
             {
                 this.currentPlayer = newPlayer;
@@ -237,20 +238,18 @@ namespace RINGS.Controllers
 
                     lock (this)
                     {
-                        if (this.CurrentPlayer == null ||
-                            string.IsNullOrEmpty(this.CurrentPlayer.Name))
+                        if (this.currentPlayer != null &&
+                            !string.IsNullOrEmpty(this.currentPlayer.Name))
                         {
-                            continue;
-                        }
+                            if (!string.IsNullOrEmpty(previousPlayerName) &&
+                                previousPlayerName != this.currentPlayer.Name)
+                            {
+                                this.previousArrayIndex = 0;
+                                this.previousOffset = 0;
+                            }
 
-                        if (!string.IsNullOrEmpty(previousPlayerName) &&
-                            previousPlayerName != this.CurrentPlayer.Name)
-                        {
-                            this.previousArrayIndex = 0;
-                            this.previousOffset = 0;
+                            previousPlayerName = this.CurrentPlayer.Name;
                         }
-
-                        previousPlayerName = this.CurrentPlayer.Name;
 
                         var result = Reader.GetChatLog(this.previousArrayIndex, this.previousOffset);
                         if (result == null)
@@ -282,9 +281,15 @@ namespace RINGS.Controllers
                         {
                             if (model.IsMe)
                             {
+                                var playerName = this.currentPlayer?.Name;
+                                if (string.IsNullOrEmpty(playerName))
+                                {
+                                    playerName = previousPlayerName;
+                                }
+
                                 DiscordBotController.Instance.SendMessage(
                                     model.ChatCode,
-                                    this.currentPlayer?.Name,
+                                    playerName,
                                     Config.Instance.ActiveProfile?.Alias,
                                     model.Message);
                             }
