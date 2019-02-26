@@ -122,7 +122,10 @@ namespace RINGS
             this.NotifyIcon.Visibility = Visibility.Visible;
             this.Hide();
 
-            await Task.Run(() => Config.Instance.Save());
+            if (this.WindowState != WindowState.Minimized)
+            {
+                await Task.Run(() => Config.Instance.Save());
+            }
         }
 
         public void ToEnd()
