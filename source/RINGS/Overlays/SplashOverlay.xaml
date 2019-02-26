@@ -1,0 +1,51 @@
+<Window
+  x:Class="RINGS.Overlays.SplashOverlay"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:local="clr-namespace:RINGS.Overlays"
+  mc:Ignorable="d"
+  Title="RINGS"
+  TextOptions.TextFormattingMode="Ideal"
+  TextOptions.TextRenderingMode="ClearType"
+  TextOptions.TextHintingMode="Fixed"
+  RenderOptions.EdgeMode="Aliased"
+  RenderOptions.BitmapScalingMode="Fant"
+  RenderOptions.ClearTypeHint="Enabled"
+  TextElement.FontWeight="Regular"
+  Icon="/RINGS;component/RINGSApp.Logo.ico"
+  AllowsTransparency="True"
+  WindowStyle="None"
+  WindowStartupLocation="CenterScreen"
+  SizeToContent="WidthAndHeight"
+  ShowInTaskbar="False"
+  Opacity="0.95">
+  <Grid>
+    <Viewbox Width="500">
+      <Image
+        Source="/RINGS;component/RINGS.Banner.png"
+        RenderOptions.BitmapScalingMode="Fant"
+        RenderOptions.EdgeMode="Unspecified"
+        RenderOptions.ClearTypeHint="Auto" />
+    </Viewbox>
+    <TextBlock
+      x:Name="VersionText"
+      VerticalAlignment="Bottom"
+      HorizontalAlignment="Right"
+      Margin="0 0 20 13"
+      Foreground="#FF382621"
+      FontSize="17"
+      FontFamily="Century Gothic"
+      Text="v1.0.0.5501">
+      <TextBlock.Effect>
+        <DropShadowEffect
+          Direction="0"
+          ShadowDepth="0"
+          RenderingBias="Quality"
+          BlurRadius="2"
+          Color="#FF382621" />
+      </TextBlock.Effect>
+    </TextBlock>
+  </Grid>
+</Window>

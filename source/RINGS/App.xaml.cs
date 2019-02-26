@@ -33,6 +33,8 @@ namespace RINGS
             Instance = this;
             AppLogger.Init("RINGSLogger");
 
+            SplashOverlay.Instance.ShowSplash();
+
             ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls;
             ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls11;
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
@@ -77,10 +79,10 @@ namespace RINGS
 #if DEBUG
             /*
             new SandboxWindow().Show();
-            */
             WebViewOverlay.Instance.ShowUrl(
                 this.MainWindow,
                 @"https://www.jma.go.jp/jp/gms/imgs/0/infrared/1/201902251650-00.png");
+            */
 #endif
 
             // アップデートを確認する

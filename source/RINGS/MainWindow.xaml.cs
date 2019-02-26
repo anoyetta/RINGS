@@ -20,6 +20,7 @@ namespace RINGS
         public MainWindow()
         {
             Instance = this;
+            App.Current.MainWindow = this;
 
             this.InitializeComponent();
 
@@ -53,6 +54,10 @@ namespace RINGS
                     DispatcherPriority.ApplicationIdle);
                 };
             }
+            else
+            {
+                this.Loaded += (_, __) => this.Activate();
+            }
 
             App.Instance.CloseMainWindowCallback = () => this.ToEnd();
         }
@@ -80,13 +85,11 @@ namespace RINGS
         {
             if (this.WindowState == WindowState.Minimized)
             {
-                this.Hide();
-                this.NotifyIcon.Visibility = Visibility.Visible;
+                this.ToHide();
             }
             else
             {
-                this.Show();
-                this.NotifyIcon.Visibility = Visibility.Collapsed;
+                this.ToShow();
             }
         }
 
@@ -110,6 +113,8 @@ namespace RINGS
             this.Show();
             this.WindowState = WindowState.Normal;
             this.NotifyIcon.Visibility = Visibility.Collapsed;
+
+            this.Activate();
         }
 
         public async void ToHide()

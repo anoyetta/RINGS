@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using aframe;
 using Discord;
@@ -35,21 +36,27 @@ namespace RINGS.ViewModels
             Interval = TimeSpan.FromSeconds(3),
         };
 
+        public System.Windows.Media.Color ActiveColor => (System.Windows.Media.Color)ColorConverter.ConvertFromString("#c3d825");
+
+        public System.Windows.Media.Color InactiveColor => (System.Windows.Media.Color)ColorConverter.ConvertFromString("#949495");
+
+        private static readonly string InactiveStatus = "inactive";
+
         private void RefreshTimer_Tick(object sender, EventArgs e)
         {
             var shar = SharlayanController.Instance;
             this.SharlayanStatus = shar.IsAttached ?
                 "Attached" :
-                string.Empty;
+                InactiveStatus;
 
             this.CurrentPlayerName = shar.CurrentPlayer != null ?
                 $"{shar.CurrentPlayer.Name} ({shar.CurrentPlayer.Job})" :
-                string.Empty;
+                InactiveStatus;
 
             var prof = this.Config.ActiveProfile;
             if (prof == null)
             {
-                this.ActiveProfileName = string.Empty;
+                this.ActiveProfileName = InactiveStatus;
             }
             else
             {
@@ -70,7 +77,7 @@ namespace RINGS.ViewModels
             this.DiscordBotStatus =
                 bots.Any() && bots.All(x => x.ConnectionState == ConnectionState.Connected) ?
                 "Ready" :
-                string.Empty;
+                InactiveStatus;
         }
 
         private async void AddLog(
@@ -88,7 +95,7 @@ namespace RINGS.ViewModels
                 ChatCode = x
             });
 
-        private string sharlayanStatus;
+        private string sharlayanStatus = InactiveStatus;
 
         public string SharlayanStatus
         {
@@ -96,7 +103,7 @@ namespace RINGS.ViewModels
             set => this.SetProperty(ref this.sharlayanStatus, value);
         }
 
-        private string currentPlayerName;
+        private string currentPlayerName = InactiveStatus;
 
         public string CurrentPlayerName
         {
@@ -104,7 +111,7 @@ namespace RINGS.ViewModels
             set => this.SetProperty(ref this.currentPlayerName, value);
         }
 
-        private string activeProfileName;
+        private string activeProfileName = InactiveStatus;
 
         public string ActiveProfileName
         {
@@ -112,7 +119,7 @@ namespace RINGS.ViewModels
             set => this.SetProperty(ref this.activeProfileName, value);
         }
 
-        private string discordBotStatus;
+        private string discordBotStatus = InactiveStatus;
 
         public string DiscordBotStatus
         {
