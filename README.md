@@ -69,6 +69,7 @@ Portal](https://discordapp.com/developers/applications/)** にログインし、
     * TOKEN : *Click to Reveal Token* をクリックし、表示されたトークン文字列をコピーします。**これがDiscordサーバ内のユーザに共有するトークンです。**
 
 3. OAuth2の設定画面にて、サーバにBotを追加するためのURLを生成します。
+    * PUBLIC BOT : OFF を選択
     * SCOPES : **bot** を選択
     * BOT PERMISSIONS : **チャンネルを見る**、**メッセージの送信**を選択
     * ページ中段にあるURLをコピーします
@@ -85,18 +86,18 @@ Discordサーバにて、RINGSを通じたチャット発言先のチャンネ�
 ### BotのトークンおよびチャンネルIDをユーザに共有
 予め作成しておいたRINGS専用のテキストチャンネルにピン留めしておくことを推奨します。
 
-#### 共有サンプル
+#### RINGS専用チャンネルの共有メッセージの例
 
-> RINGSアプリによる会話用チャンネルです。右クリックメニューから、チャンネル通知設定をミュートにすることを推奨します。
->
-> アプリケーションのダウンロード
-> https://github.com/anoyetta/RINGS
->
-> このチャンネルのID
-> 000000000000000000
->
-> Botトークン
-> xxxxxxxxxxxxxxxxxxxxxxxx.yyyyyy.zzzzzzzzzzzzzzzzzzzzzzzzzzz
+> RINGSアプリによる会話用チャンネルです。右クリックメニューから、チャンネル通知設定をミュートにすることを推奨します。  
+>  
+> アプリケーションのダウンロード  
+> https://github.com/anoyetta/RINGS  
+>  
+> このチャンネルのID  
+> 000000000000000000  
+>  
+> Botトークン  
+> xxxxxxxxxxxxxxxxxxxxxxxx.yyyyyy.zzzzzzzzzzzzzzzzzzzzzzzzzzz  
 
 # トラブルシューティング
 
@@ -112,6 +113,6 @@ Botが対象Discordチャンネルのあるサーバ内に存在しないか、�
 
 ### pingは成功するが、実際のゲーム内チャットがDiscordに送信されない
 
-"ホーム" 画面を開き、*Acrive Profile* が空欄でないこと、および *DISCORD Bot* の状態が Ready であることを確認してください。
+"ホーム" 画面を開き、*Acrive Profile* が inactive でないこと、および *DISCORD Bot* の状態が Ready であることを確認してください。
 
 RINGSの設定変更を行った直後など、ゲームの監視状態をリセットするには、*RESET SUBSCRIBERS* ボタンをクリックしてください。
