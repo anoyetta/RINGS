@@ -33,6 +33,8 @@ namespace RINGS
             Instance = this;
             AppLogger.Init("RINGSLogger");
 
+            SplashOverlay.Instance.ShowSplash();
+
             ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls;
             ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls11;
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;

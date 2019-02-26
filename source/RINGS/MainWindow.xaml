@@ -216,7 +216,7 @@
       x:Name="NotifyIcon"
       IconSource="RINGSApp.Logo.ico"
       Visibility="Collapsed"
-      DoubleClickCommand="{Binding ShowCommand, Mode=OneWay}"
+      LeftClickCommand="{Binding ShowCommand, Mode=OneWay}"
       ContextMenu="{DynamicResource NotifyIconMenu}"
       ToolTipText="{Binding Config.AppNameWithVersion, Mode=OneWay}" />
 

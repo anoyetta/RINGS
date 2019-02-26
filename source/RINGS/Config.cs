@@ -294,6 +294,9 @@ namespace RINGS
         public Version AppVersion => Assembly.GetExecutingAssembly().GetVersion();
 
         [JsonIgnore]
+        public ReleaseChannels AppReleaseChannel => Assembly.GetExecutingAssembly().GetReleaseChannels();
+
+        [JsonIgnore]
         public string AppVersionString => $"v{this.AppVersion.ToString()}";
 
         private double scale = 1.0;

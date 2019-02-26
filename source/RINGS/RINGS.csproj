@@ -93,6 +93,9 @@
     <Compile Include="Overlays\SandboxWindow.xaml.cs">
       <DependentUpon>SandboxWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Overlays\SplashOverlay.xaml.cs">
+      <DependentUpon>SplashOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Overlays\WebViewHelperOverlay.xaml.cs">
       <DependentUpon>WebViewHelperOverlay.xaml</DependentUpon>
     </Compile>
@@ -151,6 +154,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Overlays\SplashOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Overlays\WebViewHelperOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -202,6 +209,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="RINGS.Banner.png" />
     <Resource Include="RINGSApp.Logo.ico" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

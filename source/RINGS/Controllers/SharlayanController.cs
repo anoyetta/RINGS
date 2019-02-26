@@ -218,7 +218,7 @@ namespace RINGS.Controllers
             Thread.Sleep(TimeSpan.FromSeconds(DetectProcessInterval));
             AppLogger.Write("FFXIV chat log subscriber started.");
 
-            var previousCharacterName = string.Empty;
+            var previousPlayerName = string.Empty;
 
             while (true)
             {
@@ -237,17 +237,20 @@ namespace RINGS.Controllers
 
                     lock (this)
                     {
-                        if (this.CurrentPlayer == null)
+                        if (this.CurrentPlayer == null ||
+                            string.IsNullOrEmpty(this.CurrentPlayer.Name))
                         {
                             continue;
                         }
 
-                        if (previousCharacterName != this.CurrentPlayer?.Name)
+                        if (!string.IsNullOrEmpty(previousPlayerName) &&
+                            previousPlayerName != this.CurrentPlayer.Name)
                         {
-                            previousCharacterName = this.CurrentPlayer?.Name;
                             this.previousArrayIndex = 0;
                             this.previousOffset = 0;
                         }
+
+                        previousPlayerName = this.CurrentPlayer.Name;
 
                         var result = Reader.GetChatLog(this.previousArrayIndex, this.previousOffset);
                         if (result == null)

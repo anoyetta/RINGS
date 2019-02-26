@@ -48,39 +48,58 @@
     <!-- Status -->
     <metro:MetroHeader Grid.Row="0" Header="Status" metro:ControlsHelper.HeaderFontSize="20">
       <metro:MetroHeader.Resources>
-        <Color x:Key="IndicatorColor">#c3d825</Color>
-        <SolidColorBrush x:Key="IndicatorBrush" Color="{DynamicResource IndicatorColor}" />
+        <SolidColorBrush x:Key="ActiveIndicatorBrush" Color="{Binding ActiveColor, Mode=OneWay}" />
         <DropShadowEffect
-          x:Key="IndicatorEffect"
+          x:Key="ActiveIndicatorEffect"
           Direction="0"
           ShadowDepth="0"
           BlurRadius="6"
-          Color="{DynamicResource IndicatorColor}" />
+          Color="{Binding ActiveColor, Mode=OneWay}" />
+
+        <SolidColorBrush x:Key="InactiveIndicatorBrush" Color="{Binding InactiveColor, Mode=OneWay}" />
+        <DropShadowEffect
+          x:Key="InactiveIndicatorEffect"
+          Direction="0"
+          ShadowDepth="0"
+          BlurRadius="6"
+          Color="{Binding InactiveColor, Mode=OneWay}" />
+
+        <Style x:Key="StatusLabel" TargetType="Label">
+          <Setter Property="Foreground" Value="{DynamicResource ActiveIndicatorBrush}" />
+          <Setter Property="Effect" Value="{DynamicResource ActiveIndicatorEffect}" />
+
+          <Style.Triggers>
+            <Trigger Property="Content" Value="inactive">
+              <Setter Property="Foreground" Value="{DynamicResource InactiveIndicatorBrush}" />
+              <Setter Property="Effect" Value="{DynamicResource InactiveIndicatorEffect}" />
+            </Trigger>
+          </Style.Triggers>
+        </Style>
       </metro:MetroHeader.Resources>
 
       <StackPanel Margin="10 0 0 0" TextElement.FontSize="16">
         <StackPanel Orientation="Horizontal">
           <Label Content="Sharlayan" Width="120" />
           <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
-          <Label Content="{Binding SharlayanStatus, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
+          <Label Content="{Binding SharlayanStatus, Mode=OneWay}" Style="{DynamicResource StatusLabel}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
           <Label Content="Player" Width="120" />
           <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
-          <Label Content="{Binding CurrentPlayerName, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
+          <Label Content="{Binding CurrentPlayerName, Mode=OneWay}" Style="{DynamicResource StatusLabel}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
           <Label Content="Active Profile" Width="120" />
           <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
-          <Label Content="{Binding ActiveProfileName, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
+          <Label Content="{Binding ActiveProfileName, Mode=OneWay}" Style="{DynamicResource StatusLabel}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
           <Label Content="DISCORD Bot" Width="120" />
           <iconPacks:PackIconFontAwesome Kind="ArrowRightSolid" VerticalAlignment="Center" Foreground="{DynamicResource BlackBrush}" Margin="0 0 5 0" Width="14" />
-          <Label Content="{Binding DiscordBotStatus, Mode=OneWay}" Foreground="{StaticResource IndicatorBrush}" Effect="{StaticResource IndicatorEffect}" />
+          <Label Content="{Binding DiscordBotStatus, Mode=OneWay}" Style="{DynamicResource StatusLabel}" />
         </StackPanel>
 
         <Button
