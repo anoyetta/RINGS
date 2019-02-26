@@ -281,9 +281,15 @@ namespace RINGS.Controllers
                         {
                             if (model.IsMe)
                             {
+                                var playerName = this.currentPlayer?.Name;
+                                if (string.IsNullOrEmpty(playerName))
+                                {
+                                    playerName = previousPlayerName;
+                                }
+
                                 DiscordBotController.Instance.SendMessage(
                                     model.ChatCode,
-                                    this.currentPlayer?.Name,
+                                    playerName,
                                     Config.Instance.ActiveProfile?.Alias,
                                     model.Message);
                             }
