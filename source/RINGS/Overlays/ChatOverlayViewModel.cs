@@ -155,6 +155,8 @@ namespace RINGS.Overlays
             }
         }
 
+        private volatile bool previousIsAutoHide;
+
         private void HideTimer_Tick(
             object sender,
             EventArgs e)
@@ -171,12 +173,26 @@ namespace RINGS.Overlays
                 }
                 else
                 {
-                    this.ShowCallback?.Invoke();
+                    if (this.previousIsAutoHide != this.ChatOverlaySettings.IsAutoHide)
+                    {
+                        this.ShowCallback?.Invoke();
+                    }
                 }
+
+                this.previousIsAutoHide = this.ChatOverlaySettings.IsAutoHide;
             }
         }
 
-        private DateTime lastLogAddedTimestamp = DateTime.Now;
+        public DateTime lastLogAddedTimestamp = DateTime.Now;
+
+        public void ExtendTimeToHide()
+        {
+            lock (this)
+            {
+                this.lastLogAddedTimestamp = DateTime.Now.AddSeconds(
+                    this.ChatOverlaySettings.TimeToHide / 2d);
+            }
+        }
 
         private string name;
 
