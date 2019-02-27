@@ -5,7 +5,6 @@
 Chat communication enhancer for FFXIV.  
 Discord Botと連携して、ゲーム内チャット機能を拡張するアプリケーションです。
 
-<br />
 ## できること
 * ゲーム内の任意のチャットチャンネルをDiscordに転送できます
 * Discord上のテキストチャットをカスタマイズ可能なオーバーレイ上に表示できます
@@ -16,18 +15,15 @@ Discord Botと連携して、ゲーム内チャット機能を拡張するアプ
 * ゲーム内チャットウィンドウのように、タブを作成して表示項目をカスタマイズできます
 * キャラクターごとのプロファイル切り替えに対応しています
 
-<br />
 ## 最新リリース
 **[Lastest-Releases](https://github.com/anoyetta/RINGS/releases)**
 
-<br />
 ## インストール
 インストールは不要です。
 ダウンロードしたファイルを任意のディレクトリに展開して利用してください。
 
 RINGSはスタンドアロンで動作するため、他のアプリケーションと併用する必要はありません。
 
-<br />
 ## 初期設定（一般ユーザ向け）
 **Discordサーバ管理者は「Discordサーバ管理者向け設定」を併せてお読み下さい。**
 
@@ -57,7 +53,6 @@ RINGSはスタンドアロンで動作するため、他のアプリケーショ
 
 複数のキャラクターがいる場合には、画面下部の + ボタンでプロファイルを複数作成することができます。
 
-<br />
 ## Discordサーバ管理者向け設定
 RINGSを利用するためには、Discordサーバ管理者による作業が必要になります。
 
@@ -103,13 +98,10 @@ Discordサーバにて、RINGSを通じたチャット発言先のチャンネ�
 > Botトークン  
 > xxxxxxxxxxxxxxxxxxxxxxxx.yyyyyy.zzzzzzzzzzzzzzzzzzzzzzzzzzz  
 
-<br />
 ## どうやってるの？  
-
 ![RINGS_Overview1](https://github.com/anoyetta/RINGS/blob/master/images/RINGS_Overview1.png?raw=true)  
 ![RINGS_Overview2](https://github.com/anoyetta/RINGS/blob/master/images/RINGS_Overview2.png?raw=true)  
 
-<br />
 ## トラブルシューティング
 ### RINGSアプリケーション設定
 #### TEST CONNECTIONに失敗する
