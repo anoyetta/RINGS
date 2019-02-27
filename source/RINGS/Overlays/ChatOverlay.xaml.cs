@@ -203,13 +203,13 @@ namespace RINGS.Overlays
         {
             if (this.isMinimized)
             {
-                this.isMinimized = false;
                 this.StopFadeout();
                 this.MinimizeIcon.Visibility = Visibility.Collapsed;
                 this.MinimizeButton.Visibility = Visibility.Visible;
                 this.BackgroundBorder.Visibility = Visibility.Visible;
                 this.ChatPagesTabControl.Visibility = Visibility.Visible;
                 this.TitleLabel.Visibility = Visibility.Visible;
+                this.isMinimized = false;
             }
         }
 

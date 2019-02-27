@@ -27,6 +27,7 @@ RINGSはスタンドアロンで動作するため、他のアプリケーショ
 ## 初期設定（一般ユーザ向け）
 **Discordサーバ管理者は「Discordサーバ管理者向け設定」を併せてお読み下さい。**
 
+### Discord Bot の設定
 1. RINGS.exeを起動します。
 
 2. "DISCORD Bot" 画面にて、Bot の設定をします。
@@ -38,8 +39,7 @@ RINGSはスタンドアロンで動作するため、他のアプリケーショ
     * **ID** : サーバ管理者から共有された発言先DiscordチャンネルのID
     * **Helper Bot** : 上記2.で入力した、発言先Discordチャンネルへの権限を持つBotをプルダウンで選択します
 
-## チャット設定
-
+### チャットリンクの設定
 "チャットリンク" 画面にて、キャラクター別プロファイルを定義します。
 
 * キャラクター名 : あなたのキャラクター名を入力します。
@@ -69,6 +69,7 @@ Portal](https://discordapp.com/developers/applications/)** にログインし、
     * TOKEN : *Click to Reveal Token* をクリックし、表示されたトークン文字列をコピーします。**これがDiscordサーバ内のユーザに共有するトークンです。**
 
 3. OAuth2の設定画面にて、サーバにBotを追加するためのURLを生成します。
+    * PUBLIC BOT : OFF を選択
     * SCOPES : **bot** を選択
     * BOT PERMISSIONS : **チャンネルを見る**、**メッセージの送信**を選択
     * ページ中段にあるURLをコピーします
@@ -85,33 +86,31 @@ Discordサーバにて、RINGSを通じたチャット発言先のチャンネ�
 ### BotのトークンおよびチャンネルIDをユーザに共有
 予め作成しておいたRINGS専用のテキストチャンネルにピン留めしておくことを推奨します。
 
-#### 共有サンプル
+#### RINGS専用チャンネルの共有メッセージの例
+> RINGSアプリによる会話用チャンネルです。右クリックメニューから、チャンネル通知設定をミュートにすることを推奨します。  
+>  
+> アプリケーションのダウンロード  
+> https://github.com/anoyetta/RINGS  
+>  
+> このチャンネルのID  
+> 000000000000000000  
+>  
+> Botトークン  
+> xxxxxxxxxxxxxxxxxxxxxxxx.yyyyyy.zzzzzzzzzzzzzzzzzzzzzzzzzzz  
 
-> RINGSアプリによる会話用チャンネルです。右クリックメニューから、チャンネル通知設定をミュートにすることを推奨します。
->
-> アプリケーションのダウンロード
-> https://github.com/anoyetta/RINGS
->
-> このチャンネルのID
-> 000000000000000000
->
-> Botトークン
-> xxxxxxxxxxxxxxxxxxxxxxxx.yyyyyy.zzzzzzzzzzzzzzzzzzzzzzzzzzz
+## どうやってるの？  
+![RINGS_Overview1](https://github.com/anoyetta/RINGS/blob/master/images/RINGS_Overview1.png?raw=true)  
+![RINGS_Overview2](https://github.com/anoyetta/RINGS/blob/master/images/RINGS_Overview2.png?raw=true)  
 
-# トラブルシューティング
-
-## RINGSアプリケーション設定
-
-### TEST CONNECTIONに失敗する
-
+## トラブルシューティング
+### RINGSアプリケーション設定
+#### TEST CONNECTIONに失敗する
 Botのトークン文字列が誤っている可能性があります。
 
-### チャンネルへのpingに失敗する
-
+#### チャンネルへのpingに失敗する
 Botが対象Discordチャンネルのあるサーバ内に存在しないか、適切な権限がない可能性があります。
 
-### pingは成功するが、実際のゲーム内チャットがDiscordに送信されない
-
-"ホーム" 画面を開き、*Acrive Profile* が空欄でないこと、および *DISCORD Bot* の状態が Ready であることを確認してください。
+#### pingは成功するが、実際のゲーム内チャットがDiscordに送信されない
+"ホーム" 画面を開き、*Acrive Profile* が inactive でないこと、および *DISCORD Bot* の状態が Ready であることを確認してください。
 
 RINGSの設定変更を行った直後など、ゲームの監視状態をリセットするには、*RESET SUBSCRIBERS* ボタンをクリックしてください。
