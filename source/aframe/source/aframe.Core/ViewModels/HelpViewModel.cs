@@ -96,6 +96,13 @@ namespace aframe.ViewModels
             OverwritePrompt = true,
         };
 
+        public void SetCredits(IEnumerable<CreditEntry> credits)
+            => this.CreditList.AddRange(credits);
+
+        private readonly List<CreditEntry> CreditList = new List<CreditEntry>();
+
+        public bool IsExistsCredits => this.CreditList.Any();
+
         #region Commands
 
         private DelegateCommand loadedCommand;
@@ -162,6 +169,13 @@ namespace aframe.ViewModels
                 MessageBoxHelper.EnqueueSnackMessage("保存しました。");
             }));
 
+        private DelegateCommand showCreditCommand;
+
+        public DelegateCommand ShowCreditCommand =>
+            this.showCreditCommand ?? (this.showCreditCommand = new DelegateCommand(async () =>
+            {
+            }));
+
         #endregion Commands
 
         private void Refresh()
@@ -186,5 +200,12 @@ namespace aframe.ViewModels
                 MessageBoxHelper.EnqueueSnackMessage("This application is up-to-date.");
             }
         }
+    }
+
+    public class CreditEntry
+    {
+        public string SubTitle { get; set; }
+
+        public string[] Names { get; set; }
     }
 }
