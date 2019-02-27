@@ -107,7 +107,7 @@ Discordサーバにて、RINGSを通じたチャット発言先のチャンネ�
 ## どうやってるの？
 
 ![RINGS_Overview1](https://github.com/anoyetta/RINGS/blob/master/images/RINGS_Overview1.png?raw=true)  
-![RINGS_Overview2](https://github.com/anoyetta/RINGS/blob/master/images/RINGS_Overview2.png?raw=true)
+![RINGS_Overview2](https://github.com/anoyetta/RINGS/blob/master/images/RINGS_Overview2.png?raw=true)  
 
 <br />
 ## トラブルシューティング
