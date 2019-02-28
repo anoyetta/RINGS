@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media.Animation;
 using aframe;
+using aframe.Views;
 using RINGS.Models;
 
 namespace RINGS.Overlays

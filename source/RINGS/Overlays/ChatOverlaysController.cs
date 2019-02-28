@@ -81,6 +81,8 @@ namespace RINGS.Overlays
 
         public bool IsEditing { get; set; }
 
+        private int counter;
+
         public void RefreshOverlays(
             bool force = false)
         {
@@ -90,6 +92,12 @@ namespace RINGS.Overlays
                 {
                     return;
                 }
+            }
+
+            var task = default(Task);
+            if (this.counter % 2 == 0)
+            {
+                task = Task.Run(() => RefreshFFXIVIsActive());
             }
 
             var overlays = default(IEnumerable<ChatOverlay>);
@@ -118,16 +126,21 @@ namespace RINGS.Overlays
                 overlays = this.OverlayDictionary.Values.ToArray();
             }
 
-            RefreshFFXIVIsActive();
-            foreach (var overlay in overlays)
+            if (task != null)
             {
-                if (overlay.ViewModel.ChatOverlaySettings?.IsEnabled ?? false)
+                task.Wait();
+                foreach (var overlay in overlays)
                 {
-                    overlay.Visibility = IsFFXIVActive ?
-                        Visibility.Visible :
-                        Visibility.Collapsed;
+                    if (overlay.ViewModel.ChatOverlaySettings?.IsEnabled ?? false)
+                    {
+                        overlay.Visibility = IsFFXIVActive ?
+                            Visibility.Visible :
+                            Visibility.Collapsed;
+                    }
                 }
             }
+
+            this.counter++;
         }
 
         private static bool IsFFXIVActive;
@@ -142,8 +155,12 @@ namespace RINGS.Overlays
                 // プロセスIDに変換する
                 NativeMethods.GetWindowThreadProcessId(hWnd, out uint pid);
 
-                // メインモジュールのファイル名を取得する
-                var p = Process.GetProcessById((int)pid);
+                // フォアウィンドウのファイル名を取得する
+                var p = Process.GetProcesses()
+                    .FirstOrDefault(x =>
+                        !x.HasExited &&
+                        x.Id == (int)pid);
+
                 if (p != null)
                 {
                     var fileName = Path.GetFileName(

@@ -180,11 +180,19 @@ namespace RINGS
             {
                 new CreditEntry()
                 {
-                    SubTitle = "Library",
                     Names = new[]
                     {
-                        "sharlayan\nhttps://github.com/FFXIVAPP/sharlayan",
-                        "Discord.Net\nhttps://github.com/discord-net/Discord.Net",
+                        "RINGS",
+                    }
+                },
+
+                new CreditEntry()
+                {
+                    SubTitle = "Dependency Library",
+                    Names = new[]
+                    {
+                        "sharlayan",
+                        "Discord.Net",
                     }
                 },
 
@@ -216,6 +224,7 @@ namespace RINGS
                         "GUILTEX",
                         "Angel Seed",
                         "H'oney Bunny",
+                        "Citrus みかん",
                     }.OrderBy(x => x).ToArray(),
                 },
 
@@ -227,7 +236,6 @@ namespace RINGS
 
                 new CreditEntry()
                 {
-                    SubTitle = "Copyrights",
                     Names = new[]
                     {
                         "記載されている会社名・製品名・システム名などは、各社の商標、または登録商標です。\nCopyright © 2010 - 2019 SQUARE ENIX CO., LTD. All Rights Reserved.",

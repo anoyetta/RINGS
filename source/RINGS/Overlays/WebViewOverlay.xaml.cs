@@ -10,6 +10,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using aframe;
+using aframe.Views;
 using Microsoft.Win32;
 using Prism.Commands;
 using RINGS.Models;

@@ -172,8 +172,9 @@ namespace aframe.ViewModels
         private DelegateCommand showCreditCommand;
 
         public DelegateCommand ShowCreditCommand =>
-            this.showCreditCommand ?? (this.showCreditCommand = new DelegateCommand(async () =>
+            this.showCreditCommand ?? (this.showCreditCommand = new DelegateCommand(() =>
             {
+                CreditView.ShowCredits(this.CreditList, Application.Current.MainWindow);
             }));
 
         #endregion Commands
