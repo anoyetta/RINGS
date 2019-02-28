@@ -156,11 +156,7 @@ namespace RINGS.Overlays
                 NativeMethods.GetWindowThreadProcessId(hWnd, out uint pid);
 
                 // フォアウィンドウのファイル名を取得する
-                var p = Process.GetProcesses()
-                    .FirstOrDefault(x =>
-                        !x.HasExited &&
-                        x.Id == (int)pid);
-
+                var p = Process.GetProcessById((int)pid);
                 if (p != null)
                 {
                     var fileName = Path.GetFileName(

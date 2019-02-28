@@ -62,6 +62,10 @@ namespace aframe.Views
                         this.SubTitle.Text = credit.SubTitle;
                         this.Names.Text = string.Join(Environment.NewLine, credit.Names);
 
+                        this.SubTitle.Visibility = !string.IsNullOrEmpty(credit.SubTitle) ?
+                            Visibility.Visible :
+                            Visibility.Collapsed;
+
                         this.CreaditAnimationStory.Begin(this, true);
                     });
 
