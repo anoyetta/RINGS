@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using aframe;
+using aframe.Views;
 
 namespace RINGS.Overlays
 {

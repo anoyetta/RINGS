@@ -6,9 +6,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using aframe;
 
-namespace RINGS.Overlays
+namespace aframe.Views
 {
     public interface IOverlay
     {

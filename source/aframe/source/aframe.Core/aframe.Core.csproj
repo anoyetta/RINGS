@@ -147,9 +147,13 @@
     <Compile Include="Updater\UpdateChecker.cs" />
     <Compile Include="ViewModels\HelpViewModel.cs" />
     <Compile Include="ViewModels\UpdateCheckerViewModel.cs" />
+    <Compile Include="Views\CreditView.xaml.cs">
+      <DependentUpon>CreditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\IOverlay.cs" />
     <Compile Include="Views\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
@@ -184,6 +188,10 @@
     <Page Include="Dialogs\Views\FontDialogContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CreditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HelpView.xaml">
       <SubType>Designer</SubType>

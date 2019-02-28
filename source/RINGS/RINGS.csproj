@@ -89,7 +89,6 @@
     </Compile>
     <Compile Include="Overlays\ChatOverlaysController.cs" />
     <Compile Include="Overlays\ChatOverlayViewModel.cs" />
-    <Compile Include="Overlays\IOverlay.cs" />
     <Compile Include="Overlays\SandboxWindow.xaml.cs">
       <DependentUpon>SandboxWindow.xaml</DependentUpon>
     </Compile>

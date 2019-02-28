@@ -149,6 +149,10 @@
         <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}">
           <Hyperlink Command="{Binding SaveLogCommand, Mode=OneWay}">ログを保存する</Hyperlink>
         </TextBlock>
+
+        <TextBlock HorizontalAlignment="Left" Margin="{DynamicResource MenuMargin}" Visibility="{Binding IsExistsCredits, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+          <Hyperlink Command="{Binding ShowCreditCommand, Mode=OneWay}">クレジットを表示する</Hyperlink>
+        </TextBlock>
       </WrapPanel>
     </metro:MetroHeader>
 

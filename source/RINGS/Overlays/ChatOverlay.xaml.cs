@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media.Animation;
 using aframe;
+using aframe.Views;
 using RINGS.Models;
 
 namespace RINGS.Overlays
@@ -36,17 +37,10 @@ namespace RINGS.Overlays
                 ResizeMode.NoResize :
                 ResizeMode.CanResizeWithGrip;
 
-            this.FadeoutAnimation.Completed += (_, __) => this.OverlayVisible = false;
             this.ViewModel.MinimizeCallback = () => this.MinimizeChatPanel();
+            this.FadeoutAnimation.Completed += (_, __) => this.MinimizeChatPanel();
             this.ViewModel.HideCallback = () => this.StartFadeout();
-            this.ViewModel.ShowCallback = () =>
-            {
-                if (!this.OverlayVisible)
-                {
-                    this.StopFadeout();
-                    this.OverlayVisible = true;
-                }
-            };
+            this.ViewModel.ShowCallback = () => this.ShowChatPanel();
 
             this.ViewModel.ChangeActivePageCallback = (pageName) =>
             {
@@ -92,6 +86,7 @@ namespace RINGS.Overlays
 
             this.MinimizeIcon.PreviewMouseDown += (_, e) =>
             {
+                this.ViewModel.ExtendTimeToHide();
                 this.ShowChatPanel();
                 e.Handled = true;
             };
@@ -124,7 +119,7 @@ namespace RINGS.Overlays
 
         public void StartFadeout()
         {
-            if (!this.OverlayVisible)
+            if (this.isMinimized)
             {
                 return;
             }
@@ -139,8 +134,8 @@ namespace RINGS.Overlays
 
             lock (this)
             {
-                this.BeginAnimation(
-                    Window.OpacityProperty,
+                this.BackgroundBorder.BeginAnimation(
+                    Border.OpacityProperty,
                     this.FadeoutAnimation);
             }
         }
@@ -149,8 +144,8 @@ namespace RINGS.Overlays
         {
             lock (this)
             {
-                this.BeginAnimation(
-                    Window.OpacityProperty,
+                this.BackgroundBorder.BeginAnimation(
+                    Border.OpacityProperty,
                     null,
                     HandoffBehavior.SnapshotAndReplace);
             }
@@ -190,20 +185,33 @@ namespace RINGS.Overlays
             }
         }
 
+        private volatile bool isMinimized = false;
+
         private void MinimizeChatPanel()
         {
-            this.MinimizeIcon.Visibility = Visibility.Visible;
-            this.MinimizeButton.Visibility = Visibility.Collapsed;
-            this.BackgroundBorder.Visibility = Visibility.Collapsed;
-            this.ChatPagesTabControl.Visibility = Visibility.Collapsed;
+            if (!this.isMinimized)
+            {
+                this.isMinimized = true;
+                this.MinimizeIcon.Visibility = Visibility.Visible;
+                this.MinimizeButton.Visibility = Visibility.Collapsed;
+                this.BackgroundBorder.Visibility = Visibility.Collapsed;
+                this.ChatPagesTabControl.Visibility = Visibility.Collapsed;
+                this.TitleLabel.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void ShowChatPanel()
         {
-            this.MinimizeIcon.Visibility = Visibility.Collapsed;
-            this.MinimizeButton.Visibility = Visibility.Visible;
-            this.BackgroundBorder.Visibility = Visibility.Visible;
-            this.ChatPagesTabControl.Visibility = Visibility.Visible;
+            if (this.isMinimized)
+            {
+                this.StopFadeout();
+                this.MinimizeIcon.Visibility = Visibility.Collapsed;
+                this.MinimizeButton.Visibility = Visibility.Visible;
+                this.BackgroundBorder.Visibility = Visibility.Visible;
+                this.ChatPagesTabControl.Visibility = Visibility.Visible;
+                this.TitleLabel.Visibility = Visibility.Visible;
+                this.isMinimized = false;
+            }
         }
 
         #region IOverlay

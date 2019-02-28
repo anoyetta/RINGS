@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -63,6 +64,8 @@ namespace RINGS
                 DiscordBotController.Instance.StartAsync(),
                 Task.Run(() =>
                 {
+                    this.SetCredits();
+
                     HelpViewModel.Instance.OfficialSiteUri = new Uri(@"https://github.com/anoyetta/RINGS");
                     foreach (var asm in ReferenceAssemblies)
                     {
@@ -169,6 +172,76 @@ namespace RINGS
                 AppLogger.Write("RINGS Abort.");
                 AppLogger.Flush();
             }
+        }
+
+        private void SetCredits()
+        {
+            HelpViewModel.Instance.SetCredits(new[]
+            {
+                new CreditEntry()
+                {
+                    Names = new[]
+                    {
+                        "RINGS",
+                    }
+                },
+
+                new CreditEntry()
+                {
+                    SubTitle = "Dependency Library",
+                    Names = new[]
+                    {
+                        "sharlayan",
+                        "Discord.Net",
+                    }
+                },
+
+                new CreditEntry()
+                {
+                    SubTitle = "Collaborator",
+                    Names = new[]
+                    {
+                        "Sheeva Reactor",
+                    }
+                },
+
+                new CreditEntry()
+                {
+                    SubTitle = "Logo Design",
+                    Names = new[]
+                    {
+                        "みささん",
+                    }
+                },
+
+                new CreditEntry()
+                {
+                    SubTitle = "Special Thanks",
+                    Names = new[]
+                    {
+                        "t.CRiSiS",
+                        "Aqua Cat",
+                        "GUILTEX",
+                        "Angel Seed",
+                        "H'oney Bunny",
+                        "Citrus みかん",
+                    }.OrderBy(x => x).ToArray(),
+                },
+
+                new CreditEntry()
+                {
+                    SubTitle = "...and YOU.",
+                    Names = new string[0],
+                },
+
+                new CreditEntry()
+                {
+                    Names = new[]
+                    {
+                        "記載されている会社名・製品名・システム名などは、各社の商標、または登録商標です。\nCopyright © 2010 - 2019 SQUARE ENIX CO., LTD. All Rights Reserved.",
+                    }
+                },
+            });
         }
     }
 }

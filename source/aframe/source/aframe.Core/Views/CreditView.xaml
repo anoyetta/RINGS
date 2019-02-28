@@ -1,0 +1,74 @@
+<Window
+  x:Class="aframe.Views.CreditView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:local="clr-namespace:aframe.Views"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+  xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
+  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+  xmlns:fw="clr-namespace:aframe;assembly=aframe.Core"
+  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  mc:Ignorable="d"
+  Title="CREDIT"
+  RenderOptions.BitmapScalingMode="Fant"
+  RenderOptions.ClearTypeHint="Enabled"
+  RenderOptions.EdgeMode="Unspecified"
+  TextOptions.TextFormattingMode="Ideal"
+  TextOptions.TextHintingMode="Fixed"
+  TextOptions.TextRenderingMode="ClearType"
+  WindowStyle="None"
+  AllowsTransparency="True"
+  ShowInTaskbar="False"
+  ResizeMode="NoResize"
+  WindowStartupLocation="CenterOwner"
+  Background="#f8f4e6"
+  Foreground="#432f2f"
+  Opacity="0.95"
+  Width="400"
+  Height="550">
+
+  <Window.Resources>
+    <Storyboard x:Key="CreditAnimation" x:Name="CreditAnimation">
+      <DoubleAnimationUsingKeyFrames
+        Storyboard.TargetName="Names"
+        Storyboard.TargetProperty="(TextBlock.Opacity)"
+        Duration="0:0:4">
+        <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0" />
+        <LinearDoubleKeyFrame KeyTime="0:0:1" Value="1" />
+        <LinearDoubleKeyFrame KeyTime="0:0:3" Value="1" />
+        <LinearDoubleKeyFrame KeyTime="0:0:4" Value="0" />
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+  </Window.Resources>
+
+  <Grid Margin="10 30">
+    <StackPanel
+      Margin="0 0 0 0"
+      VerticalAlignment="Center"
+      HorizontalAlignment="Stretch">
+
+      <TextBlock
+        x:Name="SubTitle"
+        Opacity="{Binding ElementName=Names, Path=Opacity, Mode=OneWay}"
+        TextAlignment="Center"
+        FontFamily="Arial, Yu Gothic UI Semibold"
+        FontSize="18"
+        Text="a programmer" />
+
+      <Viewbox StretchDirection="DownOnly">
+        <TextBlock
+          x:Name="Names"
+          Margin="0 10 0 0"
+          TextAlignment="Center"
+          FontFamily="Arial, Yu Gothic UI Semibold"
+          FontSize="23"
+          Text="Anoyetta Anon" />
+      </Viewbox>
+    </StackPanel>
+  </Grid>
+</Window>
