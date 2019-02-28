@@ -39,6 +39,14 @@
   </Window.DataContext>
 
   <Window.Resources>
+    <ContextMenu
+      x:Key="MainContextMenu"
+      BorderThickness="0"
+      HasDropShadow="False"
+      Padding="0">
+      <MenuItem Header="ファイルを送る" Padding="4" />
+    </ContextMenu>
+
     <Style TargetType="TabControl" />
     <Style TargetType="TabItem" />
   </Window.Resources>
@@ -141,6 +149,7 @@
         Background="Transparent"
         Focusable="False"
         TabStripPlacement="Bottom"
+        ContextMenu="{DynamicResource MainContextMenu}"
         Opacity="{Binding ElementName=BackgroundBorder, Path=Opacity, Mode=OneWay}"
         ItemsSource="{Binding ChatOverlaySettings.ChatPages, Mode=OneWay}">
 

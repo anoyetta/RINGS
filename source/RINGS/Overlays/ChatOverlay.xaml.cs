@@ -76,6 +76,8 @@ namespace RINGS.Overlays
                 this.ViewModel.Dispose();
             };
 
+            // トリプルクリックは封印する
+            /*
             this.MouseLeftButtonDown += (_, e) =>
             {
                 if (e.ClickCount == 3)
@@ -83,6 +85,7 @@ namespace RINGS.Overlays
                     this.MinimizeChatPanel();
                 }
             };
+            */
 
             this.MinimizeIcon.PreviewMouseDown += (_, e) =>
             {

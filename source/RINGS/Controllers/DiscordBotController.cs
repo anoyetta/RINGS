@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -152,11 +153,14 @@ namespace RINGS.Controllers
             }
         }
 
+        public string LastSendChatCode { get; private set; }
+
         public async void SendMessage(
             string chatCode,
             string speaker,
             string speakerAlias,
-            string message)
+            string message,
+            string fileName = null)
         {
             var bot = this.GetBotByChatCode(chatCode);
             if (bot == null ||
@@ -188,7 +192,17 @@ namespace RINGS.Controllers
                     $"{speaker} ({speakerAlias}) :{message}" :
                     $"{speaker} :{message}";
 
-                await ch.SendMessageAsync(text);
+                if (string.IsNullOrEmpty(fileName) ||
+                    !File.Exists(fileName))
+                {
+                    await ch.SendMessageAsync(text);
+                }
+                else
+                {
+                    await ch.SendFileAsync(fileName, message);
+                }
+
+                this.LastSendChatCode = chatCode;
             }
         }
 
