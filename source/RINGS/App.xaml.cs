@@ -219,9 +219,17 @@ namespace RINGS
                     SubTitle = "Special Thanks",
                     Names = new[]
                     {
+                        "GUILTEX",
+                    }.OrderBy(x => x).ToArray(),
+                },
+
+                new CreditEntry()
+                {
+                    SubTitle = "Special Thanks",
+                    Names = new[]
+                    {
                         "t.CRiSiS",
                         "Aqua Cat",
-                        "GUILTEX",
                         "Angel Seed",
                         "H'oney Bunny",
                         "Citrus みかん",
@@ -230,8 +238,10 @@ namespace RINGS
 
                 new CreditEntry()
                 {
-                    SubTitle = "...and YOU.",
-                    Names = new string[0],
+                    Names = new[]
+                    {
+                        "...and YOU"
+                    },
                 },
 
                 new CreditEntry()
