@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -28,6 +29,7 @@ namespace RINGS
             { nameof(BuiltinBrowserSize), 80.0d },
             { nameof(ChatLogPollingInterval), 10.0d },
             { nameof(ChatLogScrollBarWidth), 6.0d },
+            { nameof(FileDirectory), Environment.GetFolderPath(Environment.SpecialFolder.Desktop) },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },
@@ -116,6 +118,9 @@ namespace RINGS
             return settings.ToArray();
         }
 
+        public static readonly string EmptyChannelID = "* Your Channel ID *";
+        public static readonly string EmptyBotToken = "* Your Bot Token *";
+
         private static SuspendableObservableCollection<CharacterProfileModel> CreateDefaultCharacterProfile() =>
             new SuspendableObservableCollection<CharacterProfileModel>()
             {
@@ -131,7 +136,7 @@ namespace RINGS
                 new DiscordChannelModel()
                 {
                     Name = "Default Channel",
-                    ID = "* Your Channel ID *",
+                    ID = EmptyChannelID,
                     HelperBotName = "Default Channel Bot",
                 },
             };
@@ -142,8 +147,10 @@ namespace RINGS
                 new DiscordBotModel()
                 {
                     Name = "Default Channel Bot",
-                    Token = "* Your Bot Token *"
+                    Token = EmptyBotToken
                 },
             };
+
+        public static readonly string TempDirectory = @".\temp";
     }
 }

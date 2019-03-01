@@ -156,4 +156,24 @@
     * クレジット表記を追加した
     </description>
   </note>
+
+  <note>
+    <version>0.2.0.2314</version>
+    <channel>Beta</channel>
+    <timestamp>2019-03-01T14:45:55.0895698+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.2.0.2314-Beta/RINGS_v0_2_0_2314_Beta.zip</uri>
+    <description>
+    * RC2
+    * メインウィンドウを最小化させたときにバルーンメッセージを表示するようにした
+    * 多重起動を防止するようにした
+    * Botの設定とチャンネルの設定の位置を上下入れ替えた
+    * Botのテスト時のエラーメッセージ等を整備した
+    * FFXIVまたはRINGSがアクティブのときのみオーバーレイが表示されることをツールチップで通知するようにした
+    * オーバーレイの詳細設定への入り方を変更した（ダブルクリックからシングルクリックに変えた）
+    * ログが多重に表示される場合がある不具合を修正した
+    * RINGSから直接添付ファイルを送れるようにした
+    * RINGSから直接クリップボード画像を送れるようにした
+    * スクリーンキャプチャーと編集及び自動的にクリップボードに保存できるようにした
+    </description>
+  </note>
 </release_notes>

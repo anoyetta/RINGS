@@ -419,7 +419,7 @@ namespace RINGS
         public double BuiltinBrowserSize
         {
             get => this.builtinBrowserSize;
-            set => this.SetProperty(ref this.builtinBrowserSize, value);
+            set => this.SetProperty(ref this.builtinBrowserSize, Math.Round(value));
         }
 
         private double chatLogPollingInterval = 10.0d;
@@ -438,6 +438,15 @@ namespace RINGS
         {
             get => this.chatLogScrollBarWidth;
             set => this.SetProperty(ref this.chatLogScrollBarWidth, value);
+        }
+
+        private string fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+        [JsonProperty(PropertyName = "file_directory")]
+        public string FileDirectory
+        {
+            get => this.fileDirectory;
+            set => this.SetProperty(ref this.fileDirectory, value);
         }
 
         private readonly Dictionary<string, ChatOverlaySettingsModel> chatOverlaySettings = new Dictionary<string, ChatOverlaySettingsModel>();

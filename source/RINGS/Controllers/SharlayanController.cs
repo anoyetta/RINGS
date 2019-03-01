@@ -183,22 +183,25 @@ namespace RINGS.Controllers
                 };
 
                 AppLogger.Write($"Current player is {this.currentPlayer?.Name}");
+            }
 
-                lock (Config.Instance.CharacterProfileList)
+            lock (Config.Instance.CharacterProfileList)
+            {
+                var active = Config.Instance.ActiveProfile;
+                if (active == null ||
+                    (!active.IsFixedActivate &&
+                    active.CharacterName != currentPlayer.Name))
                 {
-                    if (!Config.Instance.CharacterProfileList.Any(x => x.IsFixedActivate))
-                    {
-                        DiscordBotController.Instance.ClearBots();
+                    DiscordBotController.Instance.ClearBots();
 
+                    var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
+                        x.IsEnabled &&
+                        x.CharacterName == this.currentPlayer.Name);
+                    if (prof != null)
+                    {
                         Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
-                        var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
-                            x.IsEnabled &&
-                            x.CharacterName == this.currentPlayer.Name);
-                        if (prof != null)
-                        {
-                            prof.IsActive = true;
-                            AppLogger.Write($"\"{prof.CharacterName}\"'s chat link profile activated.");
-                        }
+                        prof.IsActive = true;
+                        AppLogger.Write($"\"{prof.CharacterName}\"'s chat link profile activated.");
                     }
                 }
             }
@@ -285,6 +288,11 @@ namespace RINGS.Controllers
                                 if (string.IsNullOrEmpty(playerName))
                                 {
                                     playerName = previousPlayerName;
+
+                                    if (string.IsNullOrEmpty(playerName))
+                                    {
+                                        playerName = Config.Instance.ActiveProfile?.CharacterName;
+                                    }
                                 }
 
                                 DiscordBotController.Instance.SendMessage(

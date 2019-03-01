@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -32,6 +33,19 @@ namespace RINGS
         public App()
         {
             Instance = this;
+
+            var success = this.LockDuplicateStart();
+            if (!success)
+            {
+                MessageBox.Show(
+                    "既に起動しています。",
+                    "RINGS",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                Environment.Exit(0);
+            }
+
             AppLogger.Init("RINGSLogger");
 
             SplashOverlay.Instance.ShowSplash();
@@ -133,6 +147,8 @@ namespace RINGS
             }
             finally
             {
+                this.UnlockDuplicateStart();
+
                 AppLogger.Write("RINGS End.");
                 AppLogger.Flush();
             }
@@ -165,12 +181,65 @@ namespace RINGS
             }
             finally
             {
+                this.UnlockDuplicateStart();
+
                 AppLogger.Fatal(
                     "Unhandled Exception. 予期しない例外を検知しました。",
                     e.Exception);
 
                 AppLogger.Write("RINGS Abort.");
                 AppLogger.Flush();
+            }
+        }
+
+        private static readonly string LockFileName = @".\RINGS.lock";
+        private FileStream lockFileStream;
+
+        private bool LockDuplicateStart()
+        {
+            var success = false;
+
+            try
+            {
+                try
+                {
+                    if (File.Exists(LockFileName))
+                    {
+                        File.Delete(LockFileName);
+                    }
+                }
+                catch (Exception)
+                {
+                }
+
+                this.lockFileStream = new FileStream(
+                    LockFileName,
+                    FileMode.CreateNew,
+                    FileAccess.Write,
+                    FileShare.None);
+
+                success = true;
+            }
+            catch (IOException)
+            {
+                success = false;
+            }
+
+            return success;
+        }
+
+        private void UnlockDuplicateStart()
+        {
+            if (this.lockFileStream != null)
+            {
+                this.lockFileStream.Close();
+                this.lockFileStream.Dispose();
+                this.lockFileStream = null;
+
+                if (File.Exists(LockFileName))
+                {
+                    File.Delete(LockFileName);
+                }
             }
         }
 

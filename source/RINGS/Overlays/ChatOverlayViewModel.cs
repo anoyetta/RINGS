@@ -1,7 +1,13 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using aframe;
 using Prism.Commands;
@@ -14,6 +20,8 @@ namespace RINGS.Overlays
         BindableBase,
         IDisposable
     {
+        public Window BindingWindow { get; set; }
+
         public Action<string> ChangeActivePageCallback { get; set; }
 
         public Action ShowCallback { get; set; }
@@ -230,5 +238,76 @@ namespace RINGS.Overlays
         {
             this.MinimizeCallback?.Invoke();
         }
+
+        private DelegateCommand sendFileCommand;
+
+        public DelegateCommand SendFileCommand =>
+            this.sendFileCommand ?? (this.sendFileCommand = new DelegateCommand(this.ExecuteSendFileCommand));
+
+        private void ExecuteSendFileCommand()
+        {
+            AttachmentFileOverlay.SendFile(this.BindingWindow);
+        }
+
+        private DelegateCommand sendFromClipboardCommand;
+
+        public DelegateCommand SendFromClipboardCommand =>
+            this.sendFromClipboardCommand ?? (this.sendFromClipboardCommand = new DelegateCommand(this.ExecuteSendFromClipboardCommand));
+
+        private async void ExecuteSendFromClipboardCommand()
+        {
+            var clip = Clipboard.GetDataObject();
+            if (clip == null)
+            {
+                return;
+            }
+
+            var temp = string.Empty;
+            var result = await Task.Run(() =>
+            {
+                var bmp = clip?.GetData(typeof(Bitmap)) as Bitmap;
+                if (bmp == null)
+                {
+                    return false;
+                }
+
+                temp = Path.Combine(
+                    Config.TempDirectory,
+                    $"{Guid.NewGuid()}.png");
+
+                try
+                {
+                    if (!Directory.Exists(Config.TempDirectory))
+                    {
+                        Directory.CreateDirectory(Config.TempDirectory);
+                    }
+
+                    bmp.Save(temp, ImageFormat.Png);
+                }
+                finally
+                {
+                    bmp.Dispose();
+                    bmp = null;
+                }
+
+                return true;
+            });
+
+            if (!result)
+            {
+                return;
+            }
+
+            AttachmentFileOverlay.SendFile(this.BindingWindow, temp);
+        }
+
+        private DelegateCommand launchSketchCommand;
+
+        public DelegateCommand LaunchSketchCommand =>
+            this.launchSketchCommand ?? (this.launchSketchCommand = new DelegateCommand(this.ExecuteLaunchSketchCommand));
+
+        private static readonly string SketchUri = "ms-penworkspace://Capture";
+
+        private void ExecuteLaunchSketchCommand() => Process.Start(SketchUri);
     }
 }

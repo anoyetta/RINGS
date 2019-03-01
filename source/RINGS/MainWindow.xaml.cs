@@ -47,8 +47,8 @@ namespace RINGS
                     await WPFHelper.Dispatcher.InvokeAsync(() =>
                     {
                         this.NotifyIcon.ShowBalloonTip(
+                            "Started",
                             Config.Instance.AppNameWithVersion,
-                            "started.",
                             BalloonIcon.Info);
                     },
                     DispatcherPriority.ApplicationIdle);
@@ -100,6 +100,12 @@ namespace RINGS
             if (!this.toEnd)
             {
                 this.ToHide();
+
+                this.NotifyIcon.ShowBalloonTip(
+                    "Minimized",
+                    "RINGS is minimized, still work.",
+                    BalloonIcon.Info);
+
                 e.Cancel = true;
                 return;
             }

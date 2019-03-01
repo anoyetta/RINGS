@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using aframe;
@@ -45,17 +46,40 @@ namespace RINGS.Models
 
         private async void ExecuteTestCommand()
         {
-            this.StartTestBot();
-            await this.WaitReadyAsync();
-
-            if (!this.isReady)
+            if (string.IsNullOrEmpty(this.Token) ||
+                this.Token == Config.EmptyBotToken)
             {
-                MessageBoxHelper.EnqueueSnackMessage("ERROR! Connection failed. Please, you check Help and Log.");
+                WPFHelper.Dispatcher.Invoke(() =>
+                    MessageBoxHelper.EnqueueSnackMessage("Token を設定してください"));
+                return;
             }
 
-            await this.testBot.LogoutAsync();
-            this.testBot.Dispose();
-            this.testBot = null;
+            try
+            {
+                this.StartTestBot();
+                await this.WaitReadyAsync();
+
+                if (!this.isReady)
+                {
+                    MessageBoxHelper.EnqueueSnackMessage("ERROR! Connection failed. Please, you check Help and Log.");
+                }
+            }
+            catch (Exception ex)
+            {
+                await MessageBoxHelper.ShowExceptionAsync(
+                    "Error",
+                    "Botの接続テストで例外が発生しました。\nToken及びBotの権限設定などを確認してください。",
+                    ex);
+            }
+            finally
+            {
+                if (this.testBot != null)
+                {
+                    await this.testBot?.LogoutAsync();
+                    this.testBot?.Dispose();
+                    this.testBot = null;
+                }
+            }
         }
 
         private DelegateCommand<string> pingCommand;
@@ -67,38 +91,63 @@ namespace RINGS.Models
         private async void ExecutePingCommand(
             string channelID)
         {
+            if (string.IsNullOrEmpty(channelID) ||
+                channelID == Config.EmptyChannelID)
+            {
+                WPFHelper.Dispatcher.Invoke(() =>
+                    MessageBoxHelper.EnqueueSnackMessage("チャンネルID を設定してください"));
+                return;
+            }
+
             if (!ulong.TryParse(channelID, out ulong uid))
             {
+                WPFHelper.Dispatcher.Invoke(() =>
+                    MessageBoxHelper.EnqueueSnackMessage("チャンネルID が正しくありません"));
                 return;
             }
 
-            this.StartTestBot();
-            await this.WaitReadyAsync();
-
-            if (!this.isReady)
+            try
             {
-                MessageBoxHelper.EnqueueSnackMessage("ERROR! Failed to send ping. Please, you check Help and Log.");
-                return;
-            }
+                this.StartTestBot();
+                await this.WaitReadyAsync();
 
-            var ch = this.testBot.GetChannel(uid) as ISocketMessageChannel;
-            if (ch == null)
+                if (!this.isReady)
+                {
+                    MessageBoxHelper.EnqueueSnackMessage("ERROR! Failed to send ping. Please, you check Help and Log.");
+                    return;
+                }
+
+                var ch = this.testBot.GetChannel(uid) as ISocketMessageChannel;
+                if (ch == null)
+                {
+                    MessageBoxHelper.EnqueueSnackMessage("ERROR! Failed to send ping, channel not found. Please, you check Help and Log.");
+                    return;
+                }
+
+                var speaker = SharlayanController.Instance.CurrentPlayer?.Name ?? string.Empty;
+                var message = string.IsNullOrEmpty(speaker) ?
+                    "ping!" :
+                    $"{speaker}:ping!";
+
+                await ch.SendMessageAsync(message);
+                MessageBoxHelper.EnqueueSnackMessage("SUCCESS! Your bot said ping!");
+            }
+            catch (Exception ex)
             {
-                MessageBoxHelper.EnqueueSnackMessage("ERROR! Failed to send ping, channel not found. Please, you check Help and Log.");
-                return;
+                await MessageBoxHelper.ShowExceptionAsync(
+                    "Error",
+                    "pingメッセージの送信テストで例外が発生しました。\nチャンネルID、Token及びBotの権限設定を確認してください。",
+                    ex);
             }
-
-            var speaker = SharlayanController.Instance.CurrentPlayer?.Name ?? string.Empty;
-            var message = string.IsNullOrEmpty(speaker) ?
-                "ping!" :
-                $"{speaker}:ping!";
-
-            await ch.SendMessageAsync(message);
-            MessageBoxHelper.EnqueueSnackMessage("SUCCESS! Your bot said ping!");
-
-            await this.testBot.LogoutAsync();
-            this.testBot.Dispose();
-            this.testBot = null;
+            finally
+            {
+                if (this.testBot != null)
+                {
+                    await this.testBot?.LogoutAsync();
+                    this.testBot?.Dispose();
+                    this.testBot = null;
+                }
+            }
         }
 
         private async void StartTestBot()

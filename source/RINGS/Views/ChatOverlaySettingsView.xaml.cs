@@ -34,11 +34,8 @@ namespace RINGS.Views
             object sender,
             MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
-            {
-                var model = (sender as FrameworkElement).DataContext;
-                this.ViewModel.EditOverlaySettingsCommand.Execute(model as ChatOverlaySettingsModel);
-            }
+            var model = (sender as FrameworkElement).DataContext;
+            this.ViewModel.EditOverlaySettingsCommand.Execute(model as ChatOverlaySettingsModel);
         }
     }
 }

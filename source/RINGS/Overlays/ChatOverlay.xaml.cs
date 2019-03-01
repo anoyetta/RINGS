@@ -32,6 +32,7 @@ namespace RINGS.Overlays
             this.Opacity = 0;
 
             this.ViewModel.Name = name;
+            this.ViewModel.BindingWindow = this;
             this.ViewModel.ChatOverlaySettings.PropertyChanged += this.ChatOverlaySettings_PropertyChanged;
             this.ResizeMode = this.ViewModel.ChatOverlaySettings.IsLock ?
                 ResizeMode.NoResize :
@@ -76,6 +77,8 @@ namespace RINGS.Overlays
                 this.ViewModel.Dispose();
             };
 
+            // トリプルクリックは封印する
+            /*
             this.MouseLeftButtonDown += (_, e) =>
             {
                 if (e.ClickCount == 3)
@@ -83,6 +86,7 @@ namespace RINGS.Overlays
                     this.MinimizeChatPanel();
                 }
             };
+            */
 
             this.MinimizeIcon.PreviewMouseDown += (_, e) =>
             {
@@ -163,11 +167,6 @@ namespace RINGS.Overlays
                     tb.SelectAll();
                     e.Handled = true;
                     break;
-
-                case 3:
-                    this.MinimizeChatPanel();
-                    e.Handled = true;
-                    break;
             }
         }
 
@@ -189,28 +188,34 @@ namespace RINGS.Overlays
 
         private void MinimizeChatPanel()
         {
-            if (!this.isMinimized)
+            lock (this)
             {
-                this.isMinimized = true;
-                this.MinimizeIcon.Visibility = Visibility.Visible;
-                this.MinimizeButton.Visibility = Visibility.Collapsed;
-                this.BackgroundBorder.Visibility = Visibility.Collapsed;
-                this.ChatPagesTabControl.Visibility = Visibility.Collapsed;
-                this.TitleLabel.Visibility = Visibility.Collapsed;
+                if (!this.isMinimized)
+                {
+                    this.isMinimized = true;
+                    this.MinimizeIcon.Visibility = Visibility.Visible;
+                    this.MinimizeButton.Visibility = Visibility.Collapsed;
+                    this.BackgroundBorder.Visibility = Visibility.Collapsed;
+                    this.ChatPagesTabControl.Visibility = Visibility.Collapsed;
+                    this.TitleLabel.Visibility = Visibility.Collapsed;
+                }
             }
         }
 
         private void ShowChatPanel()
         {
-            if (this.isMinimized)
+            lock (this)
             {
-                this.StopFadeout();
-                this.MinimizeIcon.Visibility = Visibility.Collapsed;
-                this.MinimizeButton.Visibility = Visibility.Visible;
-                this.BackgroundBorder.Visibility = Visibility.Visible;
-                this.ChatPagesTabControl.Visibility = Visibility.Visible;
-                this.TitleLabel.Visibility = Visibility.Visible;
-                this.isMinimized = false;
+                if (this.isMinimized)
+                {
+                    this.StopFadeout();
+                    this.MinimizeIcon.Visibility = Visibility.Collapsed;
+                    this.MinimizeButton.Visibility = Visibility.Visible;
+                    this.BackgroundBorder.Visibility = Visibility.Visible;
+                    this.ChatPagesTabControl.Visibility = Visibility.Visible;
+                    this.TitleLabel.Visibility = Visibility.Visible;
+                    this.isMinimized = false;
+                }
             }
         }
 
