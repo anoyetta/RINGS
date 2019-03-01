@@ -199,7 +199,7 @@ namespace RINGS.Controllers
                 }
                 else
                 {
-                    await ch.SendFileAsync(fileName, message);
+                    await ch.SendFileAsync(fileName, text);
                 }
 
                 this.LastSendChatCode = chatCode;
@@ -254,7 +254,8 @@ namespace RINGS.Controllers
             model.ChatCode = ch.ChatCode;
             model.IsMe = model.OriginalSpeaker == SharlayanController.Instance.CurrentPlayer?.Name;
 
-            if (!model.IsMe)
+            if (!model.IsMe ||
+                model.DiscordLog.Attachments.Any())
             {
                 WPFHelper.Dispatcher.Invoke(() =>
                 {

@@ -71,11 +71,14 @@ namespace RINGS.Overlays
             var currentScreen = System.Windows.Forms.Screen.FromHandle(interopHelper.Handle);
 
             var view = new AttachmentFileOverlay();
+            view.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             view.Files = files;
             view.Show();
 
+            /*
             view.Left = (currentScreen.Bounds.Width - view.ActualWidth) / 2d;
             view.Top = (currentScreen.Bounds.Height - view.ActualHeight) / 2d;
+            */
         }
 
         public AttachmentFileOverlay()
@@ -186,6 +189,8 @@ namespace RINGS.Overlays
                     first = false;
                 }
             }
+
+            this.Close();
         }
 
         #region IOverlay
