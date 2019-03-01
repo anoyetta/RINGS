@@ -97,10 +97,10 @@
       <!-- Miniming Icon -->
       <Button
         x:Name="MinimizeButton"
-        Margin="2"
+        Margin="0 -2 2 0"
         Padding="0"
-        Width="25"
-        Height="25"
+        Width="16"
+        Height="16"
         Panel.ZIndex="3"
         Foreground="White"
         VerticalAlignment="Top"
@@ -108,15 +108,11 @@
         BorderThickness="0"
         Background="#01000000"
         Focusable="False"
-        ToolTip="Minimize"
+        ToolTip="最小化する"
         Command="{Binding MinimizeCommand, Mode=OneWay}">
-        <Button.LayoutTransform>
-          <ScaleTransform ScaleX="0.7" ScaleY="0.7" />
-        </Button.LayoutTransform>
-        <iconPacks:FontAwesome
-          Kind="MinusSquareSolid"
-          Width="15"
-          Height="15" />
+        <Viewbox>
+          <iconPacks:FontAwesome Kind="MinusSquareSolid" />
+        </Viewbox>
       </Button>
 
       <!-- Backgroud -->

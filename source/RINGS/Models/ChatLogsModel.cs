@@ -161,7 +161,7 @@ namespace RINGS.Models
         private string[] duplicateCheckBuffer = new string[4];
         private volatile int duplicateCheckIndex = 0;
         private DateTime duplicateCheckTimestamp = DateTime.MinValue;
-        private static readonly double DuplicateDueSeconds = 0.2d;
+        private static readonly double DuplicateDueSeconds = 0.25d;
 
         private bool IsDuplicate(
             ChatLogModel chatLog)

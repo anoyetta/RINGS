@@ -343,7 +343,7 @@ namespace RINGS.Models
                 this.parentOverlaySettings != null &&
                 this.parentOverlaySettings.IsEnabled &&
                 this.handledChatChannels.ContainsKey(chatLog.ChatCode ?? string.Empty) &&
-                this.handledChatChannels[chatLog.ChatCode ?? string.Empty].IsEnabled &
+                this.handledChatChannels[chatLog.ChatCode ?? string.Empty].IsEnabled &&
                 !this.ignoreFilters.Any(x => x?.IsMatch(chatLog.Message) ?? false);
 
             this.RaisePropertyChanged(nameof(this.LogBuffer));

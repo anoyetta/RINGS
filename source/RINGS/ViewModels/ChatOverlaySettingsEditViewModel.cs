@@ -166,7 +166,8 @@ namespace RINGS.ViewModels
         {
             var page = new ChatPageSettingsModel()
             {
-                Name = "Page " + (this.model.ChatPages.Count + 1)
+                Name = "Page " + (this.model.ChatPages.Count + 1),
+                ParentOverlaySettings = this.model,
             };
 
             this.model.ChatPages.Add(page);
