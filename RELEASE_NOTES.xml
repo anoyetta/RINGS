@@ -176,4 +176,16 @@
     * スクリーンキャプチャーと編集及び自動的にクリップボードに保存できるようにした
     </description>
   </note>
+
+  <note>
+    <version>0.3.0.2401</version>
+    <channel>Beta</channel>
+    <timestamp>2019-03-02T01:32:40.6225427+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.3.0.2401-Beta/RINGS_v0_3_0_2401_Beta.zip</uri>
+    <description>
+    * RC3
+    * タブを追加したときにそのタブにチャットログが表示されない場合がある不具合を修正した
+    * チャットオーバーレイの最小化ボタンをやや大きくした
+    </description>
+  </note>
 </release_notes>
