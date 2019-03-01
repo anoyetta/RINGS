@@ -65,7 +65,8 @@
                   HorizontalAlignment="Left"
                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
                   IsChecked="{Binding Model.IsEnabled, Mode=TwoWay}"
-                  Content="Enabled" />
+                  Content="Enabled"
+                  ToolTip="オーバーレイはFFXIVまたはRINGSがアクティブのとき表示されます" />
                 <metro:ToggleSwitch
                   Margin="0 8 0 0"
                   HorizontalAlignment="Left"

@@ -116,6 +116,9 @@ namespace RINGS
             return settings.ToArray();
         }
 
+        public static readonly string EmptyChannelID = "* Your Channel ID *";
+        public static readonly string EmptyBotToken = "* Your Bot Token *";
+
         private static SuspendableObservableCollection<CharacterProfileModel> CreateDefaultCharacterProfile() =>
             new SuspendableObservableCollection<CharacterProfileModel>()
             {
@@ -131,7 +134,7 @@ namespace RINGS
                 new DiscordChannelModel()
                 {
                     Name = "Default Channel",
-                    ID = "* Your Channel ID *",
+                    ID = EmptyChannelID,
                     HelperBotName = "Default Channel Bot",
                 },
             };
@@ -142,7 +145,7 @@ namespace RINGS
                 new DiscordBotModel()
                 {
                     Name = "Default Channel Bot",
-                    Token = "* Your Bot Token *"
+                    Token = EmptyBotToken
                 },
             };
     }

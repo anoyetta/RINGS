@@ -8,8 +8,12 @@ namespace RINGS.Overlays
     /// </summary>
     public partial class WebViewHelperOverlay : Window, IOverlay
     {
+        public static WebViewHelperOverlay Instance { get; private set; }
+
         public WebViewHelperOverlay()
         {
+            Instance = this;
+
             this.InitializeComponent();
             this.ToNonActive();
 

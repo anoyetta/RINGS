@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
 
 namespace aframe.Updater
@@ -152,11 +153,20 @@ namespace aframe.Updater
             WriteLogLine("Update Completed.");
             Thread.Sleep(Interval);
 
+#if false
             WriteLogLine("Reboot Application...");
             Process.Start(new ProcessStartInfo(targetProcessName)
             {
                 WorkingDirectory = Path.GetDirectoryName(targetProcessName)
             });
+#else
+            MessageBox.Show(
+                $"Update Completed. Please restart {targetProcessName} yourself." + Environment.NewLine +
+                $"アップデートが完了しました。{targetProcessName} を再起動してください。",
+                "Updater",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+#endif
         }
 
         private static string logFileName;

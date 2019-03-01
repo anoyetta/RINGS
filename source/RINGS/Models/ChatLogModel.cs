@@ -515,6 +515,14 @@ namespace RINGS.Models
                 log.IsMe = currentPlayerNames.Any(x =>
                     log.OriginalSpeaker.Contains(x));
             }
+            else
+            {
+                var currentProfName = Config.Instance.ActiveProfile?.CharacterName;
+                if (!string.IsNullOrEmpty(currentProfName))
+                {
+                    log.IsMe = log.OriginalSpeaker.Contains(currentProfName);
+                }
+            }
 
             log.Message = FomartCharacterNames(log.message);
 

@@ -34,8 +34,95 @@
       <RowDefinition />
     </Grid.RowDefinitions>
 
+    <!-- Bot -->
+    <metro:MetroHeader Grid.Row="0" Header="Bot" Margin="0 0 0 12">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ListBox
+          Grid.Row="0"
+          Grid.Column="0"
+          x:Name="BotListBox"
+          Width="200"
+          SelectionMode="Single"
+          ItemsSource="{Binding Config.DiscordBotList, Mode=OneWay}">
+
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="{x:Type model:DiscordBotModel}">
+              <TextBlock
+                HorizontalAlignment="Stretch"
+                Text="{Binding Name, Mode=OneWay}" />
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <DockPanel
+          Grid.Column="0"
+          Grid.Row="1">
+          <StackPanel
+            Margin="0 5 0 0"
+            HorizontalAlignment="Left"
+            DockPanel.Dock="Left"
+            Orientation="Horizontal">
+            <Button
+              Height="20" Width="20"
+              HorizontalAlignment="Right"
+              Style="{DynamicResource IconButtonStyle}"
+              Command="{Binding AddBotCommand, Mode=OneWay}">
+              <Viewbox Width="12">
+                <iconPacks:PackIconMaterial Kind="Plus" Foreground="{DynamicResource IdealForegroundColorBrush}" />
+              </Viewbox>
+            </Button>
+
+            <Button
+              Margin="5 0 0 0"
+              Height="20" Width="20"
+              HorizontalAlignment="Right"
+              Style="{DynamicResource IconButtonStyle}"
+              Command="{Binding DeleteBotCommand, Mode=OneWay}"
+              CommandParameter="{Binding ElementName=BotListBox, Path=SelectedItem, Mode=OneWay}">
+              <Viewbox Width="12">
+                <iconPacks:PackIconMaterial Kind="Minus" Foreground="{DynamicResource IdealForegroundColorBrush}" />
+              </Viewbox>
+            </Button>
+          </StackPanel>
+        </DockPanel>
+
+        <Grid
+          x:Name="BotPanel"
+          Grid.Column="1"
+          Grid.Row="0"
+          Grid.RowSpan="2"
+          Margin="15 0 0 0"
+          d:DataContext="{d:DesignInstance Type={x:Type model:DiscordBotModel}, IsDesignTimeCreatable=True}"
+          DataContext="{Binding ElementName=BotListBox, Path=SelectedItem, Mode=OneWay}">
+          <StackPanel>
+            <metro:MetroHeader Header="Bot名">
+              <TextBox Text="{Binding Name, Mode=TwoWay}" />
+            </metro:MetroHeader>
+
+            <metro:MetroHeader Header="Token" Margin="0 10 0 0">
+              <TextBox
+                VerticalContentAlignment="Center"
+                FontFamily="Consolas"
+                FontSize="13"
+                Text="{Binding Token, Mode=TwoWay}" />
+            </metro:MetroHeader>
+          </StackPanel>
+        </Grid>
+      </Grid>
+    </metro:MetroHeader>
+    <!-- Bot end -->
+
     <!-- Channels -->
-    <metro:MetroHeader Grid.Row="0" Header="DISCORD Channels" Margin="0 0 0 12">
+    <metro:MetroHeader Grid.Row="1" Header="DISCORD Channels" Margin="0 12 0 0">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition />
@@ -148,92 +235,5 @@
       </Grid>
     </metro:MetroHeader>
     <!-- Channels end -->
-
-    <!-- Bot -->
-    <metro:MetroHeader Grid.Row="1" Header="Bot" Margin="0 12 0 0">
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition />
-          <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <ListBox
-          Grid.Row="0"
-          Grid.Column="0"
-          x:Name="BotListBox"
-          Width="200"
-          SelectionMode="Single"
-          ItemsSource="{Binding Config.DiscordBotList, Mode=OneWay}">
-
-          <ListBox.ItemTemplate>
-            <DataTemplate DataType="{x:Type model:DiscordBotModel}">
-              <TextBlock
-                HorizontalAlignment="Stretch"
-                Text="{Binding Name, Mode=OneWay}" />
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
-
-        <DockPanel
-          Grid.Column="0"
-          Grid.Row="1">
-          <StackPanel
-            Margin="0 5 0 0"
-            HorizontalAlignment="Left"
-            DockPanel.Dock="Left"
-            Orientation="Horizontal">
-            <Button
-              Height="20" Width="20"
-              HorizontalAlignment="Right"
-              Style="{DynamicResource IconButtonStyle}"
-              Command="{Binding AddBotCommand, Mode=OneWay}">
-              <Viewbox Width="12">
-                <iconPacks:PackIconMaterial Kind="Plus" Foreground="{DynamicResource IdealForegroundColorBrush}" />
-              </Viewbox>
-            </Button>
-
-            <Button
-              Margin="5 0 0 0"
-              Height="20" Width="20"
-              HorizontalAlignment="Right"
-              Style="{DynamicResource IconButtonStyle}"
-              Command="{Binding DeleteBotCommand, Mode=OneWay}"
-              CommandParameter="{Binding ElementName=BotListBox, Path=SelectedItem, Mode=OneWay}">
-              <Viewbox Width="12">
-                <iconPacks:PackIconMaterial Kind="Minus" Foreground="{DynamicResource IdealForegroundColorBrush}" />
-              </Viewbox>
-            </Button>
-          </StackPanel>
-        </DockPanel>
-
-        <Grid
-          x:Name="BotPanel"
-          Grid.Column="1"
-          Grid.Row="0"
-          Grid.RowSpan="2"
-          Margin="15 0 0 0"
-          d:DataContext="{d:DesignInstance Type={x:Type model:DiscordBotModel}, IsDesignTimeCreatable=True}"
-          DataContext="{Binding ElementName=BotListBox, Path=SelectedItem, Mode=OneWay}">
-          <StackPanel>
-            <metro:MetroHeader Header="Bot名">
-              <TextBox Text="{Binding Name, Mode=TwoWay}" />
-            </metro:MetroHeader>
-
-            <metro:MetroHeader Header="Token" Margin="0 10 0 0">
-              <TextBox
-                VerticalContentAlignment="Center"
-                FontFamily="Consolas"
-                FontSize="13"
-                Text="{Binding Token, Mode=TwoWay}" />
-            </metro:MetroHeader>
-          </StackPanel>
-        </Grid>
-      </Grid>
-    </metro:MetroHeader>
-    <!-- Bot end -->
   </Grid>
 </UserControl>

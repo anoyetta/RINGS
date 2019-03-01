@@ -50,6 +50,13 @@ namespace RINGS.Overlays
 
                 activeX.Silent = true;
             };
+
+            this.Closing += (_, e) =>
+            {
+                this.Hide();
+                WebViewHelperOverlay.Instance?.Close();
+                e.Cancel = true;
+            };
         }
 
         public string Url { get; private set; } = string.Empty;

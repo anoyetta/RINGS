@@ -285,6 +285,11 @@ namespace RINGS.Controllers
                                 if (string.IsNullOrEmpty(playerName))
                                 {
                                     playerName = previousPlayerName;
+
+                                    if (string.IsNullOrEmpty(playerName))
+                                    {
+                                        playerName = Config.Instance.ActiveProfile?.CharacterName;
+                                    }
                                 }
 
                                 DiscordBotController.Instance.SendMessage(

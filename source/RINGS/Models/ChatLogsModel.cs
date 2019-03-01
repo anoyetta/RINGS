@@ -161,11 +161,12 @@ namespace RINGS.Models
         private string[] duplicateCheckBuffer = new string[4];
         private volatile int duplicateCheckIndex = 0;
         private DateTime duplicateCheckTimestamp = DateTime.MinValue;
+        private static readonly double DuplicateDueSeconds = 0.2d;
 
         private bool IsDuplicate(
             ChatLogModel chatLog)
         {
-            if ((DateTime.Now - this.duplicateCheckTimestamp).TotalSeconds > 0.2d)
+            if ((DateTime.Now - this.duplicateCheckTimestamp).TotalSeconds > DuplicateDueSeconds)
             {
                 for (int i = 0; i < this.duplicateCheckBuffer.Length; i++)
                 {
@@ -175,7 +176,10 @@ namespace RINGS.Models
 
             this.duplicateCheckTimestamp = DateTime.Now;
 
+            /*
             var key = $"{chatLog.ChatCode}-{NormalizeSpeaker(chatLog.Speaker)}-{chatLog.Message}";
+            */
+            var key = $"{NormalizeSpeaker(chatLog.Speaker)}-{chatLog.Message}";
 
             var result = this.duplicateCheckBuffer.Any(x => x == key);
 
