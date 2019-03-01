@@ -263,49 +263,42 @@ namespace RINGS.Overlays
             }
 
             var temp = string.Empty;
-
-            try
+            var result = await Task.Run(() =>
             {
-                var result = await Task.Run(() =>
+                var bmp = clip?.GetData(typeof(Bitmap)) as Bitmap;
+                if (bmp == null)
                 {
-                    var bmp = clip?.GetData(typeof(Bitmap)) as Bitmap;
-                    if (bmp == null)
-                    {
-                        return false;
-                    }
-
-                    temp = Path.Combine(
-                        Path.GetTempPath(),
-                        $"{Guid.NewGuid()}.png");
-
-                    try
-                    {
-                        bmp.Save(temp, ImageFormat.Png);
-                    }
-                    finally
-                    {
-                        bmp.Dispose();
-                        bmp = null;
-                    }
-
-                    return true;
-                });
-
-                if (!result)
-                {
-                    return;
+                    return false;
                 }
 
-                AttachmentFileOverlay.SendFile(this.BindingWindow, temp);
-            }
-            finally
-            {
-                if (!string.IsNullOrEmpty(temp) &&
-                    File.Exists(temp))
+                temp = Path.Combine(
+                    Config.TempDirectory,
+                    $"{Guid.NewGuid()}.png");
+
+                try
                 {
-                    File.Delete(temp);
+                    if (!Directory.Exists(Config.TempDirectory))
+                    {
+                        Directory.CreateDirectory(Config.TempDirectory);
+                    }
+
+                    bmp.Save(temp, ImageFormat.Png);
                 }
+                finally
+                {
+                    bmp.Dispose();
+                    bmp = null;
+                }
+
+                return true;
+            });
+
+            if (!result)
+            {
+                return;
             }
+
+            AttachmentFileOverlay.SendFile(this.BindingWindow, temp);
         }
 
         private DelegateCommand launchSketchCommand;

@@ -419,7 +419,7 @@ namespace RINGS
         public double BuiltinBrowserSize
         {
             get => this.builtinBrowserSize;
-            set => this.SetProperty(ref this.builtinBrowserSize, value);
+            set => this.SetProperty(ref this.builtinBrowserSize, Math.Round(value));
         }
 
         private double chatLogPollingInterval = 10.0d;

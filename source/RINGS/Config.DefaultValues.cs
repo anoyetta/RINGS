@@ -150,5 +150,7 @@ namespace RINGS
                     Token = EmptyBotToken
                 },
             };
+
+        public static readonly string TempDirectory = @".\temp";
     }
 }

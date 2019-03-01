@@ -65,7 +65,7 @@
         Text="{Binding Message, Mode=TwoWay}" />
 
       <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0 20 0 0">
-        <Button Content="Submit" Margin="10 0" Width="90" FontSize="12" IsDefault="True" />
+        <Button Content="Submit" Margin="10 0" Width="90" FontSize="12" IsDefault="True" Command="{Binding SubmitCommand, Mode=OneWay}" />
         <Button Content="Cancel" Margin="10 0" Width="90" FontSize="12" IsCancel="True" Click="CancelButton_Click" />
       </StackPanel>
     </StackPanel>

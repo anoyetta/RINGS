@@ -294,46 +294,63 @@
       </TabControl>
     </Grid>
 
-    <StackPanel Grid.Row="2" Orientation="Horizontal">
-      <StackPanel.Resources>
-        <system:Double x:Key="IconSize">30</system:Double>
-      </StackPanel.Resources>
+    <Border
+      Grid.Row="2"
+      HorizontalAlignment="Left"
+      Opacity="{Binding ElementName=BackgroundBorder, Path=Opacity, Mode=OneWay}"
+      Background="{Binding ChatOverlaySettings.BackgroundBrush, Mode=OneWay}"
+      CornerRadius="6"
+      Padding="1">
+      <Border.Effect>
+        <DropShadowEffect
+          Opacity="{Binding ChatOberlaySettings.Opacity, Mode=OneWay}"
+          Color="{Binding ChatOberlaySettings.BackgroundBrush.Color, Mode=OneWay}"
+          Direction="0"
+          ShadowDepth="0"
+          BlurRadius="8" />
+      </Border.Effect>
 
-      <Button
-        Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
-        Focusable="False"
-        BorderThickness="0"
-        Background="Transparent"
-        ToolTip="ファイルを送る"
-        Command="{Binding SendFileCommand, Mode=OneWay}">
-        <Viewbox>
-          <iconPacks:PackIconMaterial Kind="Attachment" />
-        </Viewbox>
-      </Button>
+      <StackPanel Orientation="Horizontal">
+        <StackPanel.Resources>
+          <system:Double x:Key="IconSize">30</system:Double>
+        </StackPanel.Resources>
 
-      <Button
-        Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
-        Focusable="False"
-        BorderThickness="0"
-        Background="Transparent"
-        ToolTip="クリップボードから画像を送る"
-        Command="{Binding SendFromClipboardCommand, Mode=OneWay}">
-        <Viewbox>
-          <iconPacks:PackIconMaterial Kind="ContentPaste" />
-        </Viewbox>
-      </Button>
+        <Button
+          Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
+          Focusable="False"
+          BorderThickness="0"
+          Background="Transparent"
+          ToolTip="ファイルを送る"
+          Command="{Binding SendFileCommand, Mode=OneWay}">
+          <Viewbox>
+            <iconPacks:PackIconMaterial Kind="Attachment" />
+          </Viewbox>
+        </Button>
 
-      <Button
-        Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
-        Focusable="False"
-        BorderThickness="0"
-        Background="Transparent"
-        ToolTip="切り取り＆スケッチを起動する"
-        Command="{Binding LaunchSketchCommand, Mode=OneWay}">
-        <Viewbox>
-          <iconPacks:PackIconFontAwesome Kind="PaintBrushSolid" />
-        </Viewbox>
-      </Button>
-    </StackPanel>
+        <Button
+          Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
+          Focusable="False"
+          BorderThickness="0"
+          Background="Transparent"
+          ToolTip="クリップボードから画像を送る"
+          Command="{Binding SendFromClipboardCommand, Mode=OneWay}">
+          <Viewbox>
+            <iconPacks:PackIconMaterial Kind="ContentPaste" />
+          </Viewbox>
+        </Button>
+
+        <Button
+          Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
+          Focusable="False"
+          BorderThickness="0"
+          Background="Transparent"
+          ToolTip="切り取り＆スケッチを起動する"
+          Command="{Binding LaunchSketchCommand, Mode=OneWay}">
+          <Viewbox>
+            <iconPacks:PackIconFontAwesome Kind="PaintBrushSolid" />
+          </Viewbox>
+        </Button>
+      </StackPanel>
+    </Border>
   </Grid>
 </Window>
