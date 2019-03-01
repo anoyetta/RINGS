@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -28,6 +29,7 @@ namespace RINGS
             { nameof(BuiltinBrowserSize), 80.0d },
             { nameof(ChatLogPollingInterval), 10.0d },
             { nameof(ChatLogScrollBarWidth), 6.0d },
+            { nameof(FileDirectory), Environment.GetFolderPath(Environment.SpecialFolder.Desktop) },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },

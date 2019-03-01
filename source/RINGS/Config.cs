@@ -440,6 +440,15 @@ namespace RINGS
             set => this.SetProperty(ref this.chatLogScrollBarWidth, value);
         }
 
+        private string fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+        [JsonProperty(PropertyName = "file_directory")]
+        public string FileDirectory
+        {
+            get => this.fileDirectory;
+            set => this.SetProperty(ref this.fileDirectory, value);
+        }
+
         private readonly Dictionary<string, ChatOverlaySettingsModel> chatOverlaySettings = new Dictionary<string, ChatOverlaySettingsModel>();
 
         [JsonProperty(PropertyName = "chat_overlays", DefaultValueHandling = DefaultValueHandling.Include)]

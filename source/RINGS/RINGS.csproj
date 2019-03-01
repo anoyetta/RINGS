@@ -84,6 +84,9 @@
     <Compile Include="Models\ChatOverlaySettingsModel.cs" />
     <Compile Include="Models\DiscordChannelModel.cs" />
     <Compile Include="Models\DiscordBotModel.cs" />
+    <Compile Include="Overlays\AttachmentFileOverlay.xaml.cs">
+      <DependentUpon>AttachmentFileOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Overlays\ChatOverlay.xaml.cs">
       <DependentUpon>ChatOverlay.xaml</DependentUpon>
     </Compile>
@@ -145,6 +148,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Overlays\AttachmentFileOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Overlays\ChatOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

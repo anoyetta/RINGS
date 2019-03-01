@@ -39,19 +39,11 @@
   </Window.DataContext>
 
   <Window.Resources>
-    <ContextMenu
-      x:Key="MainContextMenu"
-      BorderThickness="0"
-      HasDropShadow="False"
-      Padding="0">
-      <MenuItem Header="ファイルを送る" Padding="4" />
-    </ContextMenu>
-
     <Style TargetType="TabControl" />
     <Style TargetType="TabItem" />
   </Window.Resources>
 
-  <Grid Margin="9">
+  <Grid Margin="9 9 9 0">
     <Grid.LayoutTransform>
       <ScaleTransform
         ScaleX="{Binding ChatOverlaySettings.Scale, Mode=OneWay}"
@@ -61,6 +53,7 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
     <Label
@@ -149,7 +142,6 @@
         Background="Transparent"
         Focusable="False"
         TabStripPlacement="Bottom"
-        ContextMenu="{DynamicResource MainContextMenu}"
         Opacity="{Binding ElementName=BackgroundBorder, Path=Opacity, Mode=OneWay}"
         ItemsSource="{Binding ChatOverlaySettings.ChatPages, Mode=OneWay}">
 
@@ -301,5 +293,47 @@
         </TabControl.ContentTemplate>
       </TabControl>
     </Grid>
+
+    <StackPanel Grid.Row="2" Orientation="Horizontal">
+      <StackPanel.Resources>
+        <system:Double x:Key="IconSize">30</system:Double>
+      </StackPanel.Resources>
+
+      <Button
+        Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
+        Focusable="False"
+        BorderThickness="0"
+        Background="Transparent"
+        ToolTip="ファイルを送る"
+        Command="{Binding SendFileCommand, Mode=OneWay}">
+        <Viewbox>
+          <iconPacks:PackIconMaterial Kind="Attachment" />
+        </Viewbox>
+      </Button>
+
+      <Button
+        Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
+        Focusable="False"
+        BorderThickness="0"
+        Background="Transparent"
+        ToolTip="クリップボードから画像を送る"
+        Command="{Binding SendFromClipboardCommand, Mode=OneWay}">
+        <Viewbox>
+          <iconPacks:PackIconMaterial Kind="ContentPaste" />
+        </Viewbox>
+      </Button>
+
+      <Button
+        Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
+        Focusable="False"
+        BorderThickness="0"
+        Background="Transparent"
+        ToolTip="切り取り＆スケッチを起動する"
+        Command="{Binding LaunchSketchCommand, Mode=OneWay}">
+        <Viewbox>
+          <iconPacks:PackIconFontAwesome Kind="PaintBrushSolid" />
+        </Viewbox>
+      </Button>
+    </StackPanel>
   </Grid>
 </Window>

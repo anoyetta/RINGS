@@ -32,6 +32,7 @@ namespace RINGS.Overlays
             this.Opacity = 0;
 
             this.ViewModel.Name = name;
+            this.ViewModel.BindingWindow = this;
             this.ViewModel.ChatOverlaySettings.PropertyChanged += this.ChatOverlaySettings_PropertyChanged;
             this.ResizeMode = this.ViewModel.ChatOverlaySettings.IsLock ?
                 ResizeMode.NoResize :
