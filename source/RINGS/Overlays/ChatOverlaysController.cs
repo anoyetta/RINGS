@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Threading;
 using aframe;
 
@@ -133,9 +132,7 @@ namespace RINGS.Overlays
                 {
                     if (overlay.ViewModel.ChatOverlaySettings?.IsEnabled ?? false)
                     {
-                        overlay.Visibility = IsFFXIVActive ?
-                            Visibility.Visible :
-                            Visibility.Collapsed;
+                        overlay.OverlayVisible = IsFFXIVActive;
                     }
                 }
             }
