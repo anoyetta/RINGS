@@ -199,4 +199,15 @@
     * ログのコンテキストメニューから選択文字列をERIONESで検索できるようにした
     </description>
   </note>
+
+  <note>
+    <version>0.3.2.2423</version>
+    <channel>Beta</channel>
+    <timestamp>2019-03-02T23:00:51.8454747+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.3.2.2423-Beta/RINGS_v0_3_2_2423_Beta.zip</uri>
+    <description>
+    * RC3.2
+    * 非アクティブ状態から復帰したときにログが選択できなくなる不具合を修正した
+    </description>
+  </note>
 </release_notes>
