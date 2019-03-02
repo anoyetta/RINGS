@@ -1,9 +1,13 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media.Animation;
@@ -159,6 +163,8 @@ namespace RINGS.Overlays
             object sender,
             MouseButtonEventArgs e)
         {
+            // 単語単位の選択を有効にするためSelectAllを封印する
+            /*
             var tb = sender as BindableRichTextBox;
 
             switch (e.ClickCount)
@@ -168,6 +174,7 @@ namespace RINGS.Overlays
                     e.Handled = true;
                     break;
             }
+            */
         }
 
         private void ScrollViewer_Loaded(
@@ -217,6 +224,31 @@ namespace RINGS.Overlays
                     this.isMinimized = false;
                 }
             }
+        }
+
+        private static readonly string ErionesUri = @"https://eriones.com/search?list=on&i=";
+
+        private async void SearchErionesItem_Click(object sender, RoutedEventArgs e)
+        {
+            var textBox =
+                ((e.OriginalSource as MenuItem)?.Parent as ContextMenu)?
+                .PlacementTarget as BindableRichTextBox;
+
+            if (textBox == null ||
+                textBox.Selection.IsEmpty)
+            {
+                return;
+            }
+
+            var selectedText = new TextRange(
+                textBox.Selection.Start,
+                textBox.Selection.End).Text;
+
+            await Task.Run(() =>
+            {
+                var arg = HttpUtility.UrlEncode(selectedText);
+                Process.Start($"{ErionesUri}{arg}");
+            });
         }
 
         #region IOverlay

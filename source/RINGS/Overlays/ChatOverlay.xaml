@@ -99,8 +99,8 @@
         x:Name="MinimizeButton"
         Margin="0 -2 2 0"
         Padding="0"
-        Width="16"
-        Height="16"
+        Width="14"
+        Height="14"
         Panel.ZIndex="3"
         Foreground="White"
         VerticalAlignment="Top"
@@ -237,37 +237,10 @@
                           </DataTrigger>
                         </Style.Triggers>
                       </Style>
-
-                      <ContextMenu
-                        x:Key="LogContextMenu"
-                        BorderThickness="0"
-                        HasDropShadow="False"
-                        Padding="0">
-                        <MenuItem
-                          Header="ログをコピー"
-                          Padding="4"
-                          Command="{Binding CopyLogCommand, Mode=OneWay}"
-                          CommandParameter="{Binding}" />
-                        <MenuItem
-                          Header="発言者をコピー"
-                          Padding="4"
-                          Command="{Binding CopyPeakerCommand, Mode=OneWay}"
-                          CommandParameter="{Binding}" />
-                        <MenuItem
-                          Margin="0 5 0 0"
-                          Header="パーティに勧誘する (/pcmd add)"
-                          Padding="4"
-                          Command="{Binding InvitePartyCommand, Mode=OneWay}"
-                          CommandParameter="{Binding}" />
-                        <MenuItem
-                          Header="パーティから除外する (/pcmd kick)"
-                          Padding="4"
-                          Command="{Binding KickPartyCommand, Mode=OneWay}"
-                          CommandParameter="{Binding}" />
-                      </ContextMenu>
                     </DataTemplate.Resources>
 
                     <fw:BindableRichTextBox
+                      AutoWordSelection="True"
                       Margin="{Binding ParentOverlaySettings.LineMarginThickness, Mode=OneWay}"
                       TextElement.FontFamily="{Binding ParentOverlaySettings.Font.FontFamily, Mode=OneWay}"
                       TextElement.FontSize="{Binding ParentOverlaySettings.Font.Size, Mode=OneWay}"
@@ -278,9 +251,42 @@
                       TextOptions.TextRenderingMode="Aliased"
                       TextOptions.TextFormattingMode="Ideal"
                       TextOptions.TextHintingMode="Auto"
-                      ContextMenu="{StaticResource LogContextMenu}"
                       Document="{Binding ChatDocument, Mode=OneWay}"
-                      PreviewMouseLeftButtonDown="BindableRichTextBox_PreviewMouseLeftButtonDown" />
+                      PreviewMouseLeftButtonDown="BindableRichTextBox_PreviewMouseLeftButtonDown">
+                      <fw:BindableRichTextBox.ContextMenu>
+                        <ContextMenu
+                          BorderThickness="0"
+                          HasDropShadow="False"
+                          Padding="0">
+                          <MenuItem
+                            Header="選択を ERIONES で検索する"
+                            Padding="4"
+                            Click="SearchErionesItem_Click" />
+                          <Separator />
+                          <MenuItem
+                            Header="ログをコピー"
+                            Padding="4"
+                            Command="{Binding CopyLogCommand, Mode=OneWay}"
+                            CommandParameter="{Binding}" />
+                          <MenuItem
+                            Header="発言者をコピー"
+                            Padding="4"
+                            Command="{Binding CopyPeakerCommand, Mode=OneWay}"
+                            CommandParameter="{Binding}" />
+                          <Separator />
+                          <MenuItem
+                            Header="パーティに勧誘する (/pcmd add)"
+                            Padding="4"
+                            Command="{Binding InvitePartyCommand, Mode=OneWay}"
+                            CommandParameter="{Binding}" />
+                          <MenuItem
+                            Header="パーティから除外する (/pcmd kick)"
+                            Padding="4"
+                            Command="{Binding KickPartyCommand, Mode=OneWay}"
+                            CommandParameter="{Binding}" />
+                        </ContextMenu>
+                      </fw:BindableRichTextBox.ContextMenu>
+                    </fw:BindableRichTextBox>
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>

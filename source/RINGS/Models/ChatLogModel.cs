@@ -710,6 +710,8 @@ namespace RINGS.Models
             }
         }
 
+        private DelegateCommand<object> searchErionesCommand;
+
         #endregion Context Menu Commands
     }
 

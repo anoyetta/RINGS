@@ -188,4 +188,15 @@
     * チャットオーバーレイの最小化ボタンをやや大きくした
     </description>
   </note>
+
+  <note>
+    <version>0.3.1.2413</version>
+    <channel>Beta</channel>
+    <timestamp>2019-03-02T13:17:59.5095518+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.3.1.2413-Beta/RINGS_v0_3_1_2413_Beta.zip</uri>
+    <description>
+    * RC3.1
+    * ログのコンテキストメニューから選択文字列をERIONESで検索できるようにした
+    </description>
+  </note>
 </release_notes>
