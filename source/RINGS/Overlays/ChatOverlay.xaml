@@ -241,6 +241,7 @@
 
                     <fw:BindableRichTextBox
                       AutoWordSelection="True"
+                      SelectionBrush="WhiteSmoke"
                       Margin="{Binding ParentOverlaySettings.LineMarginThickness, Mode=OneWay}"
                       TextElement.FontFamily="{Binding ParentOverlaySettings.Font.FontFamily, Mode=OneWay}"
                       TextElement.FontSize="{Binding ParentOverlaySettings.Font.Size, Mode=OneWay}"
@@ -251,8 +252,7 @@
                       TextOptions.TextRenderingMode="Aliased"
                       TextOptions.TextFormattingMode="Ideal"
                       TextOptions.TextHintingMode="Auto"
-                      Document="{Binding ChatDocument, Mode=OneWay}"
-                      PreviewMouseLeftButtonDown="BindableRichTextBox_PreviewMouseLeftButtonDown">
+                      Document="{Binding ChatDocument, Mode=OneWay}">
                       <fw:BindableRichTextBox.ContextMenu>
                         <ContextMenu
                           BorderThickness="0"
