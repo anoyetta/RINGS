@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using aframe;
 using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Mvvm;
 using RINGS.Common;
 
@@ -9,6 +13,9 @@ namespace RINGS.Models
     public class CharacterProfileModel :
         BindableBase
     {
+        [JsonIgnore]
+        public Guid ID { get; } = Guid.NewGuid();
+
         private bool isEnabled;
 
         [JsonProperty(PropertyName = "enabled")]
@@ -112,6 +119,24 @@ namespace RINGS.Models
             }
 
             return new ObservableCollection<ChannelLinkerModel>(result);
+        }
+
+        private DelegateCommand fixedChangeCommand;
+
+        [JsonIgnore]
+        public DelegateCommand FixedChangeCommand =>
+            this.fixedChangeCommand ?? (this.fixedChangeCommand = new DelegateCommand(this.ExecuteFixedChangeCommand));
+
+        private void ExecuteFixedChangeCommand()
+        {
+            if (this.IsFixedActivate)
+            {
+                var targets = Config.Instance.CharacterProfileList.Where(x =>
+                    x.IsFixedActivate &&
+                    x.ID != this.ID);
+
+                targets.Walk(x => x.IsFixedActivate = false);
+            }
         }
     }
 }

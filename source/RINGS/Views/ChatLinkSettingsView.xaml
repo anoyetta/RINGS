@@ -138,7 +138,8 @@
           HorizontalAlignment="Left"
           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
           Content="アクティブプロファイルとして固定する"
-          IsChecked="{Binding IsFixedActivate, Mode=TwoWay}" />
+          IsChecked="{Binding IsFixedActivate, Mode=TwoWay}"
+          CheckChangedCommand="{Binding FixedChangeCommand, Mode=OneWay}" />
       </StackPanel>
 
       <metro:MetroHeader Header="チャンネルリンク" Margin="0 20 0 0" Grid.Row="1">
