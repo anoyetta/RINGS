@@ -300,7 +300,6 @@
     <Border
       Grid.Row="2"
       HorizontalAlignment="Left"
-      Opacity="{Binding ElementName=BackgroundBorder, Path=Opacity, Mode=OneWay}"
       Background="{Binding ChatOverlaySettings.BackgroundBrush, Mode=OneWay}"
       CornerRadius="6"
       Padding="1">
