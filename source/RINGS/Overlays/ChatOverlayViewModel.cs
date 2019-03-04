@@ -173,8 +173,7 @@ namespace RINGS.Overlays
             {
                 if (this.ChatOverlaySettings.IsAutoHide)
                 {
-                    if ((DateTime.Now - this.lastLogAddedTimestamp).TotalSeconds >
-                        this.ChatOverlaySettings.TimeToHide)
+                    if (this.IsTimeToHide())
                     {
                         this.HideCallback?.Invoke();
                     }
@@ -188,6 +187,16 @@ namespace RINGS.Overlays
                 }
 
                 this.previousIsAutoHide = this.ChatOverlaySettings.IsAutoHide;
+            }
+        }
+
+        public bool IsTimeToHide()
+        {
+            lock (this)
+            {
+                return
+                    (DateTime.Now - this.lastLogAddedTimestamp).TotalSeconds >
+                    this.ChatOverlaySettings.TimeToHide;
             }
         }
 

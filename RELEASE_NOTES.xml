@@ -210,4 +210,16 @@
     * 非アクティブ状態から復帰したときにログが選択できなくなる不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>0.3.3.2609</version>
+    <channel>Beta</channel>
+    <timestamp>2019-03-04T09:18:01.3869670+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v0.3.3.2609-Beta/RINGS_v0_3_3_2609_Beta.zip</uri>
+    <description>
+    * RC3.3
+    * Ctrl+A, Ctrl+C のショートカットを搭載した
+    </description>
+  </note>
+
 </release_notes>
