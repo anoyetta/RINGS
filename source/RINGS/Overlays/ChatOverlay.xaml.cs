@@ -42,8 +42,15 @@ namespace RINGS.Overlays
                 ResizeMode.NoResize :
                 ResizeMode.CanResizeWithGrip;
 
+            this.FadeoutAnimation.Completed += (_, __) =>
+            {
+                if (this.ViewModel.IsTimeToHide())
+                {
+                    this.MinimizeChatPanel();
+                }
+            };
+
             this.ViewModel.MinimizeCallback = () => this.MinimizeChatPanel();
-            this.FadeoutAnimation.Completed += (_, __) => this.MinimizeChatPanel();
             this.ViewModel.HideCallback = () => this.StartFadeout();
             this.ViewModel.ShowCallback = () => this.ShowChatPanel();
 
@@ -188,6 +195,36 @@ namespace RINGS.Overlays
                 obj is ScrollBar bar)
             {
                 bar.Width = Config.Instance.ChatLogScrollBarWidth;
+            }
+        }
+
+        private void ChatLogTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var tb = sender as BindableRichTextBox;
+
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                switch (e.Key)
+                {
+                    case Key.A:
+                        tb.SelectAll();
+                        break;
+
+                    case Key.C:
+                        if (!tb.Selection.IsEmpty)
+                        {
+                            var selectedText = new TextRange(
+                                tb.Selection.Start,
+                                tb.Selection.End).Text;
+
+                            if (!string.IsNullOrEmpty(selectedText))
+                            {
+                                Clipboard.SetDataObject(selectedText);
+                            }
+                        }
+
+                        break;
+                }
             }
         }
 

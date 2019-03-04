@@ -252,7 +252,8 @@
                       TextOptions.TextRenderingMode="Aliased"
                       TextOptions.TextFormattingMode="Ideal"
                       TextOptions.TextHintingMode="Auto"
-                      Document="{Binding ChatDocument, Mode=OneWay}">
+                      Document="{Binding ChatDocument, Mode=OneWay}"
+                      PreviewKeyDown="ChatLogTextBox_PreviewKeyDown">
                       <fw:BindableRichTextBox.ContextMenu>
                         <ContextMenu
                           BorderThickness="0"
