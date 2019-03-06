@@ -20,10 +20,14 @@ namespace RINGS.ViewModels
 {
     public class HomeViewModel : BindableBase
     {
+        private static HomeViewModel currentInstance;
+
         public Config Config => Config.Instance;
 
         public HomeViewModel()
         {
+            currentInstance = this;
+
             this.refreshTimer.Tick += this.RefreshTimer_Tick;
             this.refreshTimer.Start();
 
@@ -146,32 +150,42 @@ namespace RINGS.ViewModels
         private DelegateCommand resetCommand;
 
         public DelegateCommand ResetCommand =>
-            this.resetCommand ?? (this.resetCommand = new DelegateCommand(this.ExecuteResetCommand));
+            this.resetCommand ?? (this.resetCommand = new DelegateCommand(async () => await ResetSubscribersAsync()));
 
-        private async void ExecuteResetCommand()
+        public static async Task ResetSubscribersAsync(
+            bool slient = false,
+            Action notifyCallback = null)
         {
-            var result = await MessageBoxHelper.ShowMessageAsync(
-                "RESET SUBSCRIBERS",
-                "Sharlayan, DISCORD の監視スレッドをリセットしますか？\n" +
-                "すべての接続が解除されアプリケーションの起動直後の状態に戻ります。",
-                MessageDialogStyle.AffirmativeAndNegative);
-
-            if (result != MessageDialogResult.Affirmative)
+            if (!slient)
             {
-                return;
+                var result = await MessageBoxHelper.ShowMessageAsync(
+                    "RESET SUBSCRIBERS",
+                    "Sharlayan, DISCORD の監視スレッドをリセットしますか？\n" +
+                    "すべての接続が解除されアプリケーションの起動直後の状態に戻ります。",
+                    MessageDialogStyle.AffirmativeAndNegative);
+
+                if (result != MessageDialogResult.Affirmative)
+                {
+                    return;
+                }
             }
 
-            this.SharlayanStatus = string.Empty;
-            this.CurrentPlayerName = string.Empty;
-            this.ActiveProfileName = string.Empty;
-            this.DiscordBotStatus = string.Empty;
+            currentInstance.SharlayanStatus = string.Empty;
+            currentInstance.CurrentPlayerName = string.Empty;
+            currentInstance.ActiveProfileName = string.Empty;
+            currentInstance.DiscordBotStatus = string.Empty;
 
             var t1 = Task.Run(() => SharlayanController.Instance.StartAsync());
             var t2 = Task.Run(() => DiscordBotController.Instance.StartAsync());
 
             await Task.WhenAll(t1, t2);
 
-            MessageBoxHelper.EnqueueSnackMessage("Subscribers restarted.");
+            if (!slient)
+            {
+                MessageBoxHelper.EnqueueSnackMessage("Subscribers restarted.");
+            }
+
+            notifyCallback?.Invoke();
         }
 
         private DelegateCommand<string> submitTestMessageCommand;

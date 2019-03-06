@@ -28,6 +28,7 @@ namespace RINGS
                 this.Snackbar.MessageQueue.Enqueue(message, neverDuplicate);
 
             this.ViewModel.CloseAction = () => this.ToEnd();
+            this.ViewModel.TaskbarIconGetter = new Func<TaskbarIcon>(() => this.NotifyIcon);
 
             this.StateChanged += this.MainWindow_StateChanged;
             this.Closing += this.MainWindow_Closing;

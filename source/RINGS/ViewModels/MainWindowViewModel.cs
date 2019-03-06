@@ -1,5 +1,6 @@
 using System;
 using aframe;
+using Hardcodet.Wpf.TaskbarNotification;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -22,6 +23,8 @@ namespace RINGS.ViewModels
         public HelpView HelpView => new HelpView();
 
         #endregion Content View Creator
+
+        public Func<TaskbarIcon> TaskbarIconGetter { get; set; }
 
         public Action CloseAction { get; set; }
 
@@ -57,6 +60,20 @@ namespace RINGS.ViewModels
         {
             MainWindow.Instance.ToShow();
         }
+
+        private DelegateCommand resetCommand;
+
+        public DelegateCommand ResetCommand =>
+            this.resetCommand ?? (this.resetCommand = new DelegateCommand(async () =>
+            await HomeViewModel.ResetSubscribersAsync(
+                true,
+                () =>
+                {
+                    TaskbarIconGetter?.Invoke()?.ShowBalloonTip(
+                        "Restarted",
+                        "sharlayan and DISCORD Bot restarted.",
+                        BalloonIcon.Info);
+                })));
 
         private DelegateCommand endCommand;
 
