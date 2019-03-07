@@ -206,6 +206,8 @@
 
         <MenuItem Header="{Binding Config.AppNameWithVersion, Mode=OneWay}" Command="{Binding ShowCommand, Mode=OneWay}" FontWeight="Bold" FontSize="18" Height="36" IsHitTestVisible="False" />
         <MenuItem Header="表示" Command="{Binding ShowCommand, Mode=OneWay}" />
+        <MenuItem Header="リセット" Command="{Binding ResetCommand, Mode=OneWay}" />
+        <Separator />
         <MenuItem Header="終了" Command="{Binding EndCommand, Mode=OneWay}" />
       </ContextMenu>
     </ResourceDictionary>

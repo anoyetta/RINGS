@@ -101,6 +101,7 @@ namespace RINGS.Overlays
 
             this.MinimizeIcon.PreviewMouseDown += (_, e) =>
             {
+                this.ViewModel.IsForceMinimized = false;
                 this.ViewModel.ExtendTimeToHide();
                 this.ShowChatPanel();
                 e.Handled = true;

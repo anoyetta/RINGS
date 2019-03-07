@@ -30,6 +30,8 @@ namespace RINGS.Overlays
 
         public Action MinimizeCallback { get; set; }
 
+        public bool IsForceMinimized { get; set; }
+
         private readonly DispatcherTimer HideTimer = new DispatcherTimer(DispatcherPriority.ContextIdle)
         {
             Interval = TimeSpan.FromSeconds(1.0),
@@ -154,7 +156,11 @@ namespace RINGS.Overlays
             lock (this)
             {
                 this.lastLogAddedTimestamp = DateTime.Now;
-                this.ShowCallback?.Invoke();
+
+                if (!this.IsForceMinimized)
+                {
+                    this.ShowCallback?.Invoke();
+                }
             }
 
             if (this.ChatOverlaySettings.IsAutoActivatePage)
@@ -245,6 +251,7 @@ namespace RINGS.Overlays
 
         private void ExecuteMinimizeCommand()
         {
+            this.IsForceMinimized = true;
             this.MinimizeCallback?.Invoke();
         }
 
