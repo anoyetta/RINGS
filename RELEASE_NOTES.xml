@@ -230,6 +230,7 @@
     <description>
     * RC3.4
     * RESET SUBSCRIBERS をタスクトレイアイコンのコンテキストメニューからも実行できるようにした
+    * チャットオーバーレイを任意に最小化しているときに新しい発言を受信すると最小化が解除されてしまう不具合を修正した
     </description>
   </note>
 </release_notes>
