@@ -233,4 +233,15 @@
     * チャットオーバーレイを任意に最小化しているときに新しい発言を受信すると最小化が解除されてしまう不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>1.0.0.3309</version>
+    <channel>Stable</channel>
+    <timestamp>2019-03-11T09:39:56.8283752+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.0.0.3309-Stable/RINGS_v1_0_0_3309_Stable.zip</uri>
+    <description>
+    * チャットオーバーレイのフェードアウト処理中に発言があるとオーバーレイが復帰しない場合がある不具合を修正した
+    * フォアグラウンドアプリケーションの判定スレッドを変更した
+    </description>
+  </note>
 </release_notes>

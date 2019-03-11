@@ -263,6 +263,11 @@ namespace RINGS.Controllers
                         this.previousArrayIndex = result.PreviousArrayIndex;
                         this.previousOffset = result.PreviousOffset;
 
+                        if (!result.ChatLogItems.Any())
+                        {
+                            continue;
+                        }
+
                         targetLogs = result.ChatLogItems
                             .Where(x => ChatCodes.All.Contains(x.Code));
 
