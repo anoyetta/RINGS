@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using aframe;
@@ -429,6 +430,15 @@ namespace RINGS
         {
             get => this.chatLogPollingInterval;
             set => this.SetProperty(ref this.chatLogPollingInterval, value);
+        }
+
+        private ThreadPriority chatLogSubscriberThreadPriority = ThreadPriority.BelowNormal;
+
+        [JsonProperty(PropertyName = "chatlog_subscriber_threadpriority")]
+        public ThreadPriority ChatLogSubscriberThreadPriority
+        {
+            get => this.chatLogSubscriberThreadPriority;
+            set => this.SetProperty(ref this.chatLogSubscriberThreadPriority, value);
         }
 
         private double chatLogScrollBarWidth = 6.0d;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Media;
 using aframe;
 using aframe.Updater;
@@ -28,6 +29,7 @@ namespace RINGS
             { nameof(IsUseBuiltInBrowser), true },
             { nameof(BuiltinBrowserSize), 80.0d },
             { nameof(ChatLogPollingInterval), 10.0d },
+            { nameof(ChatLogSubscriberThreadPriority), ThreadPriority.BelowNormal },
             { nameof(ChatLogScrollBarWidth), 6.0d },
             { nameof(FileDirectory), Environment.GetFolderPath(Environment.SpecialFolder.Desktop) },
 

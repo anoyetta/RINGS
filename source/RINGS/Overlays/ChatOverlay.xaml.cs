@@ -254,6 +254,7 @@ namespace RINGS.Overlays
                 if (this.isMinimized)
                 {
                     this.StopFadeout();
+                    this.BackgroundBorder.Opacity = 1;
                     this.MinimizeIcon.Visibility = Visibility.Collapsed;
                     this.MinimizeButton.Visibility = Visibility.Visible;
                     this.BackgroundBorder.Visibility = Visibility.Visible;

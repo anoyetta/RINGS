@@ -136,12 +136,18 @@ namespace RINGS
 #endif
             },
             DispatcherPriority.ApplicationIdle);
+
+            // グローバルキーフックをセットする
+            SharlayanController.SubscribeKeyHook();
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
             try
             {
+                // グローバルキーフックを解除する
+                SharlayanController.UnsubscribeKeyHook();
+
                 Config.Instance.Save();
                 ChatOverlaysController.Instance.Stop();
             }
@@ -160,6 +166,9 @@ namespace RINGS
         {
             try
             {
+                // グローバルキーフックを解除する
+                SharlayanController.UnsubscribeKeyHook();
+
                 Config.Instance.Save();
 
                 if (this.MainWindow != null)
