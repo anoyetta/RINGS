@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using aframe;
+using Gma.System.MouseKeyHook;
 using RINGS.Common;
 using RINGS.Models;
 using Sharlayan;
@@ -28,6 +29,8 @@ namespace RINGS.Controllers
         #endregion Singleton
 
         private static readonly double DetectProcessInterval = 5.0d;
+        private static readonly TimeSpan ChatIdleInterval = TimeSpan.FromMilliseconds(100);
+        private static readonly TimeSpan ChatIdelThreshold = TimeSpan.FromSeconds(30);
 
         private Thread subscribeFFXIVProcessThread;
         private Thread subscribeChatLogThread;
@@ -84,11 +87,13 @@ namespace RINGS.Controllers
             this.subscribeChatLogThread = new Thread(new ThreadStart(this.SubscribeChatLog))
             {
                 IsBackground = true,
-                Priority = ThreadPriority.Normal,
+                Priority = Config.Instance.ChatLogSubscriberThreadPriority,
             };
 
             this.subscribeChatLogThread.Start();
         });
+
+        private volatile bool isWorking = false;
 
         private void SubscribeFFXIVProcess()
         {
@@ -103,43 +108,47 @@ namespace RINGS.Controllers
 
                 try
                 {
-                    lock (this)
+                    if (this.isWorking)
                     {
-                        var processes = Process.GetProcessesByName("ffxiv_dx11");
-                        if (processes.Length < 1)
-                        {
-                            if (this.IsAttached)
-                            {
-                                this.handledProcessID = 0;
-                            }
-
-                            this.ClearActiveProfile();
-                            continue;
-                        }
-
-                        var ffxiv = processes[0];
-
-                        if (!MemoryHandler.Instance.IsAttached ||
-                            this.handledProcessID != ffxiv.Id)
-                        {
-                            MemoryHandler.Instance.SetProcess(
-                                new ProcessModel
-                                {
-                                    Process = ffxiv,
-                                    IsWin64 = true
-                                },
-                                language);
-
-                            this.handledProcessID = ffxiv.Id;
-                            this.previousArrayIndex = 0;
-                            this.previousOffset = 0;
-                            this.currentPlayer = null;
-
-                            AppLogger.Write("Attached to FFXIV.");
-                        }
-
-                        this.RefreshActiveProfile();
+                        continue;
                     }
+
+                    this.isWorking = true;
+
+                    var processes = Process.GetProcessesByName("ffxiv_dx11");
+                    if (processes.Length < 1)
+                    {
+                        if (this.IsAttached)
+                        {
+                            this.handledProcessID = 0;
+                        }
+
+                        this.ClearActiveProfile();
+                        continue;
+                    }
+
+                    var ffxiv = processes[0];
+
+                    if (!MemoryHandler.Instance.IsAttached ||
+                        this.handledProcessID != ffxiv.Id)
+                    {
+                        MemoryHandler.Instance.SetProcess(
+                            new ProcessModel
+                            {
+                                Process = ffxiv,
+                                IsWin64 = true
+                            },
+                            language);
+
+                        this.handledProcessID = ffxiv.Id;
+                        this.previousArrayIndex = 0;
+                        this.previousOffset = 0;
+                        this.currentPlayer = null;
+
+                        AppLogger.Write("Attached to FFXIV.");
+                    }
+
+                    this.RefreshActiveProfile();
                 }
                 catch (ThreadAbortException)
                 {
@@ -149,6 +158,10 @@ namespace RINGS.Controllers
                 {
                     AppLogger.Error("Happened exception from FFXIV process subscriber.", ex);
                     Thread.Sleep(TimeSpan.FromSeconds(DetectProcessInterval * 2));
+                }
+                finally
+                {
+                    this.isWorking = false;
                 }
             }
         }
@@ -190,13 +203,13 @@ namespace RINGS.Controllers
                 var active = Config.Instance.ActiveProfile;
                 if (active == null ||
                     (!active.IsFixedActivate &&
-                    active.CharacterName != currentPlayer.Name))
+                    active.CharacterName != this.currentPlayer?.Name))
                 {
                     DiscordBotController.Instance.ClearBots();
 
-                    var prof = Config.Instance.CharacterProfileList.FirstOrDefault(x =>
+                    var prof = Config.Instance.CharacterProfileList?.FirstOrDefault(x =>
                         x.IsEnabled &&
-                        x.CharacterName == this.currentPlayer.Name);
+                        x.CharacterName == this.currentPlayer?.Name);
                     if (prof != null)
                     {
                         Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
@@ -217,6 +230,8 @@ namespace RINGS.Controllers
             }
         }
 
+        private DateTime lastChatLogReceivedTimestamp = DateTime.MinValue;
+
         private void SubscribeChatLog()
         {
             Thread.Sleep(TimeSpan.FromSeconds(DetectProcessInterval));
@@ -226,21 +241,35 @@ namespace RINGS.Controllers
 
             while (true)
             {
+                var interval = TimeSpan.FromMilliseconds(Config.Instance.ChatLogPollingInterval);
                 var isExistLogs = false;
 
                 try
                 {
+                    // スレッドプライオリティを更新する
+                    if (Thread.CurrentThread.Priority != Config.Instance.ChatLogSubscriberThreadPriority)
+                    {
+                        Thread.CurrentThread.Priority = Config.Instance.ChatLogSubscriberThreadPriority;
+                    }
+
                     if (!this.IsAttached ||
                         !Reader.CanGetChatLog())
                     {
-                        Thread.Sleep(TimeSpan.FromSeconds(DetectProcessInterval));
+                        interval = TimeSpan.FromSeconds(DetectProcessInterval);
                         continue;
                     }
 
                     var targetLogs = default(IEnumerable<ChatLogItem>);
 
-                    lock (this)
+                    try
                     {
+                        if (this.isWorking)
+                        {
+                            continue;
+                        }
+
+                        this.isWorking = true;
+
                         if (this.currentPlayer != null &&
                             !string.IsNullOrEmpty(this.currentPlayer.Name))
                         {
@@ -257,7 +286,6 @@ namespace RINGS.Controllers
                         var result = Reader.GetChatLog(this.previousArrayIndex, this.previousOffset);
                         if (result == null)
                         {
-                            Thread.Sleep(TimeSpan.FromMilliseconds(Config.Instance.ChatLogPollingInterval));
                             continue;
                         }
 
@@ -266,7 +294,6 @@ namespace RINGS.Controllers
 
                         if (!result.ChatLogItems.Any())
                         {
-                            Thread.Sleep(TimeSpan.FromMilliseconds(Config.Instance.ChatLogPollingInterval));
                             continue;
                         }
 
@@ -274,6 +301,10 @@ namespace RINGS.Controllers
                             .Where(x => ChatCodes.All.Contains(x.Code));
 
                         isExistLogs = targetLogs.Any();
+                    }
+                    finally
+                    {
+                        this.isWorking = false;
                     }
 
                     if (isExistLogs)
@@ -328,17 +359,69 @@ namespace RINGS.Controllers
                 catch (Exception ex)
                 {
                     AppLogger.Error("Happened exception from chat log subscriber.", ex);
-                    Thread.Sleep(TimeSpan.FromSeconds(DetectProcessInterval * 2));
+                    interval = TimeSpan.FromSeconds(DetectProcessInterval * 2);
                 }
+                finally
+                {
+                    var now = DateTime.Now;
 
-                if (isExistLogs)
-                {
-                    Thread.Yield();
+                    if (isExistLogs)
+                    {
+                        this.lastChatLogReceivedTimestamp = now;
+                        Thread.Yield();
+                    }
+                    else
+                    {
+                        if ((now - this.lastChatLogReceivedTimestamp) > ChatIdelThreshold)
+                        {
+                            interval = ChatIdleInterval;
+                        }
+
+                        Thread.Sleep(interval);
+                    }
                 }
-                else
+            }
+        }
+
+        private static readonly object GlobalHookLock = new object();
+        private static IKeyboardMouseEvents globalHook;
+
+        public static void SubscribeKeyHook()
+        {
+            lock (GlobalHookLock)
+            {
+                if (globalHook == null)
                 {
-                    Thread.Sleep(TimeSpan.FromMilliseconds(Config.Instance.ChatLogPollingInterval));
+                    globalHook = Hook.GlobalEvents();
+                    globalHook.KeyPress += GlobalHook_KeyPress;
                 }
+            }
+        }
+
+        public static void UnsubscribeKeyHook()
+        {
+            lock (GlobalHookLock)
+            {
+                if (globalHook != null)
+                {
+                    globalHook.KeyPress -= GlobalHook_KeyPress;
+                    globalHook.Dispose();
+                    globalHook = null;
+                }
+            }
+        }
+
+        private static readonly char[] ChatInputingKeys = new[]
+        {
+            (char)System.Windows.Forms.Keys.Enter,
+            (char)System.Windows.Forms.Keys.Space,
+        };
+
+        private static void GlobalHook_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (ChatInputingKeys.Contains(e.KeyChar))
+            {
+                SharlayanController.Instance.lastChatLogReceivedTimestamp = DateTime.Now;
             }
         }
     }

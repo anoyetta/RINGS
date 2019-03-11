@@ -127,6 +127,15 @@
             Minimum="1"
             Value="{Binding Config.ChatLogPollingInterval, Mode=TwoWay}" />
         </metro:MetroHeader>
+
+        <metro:MetroHeader Header="チャットログの購読スレッドの優先度" Margin="{DynamicResource ContentMargin}">
+          <ComboBox
+            Margin="0 5 0 0"
+            Width="115"
+            HorizontalAlignment="Left"
+            ItemsSource="{Binding ThreadPriorityList, Mode=OneWay}"
+            SelectedItem="{Binding Config.ChatLogSubscriberThreadPriority, Mode=TwoWay}" />
+        </metro:MetroHeader>
       </StackPanel>
     </ScrollViewer>
   </Grid>
