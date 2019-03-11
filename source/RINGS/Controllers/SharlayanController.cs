@@ -257,6 +257,7 @@ namespace RINGS.Controllers
                         var result = Reader.GetChatLog(this.previousArrayIndex, this.previousOffset);
                         if (result == null)
                         {
+                            Thread.Sleep(TimeSpan.FromMilliseconds(Config.Instance.ChatLogPollingInterval));
                             continue;
                         }
 
@@ -265,6 +266,7 @@ namespace RINGS.Controllers
 
                         if (!result.ChatLogItems.Any())
                         {
+                            Thread.Sleep(TimeSpan.FromMilliseconds(Config.Instance.ChatLogPollingInterval));
                             continue;
                         }
 
