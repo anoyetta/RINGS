@@ -32,6 +32,14 @@ namespace RINGS.Overlays
             Interval = TimeSpan.FromSeconds(0.5),
         };
 
+        private static readonly TimeSpan ForgroundAppSubscribeInterval = TimeSpan.FromSeconds(3);
+
+        private readonly Thread ForegroundAppSubscriber = new Thread(SubscribeForegroundApp)
+        {
+            IsBackground = true,
+            Priority = ThreadPriority.Lowest,
+        };
+
         public async Task StartAsync() => await Task.Run(() =>
         {
             if (!this.refreshTimer.IsEnabled)
@@ -40,11 +48,14 @@ namespace RINGS.Overlays
                 this.refreshTimer.Tick += this.RefreshTimer_Tick;
                 this.refreshTimer.Start();
             }
+
+            this.ForegroundAppSubscriber.Start();
         });
 
         public void Stop()
         {
             this.refreshTimer.Stop();
+            this.ForegroundAppSubscriber.Abort();
 
             lock (this)
             {
@@ -93,12 +104,6 @@ namespace RINGS.Overlays
                 }
             }
 
-            var task = default(Task);
-            if (this.counter % 2 == 0)
-            {
-                task = Task.Run(() => RefreshFFXIVIsActive());
-            }
-
             var overlays = default(IEnumerable<ChatOverlay>);
 
             lock (this)
@@ -125,22 +130,44 @@ namespace RINGS.Overlays
                 overlays = this.OverlayDictionary.Values.ToArray();
             }
 
-            if (task != null)
+            foreach (var overlay in overlays)
             {
-                task.Wait();
-                foreach (var overlay in overlays)
+                if (overlay.ViewModel.ChatOverlaySettings?.IsEnabled ?? false)
                 {
-                    if (overlay.ViewModel.ChatOverlaySettings?.IsEnabled ?? false)
-                    {
-                        overlay.OverlayVisible = IsFFXIVActive;
-                    }
+                    overlay.OverlayVisible = IsFFXIVActive;
                 }
             }
 
             this.counter++;
         }
 
-        private static bool IsFFXIVActive;
+        private static void SubscribeForegroundApp()
+        {
+            Thread.Sleep(ForgroundAppSubscribeInterval.Add(ForgroundAppSubscribeInterval));
+
+            while (true)
+            {
+                try
+                {
+                    RefreshFFXIVIsActive();
+                }
+                catch (ThreadAbortException)
+                {
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Error("Happened exception from Foreground App subscriber.", ex);
+                    Thread.Sleep(ForgroundAppSubscribeInterval.Add(ForgroundAppSubscribeInterval));
+                }
+                finally
+                {
+                    Thread.Sleep(ForgroundAppSubscribeInterval);
+                }
+            }
+        }
+
+        private static volatile bool IsFFXIVActive;
 
         private static void RefreshFFXIVIsActive()
         {
