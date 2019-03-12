@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using aframe;
+using RINGS.Controllers;
 
 namespace RINGS.Overlays
 {
@@ -178,6 +179,12 @@ namespace RINGS.Overlays
 
                 // プロセスIDに変換する
                 NativeMethods.GetWindowThreadProcessId(hWnd, out uint pid);
+
+                if (pid == SharlayanController.Instance.HandledProcessID)
+                {
+                    IsFFXIVActive = true;
+                    return;
+                }
 
                 // フォアウィンドウのファイル名を取得する
                 var p = Process.GetProcessById((int)pid);
