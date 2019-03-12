@@ -191,6 +191,8 @@
               Loaded="ScrollViewer_Loaded">
 
               <ItemsControl
+                VirtualizingPanel.IsVirtualizing="True"
+                VirtualizingPanel.VirtualizationMode="Recycling"
                 Focusable="False"
                 IsTabStop="False"
                 BorderThickness="0"
