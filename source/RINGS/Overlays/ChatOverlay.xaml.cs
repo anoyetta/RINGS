@@ -51,7 +51,7 @@ namespace RINGS.Overlays
             };
 
             this.ViewModel.MinimizeCallback = () => this.MinimizeChatPanel();
-            this.ViewModel.HideCallback = () => this.StartFadeout();
+            this.ViewModel.HideCallback = () => this.MinimizeChatPanel();
             this.ViewModel.ShowCallback = () => this.ShowChatPanel();
 
             this.ViewModel.ChangeActivePageCallback = (pageName) =>
