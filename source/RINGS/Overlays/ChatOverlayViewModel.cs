@@ -325,5 +325,12 @@ namespace RINGS.Overlays
         private static readonly string SketchUri = "ms-penworkspace://Capture";
 
         private void ExecuteLaunchSketchCommand() => Process.Start(SketchUri);
+
+        private DelegateCommand searchLogsCommand;
+
+        public DelegateCommand SearchLogsCommand =>
+            this.searchLogsCommand ?? (this.searchLogsCommand = new DelegateCommand(this.ExecuteSearchLogsCommand));
+
+        private void ExecuteSearchLogsCommand() => new SearchLogsOverlay().Show();
     }
 }

@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -47,7 +48,7 @@ namespace RINGS.Models
 
             if (this.IsExistSpeaker)
             {
-                para1.Inlines.Add(new Run(this.Speaker + " "));
+                para1.Inlines.Add(CreateSpeakerElement());
 
                 if (this.IsExistSpeakerAlias)
                 {
@@ -247,6 +248,45 @@ namespace RINGS.Models
                 para.Inlines.Add(headerElement);
                 para.Inlines.Add(hyperlinkElement);
             }
+
+            Inline CreateSpeakerElement()
+            {
+                if (this.discordLog != null ||
+                    (string.IsNullOrEmpty(this.SpeakerCharacterName) && string.IsNullOrEmpty(this.SpeakerServer)))
+                {
+                    return new Run(this.Speaker + " ");
+                }
+
+                var url = string.Empty;
+                var server = Uri.EscapeDataString(this.SpeakerServer);
+                var name = Uri.EscapeDataString(this.SpeakerCharacterName);
+
+                if (!string.IsNullOrEmpty(this.SpeakerServer) &&
+                    !string.IsNullOrEmpty(this.SpeakerCharacterName))
+                {
+                    url = $@"https://ja.fflogs.com/character/jp/{server}/{name}";
+                }
+                else
+                {
+                    url = $@"https://ja.fflogs.com/search/?term={name}";
+                }
+
+                var text = new Run()
+                {
+                    Text = this.Speaker,
+                    Cursor = Cursors.Arrow,
+                    TextDecorations = TextDecorations.Underline,
+                    Tag = new Uri(url),
+                };
+
+                text.MouseLeftButtonDown += this.Speaker_MouseLeftButtonDown;
+
+                var span = new Span();
+                span.Inlines.Add(text);
+                span.Inlines.Add(new Run(" "));
+
+                return span;
+            }
         }
 
         private void HyperlinkElement_RequestNavigate(
@@ -266,6 +306,36 @@ namespace RINGS.Models
                     e.Uri.AbsoluteUri);
             }
 
+            e.Handled = true;
+        }
+
+        private void Speaker_MouseLeftButtonDown(
+            object sender,
+            MouseButtonEventArgs e)
+        {
+            var uri = (sender as Run).Tag as Uri;
+
+            if (uri != null)
+            {
+                if (!Config.Instance.IsUseBuiltInBrowser)
+                {
+                    Process.Start(new ProcessStartInfo(uri.AbsoluteUri));
+                }
+                else
+                {
+                    var window = Window.GetWindow(sender as Run);
+                    WebViewOverlay.Instance.ShowUrl(
+                        window,
+                        uri.AbsoluteUri,
+                        new Size(1200d, 780d));
+                }
+            }
+        }
+
+        private void SpeakerLink_RequestNavigate(
+            object sender,
+            RequestNavigateEventArgs e)
+        {
             e.Handled = true;
         }
 
@@ -410,6 +480,22 @@ namespace RINGS.Models
             this.Speaker = speaker;
         }
 
+        private string speakerCharacterName;
+
+        public string SpeakerCharacterName
+        {
+            get => this.speakerCharacterName;
+            set => this.SetProperty(ref this.speakerCharacterName, value);
+        }
+
+        private string speakerServer;
+
+        public string SpeakerServer
+        {
+            get => this.speakerServer;
+            set => this.SetProperty(ref this.speakerServer, value);
+        }
+
         private string message;
 
         public string Message
@@ -497,8 +583,10 @@ namespace RINGS.Models
                     speakerPart.EndsWith(x));
                 if (!string.IsNullOrEmpty(server))
                 {
-                    speakerPart = speakerPart.Replace(server, string.Empty);
-                    speakerPart = $"{speakerPart}@{server}";
+                    log.SpeakerServer = server;
+                    log.SpeakerCharacterName = speakerPart.Replace(server, string.Empty);
+
+                    speakerPart = $"{log.SpeakerCharacterName}@{server}";
                 }
 
                 log.OriginalSpeaker = speakerPart;

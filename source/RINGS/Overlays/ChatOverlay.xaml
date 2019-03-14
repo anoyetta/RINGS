@@ -354,6 +354,18 @@
             <iconPacks:PackIconFontAwesome Kind="PaintBrushSolid" />
           </Viewbox>
         </Button>
+
+        <Button
+          Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
+          Focusable="False"
+          BorderThickness="0"
+          Background="Transparent"
+          ToolTip="FFLogsで検索する"
+          Command="{Binding SearchLogsCommand, Mode=OneWay}">
+          <Viewbox>
+            <iconPacks:PackIconOcticons Kind="Graph" />
+          </Viewbox>
+        </Button>
       </StackPanel>
     </Border>
   </Grid>
