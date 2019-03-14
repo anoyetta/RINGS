@@ -588,6 +588,11 @@ namespace RINGS.Models
 
                     speakerPart = $"{log.SpeakerCharacterName}@{server}";
                 }
+                else
+                {
+                    log.SpeakerServer = string.Empty;
+                    log.SpeakerCharacterName = speakerPart;
+                }
 
                 log.OriginalSpeaker = speakerPart;
                 log.Message = xivLog.Line.Substring(i + 1);
