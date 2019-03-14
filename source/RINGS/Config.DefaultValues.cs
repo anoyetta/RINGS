@@ -26,7 +26,7 @@ namespace RINGS
             { nameof(H), 640 },
             { nameof(IsStartupWithWindows), false },
             { nameof(IsMinimizeStartup), false },
-            { nameof(IsUseBuiltInBrowser), true },
+            { nameof(IsUseBuiltInBrowser), false },
             { nameof(BuiltinBrowserSize), 80.0d },
             { nameof(ChatLogPollingInterval), 10.0d },
             { nameof(ChatLogSubscriberThreadPriority), ThreadPriority.BelowNormal },
