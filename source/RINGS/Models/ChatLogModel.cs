@@ -253,7 +253,11 @@ namespace RINGS.Models
             Inline CreateSpeakerElement()
             {
                 if (this.discordLog != null ||
-                    (string.IsNullOrEmpty(this.SpeakerCharacterName) && string.IsNullOrEmpty(this.SpeakerServer)))
+                    string.IsNullOrEmpty(this.SpeakerCharacterName) ||
+                    this.ChatCode == ChatCodes.NPC ||
+                    this.ChatCode == ChatCodes.NPCAnnounce ||
+                    this.ChatCode == ChatCodes.CustomEmotes ||
+                    this.ChatCode == ChatCodes.StandardEmotes)
                 {
                     return new Run(this.Speaker + " ");
                 }
