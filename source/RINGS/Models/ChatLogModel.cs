@@ -264,16 +264,49 @@ namespace RINGS.Models
 
                 var url = string.Empty;
                 var server = Uri.EscapeDataString(this.SpeakerServer);
-                var name = Uri.EscapeDataString(this.SpeakerCharacterName);
+                var name = this.SpeakerCharacterName;
 
-                if (!string.IsNullOrEmpty(this.SpeakerServer) &&
-                    !string.IsNullOrEmpty(this.SpeakerCharacterName))
+                var first = string.Empty;
+                var family = string.Empty;
+
+                if (name.Contains(" "))
                 {
-                    url = $@"https://ja.fflogs.com/character/jp/{server}/{name}";
+                    var parts = name.Split(' ');
+                    first = parts[0].Replace(".", string.Empty);
+                    family = parts[1].Replace(".", string.Empty);
                 }
                 else
                 {
-                    url = $@"https://ja.fflogs.com/search/?term={name}";
+                    return new Run(this.Speaker + " ");
+                }
+
+                var isInitialized = first.Length <= 1 || family.Length <= 1;
+
+                if (!string.IsNullOrEmpty(this.SpeakerCharacterName) &&
+                    !isInitialized)
+                {
+                    var nameArgument = Uri.EscapeDataString($"{first} {family}");
+                    url = $@"https://ja.fflogs.com/character/jp/{server}/{nameArgument}";
+                }
+                else
+                {
+                    url = $@"https://ja.fflogs.com/search/?term=";
+
+                    if (!isInitialized)
+                    {
+                        url += Uri.EscapeDataString($"{first} {family}");
+                    }
+                    else
+                    {
+                        if (first.Length > 1)
+                        {
+                            url += Uri.EscapeDataString(first);
+                        }
+                        else
+                        {
+                            return new Run(this.Speaker + " ");
+                        }
+                    }
                 }
 
                 var text = new Run()
