@@ -262,20 +262,31 @@
                           HasDropShadow="False"
                           Padding="0">
                           <MenuItem
-                            Header="選択を ERIONES で検索する"
+                            Header="コピー"
                             Padding="4"
-                            Click="SearchErionesItem_Click" />
+                            Click="CopySelectionItem_Click" />
                           <Separator />
                           <MenuItem
-                            Header="ログをコピー"
+                            Header="全文をコピー"
                             Padding="4"
                             Command="{Binding CopyLogCommand, Mode=OneWay}"
                             CommandParameter="{Binding}" />
                           <MenuItem
+                            Header="発言をコピー"
+                            Padding="4"
+                            Command="{Binding CopyMessageCommand, Mode=OneWay}"
+                            CommandParameter="{Binding}" />
+                          <MenuItem
                             Header="発言者をコピー"
                             Padding="4"
-                            Command="{Binding CopyPeakerCommand, Mode=OneWay}"
+                            Command="{Binding CopySpeakerCommand, Mode=OneWay}"
                             CommandParameter="{Binding}" />
+                          <Separator />
+                          <MenuItem
+                            Header="選択を ERIONES で検索する"
+                            Padding="4"
+                            Click="SearchErionesItem_Click" />
+                          <!--
                           <Separator />
                           <MenuItem
                             Header="パーティに勧誘する (/pcmd add)"
@@ -287,6 +298,7 @@
                             Padding="4"
                             Command="{Binding KickPartyCommand, Mode=OneWay}"
                             CommandParameter="{Binding}" />
+                          -->
                         </ContextMenu>
                       </fw:BindableRichTextBox.ContextMenu>
                     </fw:BindableRichTextBox>
@@ -352,6 +364,18 @@
           Command="{Binding LaunchSketchCommand, Mode=OneWay}">
           <Viewbox>
             <iconPacks:PackIconFontAwesome Kind="PaintBrushSolid" />
+          </Viewbox>
+        </Button>
+
+        <Button
+          Width="{StaticResource IconSize}" Height="{StaticResource IconSize}"
+          Focusable="False"
+          BorderThickness="0"
+          Background="Transparent"
+          ToolTip="FFLogsで検索する"
+          Command="{Binding SearchLogsCommand, Mode=OneWay}">
+          <Viewbox>
+            <iconPacks:PackIconOcticons Kind="Graph" />
           </Viewbox>
         </Button>
       </StackPanel>

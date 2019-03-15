@@ -249,4 +249,15 @@
     * チャットログの購読スレッドの優先順位を任意に設定できるようにした
     </description>
   </note>
+
+  <note>
+    <version>1.1.0.3618</version>
+    <channel>Stable</channel>
+    <timestamp>2019-03-14T18:23:16.7601506+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.1.0.3618-Stable/RINGS_v1_1_0_3618_Stable.zip</uri>
+    <description>
+    * 発言者をハイパーリンク化しクリックでFFLogsで検索できるようにした
+    * 任意のキャラ名を入力してFFLogsを開くダイアログを追加した
+    </description>
+  </note>
 </release_notes>

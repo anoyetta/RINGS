@@ -10,9 +10,11 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using aframe;
 using Discord.WebSocket;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -47,7 +49,7 @@ namespace RINGS.Models
 
             if (this.IsExistSpeaker)
             {
-                para1.Inlines.Add(new Run(this.Speaker + " "));
+                para1.Inlines.Add(CreateSpeakerElement());
 
                 if (this.IsExistSpeakerAlias)
                 {
@@ -247,6 +249,83 @@ namespace RINGS.Models
                 para.Inlines.Add(headerElement);
                 para.Inlines.Add(hyperlinkElement);
             }
+
+            Inline CreateSpeakerElement()
+            {
+                if (this.discordLog != null ||
+                    string.IsNullOrEmpty(this.SpeakerCharacterName) ||
+                    this.ChatCode == ChatCodes.NPC ||
+                    this.ChatCode == ChatCodes.NPCAnnounce ||
+                    this.ChatCode == ChatCodes.CustomEmotes ||
+                    this.ChatCode == ChatCodes.StandardEmotes)
+                {
+                    return new Run(this.Speaker + " ");
+                }
+
+                var url = string.Empty;
+                var server = Uri.EscapeDataString(this.SpeakerServer);
+                var name = this.SpeakerCharacterName;
+
+                var first = string.Empty;
+                var family = string.Empty;
+
+                if (name.Contains(" "))
+                {
+                    var parts = name.Split(' ');
+                    first = parts[0].Replace(".", string.Empty);
+                    family = parts[1].Replace(".", string.Empty);
+                }
+                else
+                {
+                    return new Run(this.Speaker + " ");
+                }
+
+                var isInitialized = first.Length <= 1 || family.Length <= 1;
+
+                if (!string.IsNullOrEmpty(this.SpeakerCharacterName) &&
+                    !isInitialized)
+                {
+                    var nameArgument = Uri.EscapeDataString($"{first} {family}");
+                    url = $@"https://ja.fflogs.com/character/jp/{server}/{nameArgument}";
+                }
+                else
+                {
+                    url = $@"https://ja.fflogs.com/search/?term=";
+
+                    if (!isInitialized)
+                    {
+                        url += Uri.EscapeDataString($"{first} {family}");
+                    }
+                    else
+                    {
+                        if (first.Length > 1)
+                        {
+                            url += Uri.EscapeDataString(first);
+                        }
+                        else
+                        {
+                            return new Run(this.Speaker + " ");
+                        }
+                    }
+                }
+
+                var text = new Run()
+                {
+                    Text = this.Speaker,
+                    Cursor = Cursors.Arrow,
+                    TextDecorations = TextDecorations.Underline,
+                    ToolTip = url,
+                    Tag = new Uri(url),
+                };
+
+                text.MouseLeftButtonDown += this.Speaker_MouseLeftButtonDown;
+
+                var span = new Span();
+                span.Inlines.Add(text);
+                span.Inlines.Add(new Run(" "));
+
+                return span;
+            }
         }
 
         private void HyperlinkElement_RequestNavigate(
@@ -266,6 +345,36 @@ namespace RINGS.Models
                     e.Uri.AbsoluteUri);
             }
 
+            e.Handled = true;
+        }
+
+        private void Speaker_MouseLeftButtonDown(
+            object sender,
+            MouseButtonEventArgs e)
+        {
+            var uri = (sender as Run).Tag as Uri;
+
+            if (uri != null)
+            {
+                if (!Config.Instance.IsUseBuiltInBrowser)
+                {
+                    Process.Start(new ProcessStartInfo(uri.AbsoluteUri));
+                }
+                else
+                {
+                    var window = Window.GetWindow(sender as Run);
+                    WebViewOverlay.Instance.ShowUrl(
+                        window,
+                        uri.AbsoluteUri,
+                        new Size(1200d, 780d));
+                }
+            }
+        }
+
+        private void SpeakerLink_RequestNavigate(
+            object sender,
+            RequestNavigateEventArgs e)
+        {
             e.Handled = true;
         }
 
@@ -410,6 +519,22 @@ namespace RINGS.Models
             this.Speaker = speaker;
         }
 
+        private string speakerCharacterName;
+
+        public string SpeakerCharacterName
+        {
+            get => this.speakerCharacterName;
+            set => this.SetProperty(ref this.speakerCharacterName, value);
+        }
+
+        private string speakerServer;
+
+        public string SpeakerServer
+        {
+            get => this.speakerServer;
+            set => this.SetProperty(ref this.speakerServer, value);
+        }
+
         private string message;
 
         public string Message
@@ -497,8 +622,15 @@ namespace RINGS.Models
                     speakerPart.EndsWith(x));
                 if (!string.IsNullOrEmpty(server))
                 {
-                    speakerPart = speakerPart.Replace(server, string.Empty);
-                    speakerPart = $"{speakerPart}@{server}";
+                    log.SpeakerServer = server;
+                    log.SpeakerCharacterName = speakerPart.Replace(server, string.Empty);
+
+                    speakerPart = $"{log.SpeakerCharacterName}@{server}";
+                }
+                else
+                {
+                    log.SpeakerServer = string.Empty;
+                    log.SpeakerCharacterName = speakerPart;
                 }
 
                 log.OriginalSpeaker = speakerPart;
@@ -644,42 +776,65 @@ namespace RINGS.Models
         public DelegateCommand<ChatLogModel> CopyLogCommand =>
             this.copyLogCommand ?? (this.copyLogCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopyLogCommand));
 
-        private void ExecuteCopyLogCommand(
+        private async void ExecuteCopyLogCommand(
             ChatLogModel model)
         {
-            var sb = new StringBuilder();
-
-            var block = model.ChatDocument.Blocks.FirstOrDefault();
-            if (block != null &&
-                block is Paragraph para)
+            await WPFHelper.Dispatcher.InvokeAsync(() =>
             {
-                foreach (var i in para.Inlines)
+                var sb = new StringBuilder();
+
+                var block = model.ChatDocument.Blocks.FirstOrDefault();
+                if (block != null &&
+                    block is Paragraph para)
                 {
-                    if (i is Run run)
+                    foreach (var i in para.Inlines)
                     {
-                        sb.Append(run.Text);
+                        if (i is Run run)
+                        {
+                            sb.Append(run.Text);
+                        }
                     }
                 }
-            }
 
-            if (sb.Length > 0)
-            {
-                Clipboard.SetDataObject(sb.ToString());
-            }
+                if (sb.Length > 0)
+                {
+                    Clipboard.SetDataObject(sb.ToString());
+                }
+            });
         }
 
-        private DelegateCommand<ChatLogModel> copyPeakerCommand;
+        private DelegateCommand<ChatLogModel> copyMessageCommand;
 
-        public DelegateCommand<ChatLogModel> CopyPeakerCommand =>
-            this.copyPeakerCommand ?? (this.copyPeakerCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopyPeakerCommand));
+        public DelegateCommand<ChatLogModel> CopyMessageCommand =>
+            this.copyMessageCommand ?? (this.copyMessageCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopyMessageCommand));
 
-        private void ExecuteCopyPeakerCommand(
+        private void ExecuteCopyMessageCommand(
             ChatLogModel model)
         {
-            if (!string.IsNullOrEmpty(model.OriginalSpeaker))
+            if (model == null ||
+                string.IsNullOrEmpty(model.Message))
             {
-                Clipboard.SetDataObject(model.OriginalSpeaker);
+                return;
             }
+
+            Clipboard.SetDataObject(model.Message);
+        }
+
+        private DelegateCommand<ChatLogModel> copySpeakerCommand;
+
+        public DelegateCommand<ChatLogModel> CopySpeakerCommand =>
+            this.copySpeakerCommand ?? (this.copySpeakerCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopySpeakerCommand));
+
+        private void ExecuteCopySpeakerCommand(
+            ChatLogModel model)
+        {
+            if (model == null ||
+                string.IsNullOrEmpty(model.OriginalSpeaker))
+            {
+                return;
+            }
+
+            Clipboard.SetDataObject(model.OriginalSpeaker);
         }
 
         private DelegateCommand<ChatLogModel> invitePartyCommand;

@@ -115,6 +115,8 @@
     <!-- Log -->
     <metro:MetroHeader Grid.Row="2" Margin="0 5 0 0" Header="Chat Log" metro:ControlsHelper.HeaderFontSize="20">
       <ScrollViewer
+        VirtualizingPanel.IsVirtualizing="True"
+        VirtualizingPanel.VirtualizationMode="Recycling"
         x:Name="LogScrollViewer"
         Margin="0 5 0 0"
         Focusable="False"
@@ -129,7 +131,7 @@
 
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-              <StackPanel />
+              <VirtualizingStackPanel />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
 

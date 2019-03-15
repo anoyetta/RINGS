@@ -110,9 +110,6 @@ namespace RINGS
                 e.Cancel = true;
                 return;
             }
-
-            this.NotifyIcon.Visibility = Visibility.Collapsed;
-            this.NotifyIcon.Dispose();
         }
 
         public void ToShow()

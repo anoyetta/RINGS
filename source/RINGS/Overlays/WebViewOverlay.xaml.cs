@@ -51,8 +51,11 @@ namespace RINGS.Overlays
                 activeX.Silent = true;
             };
 
+            this.WebView.LoadCompleted += (_, __) => this.WebView.Cursor = Cursors.Arrow;
+
             this.Closing += (_, e) =>
             {
+                this.WebView.Cursor = Cursors.Arrow;
                 this.Hide();
                 WebViewHelperOverlay.Instance?.Close();
                 e.Cancel = true;
@@ -63,18 +66,25 @@ namespace RINGS.Overlays
 
         public void ShowUrl(
             Window parent,
-            string url)
+            string url,
+            Size? size = null)
         {
             this.Url = url;
 
             var interopHelper = new WindowInteropHelper(parent);
             var currentScreen = System.Windows.Forms.Screen.FromHandle(interopHelper.Handle);
 
-            var sizeRatio = Config.Instance.BuiltinBrowserSize / 100d;
-            this.Width = currentScreen.Bounds.Width * sizeRatio;
-            this.Height = currentScreen.Bounds.Height * sizeRatio;
-            this.Left = (currentScreen.Bounds.Width - this.Width) / 2d;
-            this.Top = (currentScreen.Bounds.Height - this.Height) / 2d;
+            if (!size.HasValue)
+            {
+                var sizeRatio = Config.Instance.BuiltinBrowserSize / 100d;
+                this.Width = currentScreen.Bounds.Width * sizeRatio;
+                this.Height = currentScreen.Bounds.Height * sizeRatio;
+            }
+            else
+            {
+                this.Width = size.Value.Width;
+                this.Height = size.Value.Height;
+            }
 
             this.WebView.Visibility = Visibility.Collapsed;
             this.ImageBox.Visibility = Visibility.Collapsed;
@@ -82,6 +92,7 @@ namespace RINGS.Overlays
 
             if (!url.IsImage())
             {
+                this.WebView.Cursor = Cursors.Wait;
                 this.WebView.Navigate(url);
 
                 this.ImageView.MouseWheel -= this.Image_MouseWheel;
@@ -110,7 +121,7 @@ namespace RINGS.Overlays
             var closeView = new WebViewHelperOverlay();
             closeView.Owner = this;
             closeView.Show();
-            closeView.Top = this.Top;
+            closeView.Top = this.Top + this.Height - closeView.Height;
             closeView.Left = this.Left + this.Width - closeView.Width;
         }
 

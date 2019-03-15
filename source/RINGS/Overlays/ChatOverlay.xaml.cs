@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -11,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using aframe;
 using aframe.Views;
 using RINGS.Models;
@@ -76,6 +76,16 @@ namespace RINGS.Overlays
             {
                 this.OverlayVisible = this.ViewModel.ChatOverlaySettings.IsEnabled;
                 this.SubscribeZOrderCorrector();
+
+                // ビルトインブラウザを生成しておく
+                if (Config.Instance.IsUseBuiltInBrowser)
+                {
+                    WPFHelper.Dispatcher.InvokeAsync(() =>
+                    {
+                        var b = WebViewOverlay.Instance;
+                    },
+                    DispatcherPriority.ApplicationIdle);
+                }
             };
 
             this.Closed += (_, __) =>
@@ -265,29 +275,60 @@ namespace RINGS.Overlays
             }
         }
 
+        private async void CopySelectionItem_Click(object sender, RoutedEventArgs e)
+        {
+            await WPFHelper.Dispatcher.InvokeAsync(() =>
+            {
+                var textBox =
+                    ((e.OriginalSource as MenuItem)?.Parent as ContextMenu)?
+                    .PlacementTarget as BindableRichTextBox;
+
+                if (textBox == null ||
+                    textBox.Selection.IsEmpty)
+                {
+                    return;
+                }
+
+                var selectedText = new TextRange(
+                    textBox.Selection.Start,
+                    textBox.Selection.End).Text;
+
+                if (!string.IsNullOrEmpty(selectedText))
+                {
+                    Clipboard.SetDataObject(selectedText);
+                }
+            });
+        }
+
         private static readonly string ErionesUri = @"https://eriones.com/search?list=on&i=";
 
         private async void SearchErionesItem_Click(object sender, RoutedEventArgs e)
         {
-            var textBox =
-                ((e.OriginalSource as MenuItem)?.Parent as ContextMenu)?
-                .PlacementTarget as BindableRichTextBox;
-
-            if (textBox == null ||
-                textBox.Selection.IsEmpty)
+            var selectedText = await WPFHelper.Dispatcher.InvokeAsync(() =>
             {
-                return;
-            }
+                var textBox =
+                    ((e.OriginalSource as MenuItem)?.Parent as ContextMenu)?
+                    .PlacementTarget as BindableRichTextBox;
 
-            var selectedText = new TextRange(
-                textBox.Selection.Start,
-                textBox.Selection.End).Text;
+                if (textBox == null ||
+                    textBox.Selection.IsEmpty)
+                {
+                    return string.Empty;
+                }
 
-            await Task.Run(() =>
-            {
-                var arg = HttpUtility.UrlEncode(selectedText);
-                Process.Start($"{ErionesUri}{arg}");
+                return new TextRange(
+                    textBox.Selection.Start,
+                    textBox.Selection.End).Text;
             });
+
+            if (!string.IsNullOrEmpty(selectedText))
+            {
+                await Task.Run(() =>
+                {
+                    var arg = Uri.EscapeDataString(selectedText);
+                    Process.Start($"{ErionesUri}{arg}");
+                });
+            }
         }
 
         #region IOverlay

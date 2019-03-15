@@ -24,7 +24,7 @@
   TextOptions.TextRenderingMode="ClearType"
   ShowInTaskbar="True"
   ResizeMode="NoResize"
-  WindowStartupLocation="Manual"
+  WindowStartupLocation="CenterScreen"
   Height="450"
   Width="800"
   DataContext="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}">
