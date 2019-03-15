@@ -283,6 +283,7 @@ namespace RINGS.Models
                 var isInitialized = first.Length <= 1 || family.Length <= 1;
 
                 if (!string.IsNullOrEmpty(this.SpeakerCharacterName) &&
+                    !string.IsNullOrEmpty(server) &&
                     !isInitialized)
                 {
                     var nameArgument = Uri.EscapeDataString($"{first} {family}");

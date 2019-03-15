@@ -260,4 +260,14 @@
     * 任意のキャラ名を入力してFFLogsを開くダイアログを追加した
     </description>
   </note>
+
+  <note>
+    <version>1.1.1.3801</version>
+    <channel>Stable</channel>
+    <timestamp>2019-03-16T01:16:46.1587826+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.1.1.3801-Stable/RINGS_v1_1_1_3801_Stable.zip</uri>
+    <description>
+    * FFLogsリンクが正しく生成されず404エラーになる場合がある不具合を修正した
+    </description>
+  </note>
 </release_notes>
