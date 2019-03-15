@@ -275,29 +275,60 @@ namespace RINGS.Overlays
             }
         }
 
+        private async void CopySelectionItem_Click(object sender, RoutedEventArgs e)
+        {
+            await WPFHelper.Dispatcher.InvokeAsync(() =>
+            {
+                var textBox =
+                    ((e.OriginalSource as MenuItem)?.Parent as ContextMenu)?
+                    .PlacementTarget as BindableRichTextBox;
+
+                if (textBox == null ||
+                    textBox.Selection.IsEmpty)
+                {
+                    return;
+                }
+
+                var selectedText = new TextRange(
+                    textBox.Selection.Start,
+                    textBox.Selection.End).Text;
+
+                if (!string.IsNullOrEmpty(selectedText))
+                {
+                    Clipboard.SetDataObject(selectedText);
+                }
+            });
+        }
+
         private static readonly string ErionesUri = @"https://eriones.com/search?list=on&i=";
 
         private async void SearchErionesItem_Click(object sender, RoutedEventArgs e)
         {
-            var textBox =
-                ((e.OriginalSource as MenuItem)?.Parent as ContextMenu)?
-                .PlacementTarget as BindableRichTextBox;
-
-            if (textBox == null ||
-                textBox.Selection.IsEmpty)
+            var selectedText = await WPFHelper.Dispatcher.InvokeAsync(() =>
             {
-                return;
-            }
+                var textBox =
+                    ((e.OriginalSource as MenuItem)?.Parent as ContextMenu)?
+                    .PlacementTarget as BindableRichTextBox;
 
-            var selectedText = new TextRange(
-                textBox.Selection.Start,
-                textBox.Selection.End).Text;
+                if (textBox == null ||
+                    textBox.Selection.IsEmpty)
+                {
+                    return string.Empty;
+                }
 
-            await Task.Run(() =>
-            {
-                var arg = Uri.EscapeDataString(selectedText);
-                Process.Start($"{ErionesUri}{arg}");
+                return new TextRange(
+                    textBox.Selection.Start,
+                    textBox.Selection.End).Text;
             });
+
+            if (!string.IsNullOrEmpty(selectedText))
+            {
+                await Task.Run(() =>
+                {
+                    var arg = Uri.EscapeDataString(selectedText);
+                    Process.Start($"{ErionesUri}{arg}");
+                });
+            }
         }
 
         #region IOverlay

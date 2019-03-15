@@ -177,13 +177,15 @@
         HorizontalScrollBarVisibility="Disabled"
         VerticalScrollBarVisibility="Auto">
         <ItemsControl
+          VirtualizingPanel.IsVirtualizing="True"
+          VirtualizingPanel.VirtualizationMode="Recycling"
           ItemsSource="{Binding Logs, Mode=OneWay}"
           Focusable="False"
           IsTabStop="False">
 
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-              <StackPanel />
+              <VirtualizingStackPanel />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
 

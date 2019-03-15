@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using aframe;
 using Discord.WebSocket;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -737,42 +738,65 @@ namespace RINGS.Models
         public DelegateCommand<ChatLogModel> CopyLogCommand =>
             this.copyLogCommand ?? (this.copyLogCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopyLogCommand));
 
-        private void ExecuteCopyLogCommand(
+        private async void ExecuteCopyLogCommand(
             ChatLogModel model)
         {
-            var sb = new StringBuilder();
-
-            var block = model.ChatDocument.Blocks.FirstOrDefault();
-            if (block != null &&
-                block is Paragraph para)
+            await WPFHelper.Dispatcher.InvokeAsync(() =>
             {
-                foreach (var i in para.Inlines)
+                var sb = new StringBuilder();
+
+                var block = model.ChatDocument.Blocks.FirstOrDefault();
+                if (block != null &&
+                    block is Paragraph para)
                 {
-                    if (i is Run run)
+                    foreach (var i in para.Inlines)
                     {
-                        sb.Append(run.Text);
+                        if (i is Run run)
+                        {
+                            sb.Append(run.Text);
+                        }
                     }
                 }
-            }
 
-            if (sb.Length > 0)
-            {
-                Clipboard.SetDataObject(sb.ToString());
-            }
+                if (sb.Length > 0)
+                {
+                    Clipboard.SetDataObject(sb.ToString());
+                }
+            });
         }
 
-        private DelegateCommand<ChatLogModel> copyPeakerCommand;
+        private DelegateCommand<ChatLogModel> copyMessageCommand;
 
-        public DelegateCommand<ChatLogModel> CopyPeakerCommand =>
-            this.copyPeakerCommand ?? (this.copyPeakerCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopyPeakerCommand));
+        public DelegateCommand<ChatLogModel> CopyMessageCommand =>
+            this.copyMessageCommand ?? (this.copyMessageCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopyMessageCommand));
 
-        private void ExecuteCopyPeakerCommand(
+        private void ExecuteCopyMessageCommand(
             ChatLogModel model)
         {
-            if (!string.IsNullOrEmpty(model.OriginalSpeaker))
+            if (model == null ||
+                string.IsNullOrEmpty(model.Message))
             {
-                Clipboard.SetDataObject(model.OriginalSpeaker);
+                return;
             }
+
+            Clipboard.SetDataObject(model.Message);
+        }
+
+        private DelegateCommand<ChatLogModel> copySpeakerCommand;
+
+        public DelegateCommand<ChatLogModel> CopySpeakerCommand =>
+            this.copySpeakerCommand ?? (this.copySpeakerCommand = new DelegateCommand<ChatLogModel>(this.ExecuteCopySpeakerCommand));
+
+        private void ExecuteCopySpeakerCommand(
+            ChatLogModel model)
+        {
+            if (model == null ||
+                string.IsNullOrEmpty(model.OriginalSpeaker))
+            {
+                return;
+            }
+
+            Clipboard.SetDataObject(model.OriginalSpeaker);
         }
 
         private DelegateCommand<ChatLogModel> invitePartyCommand;
