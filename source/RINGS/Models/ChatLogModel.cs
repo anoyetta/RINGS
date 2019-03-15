@@ -314,6 +314,7 @@ namespace RINGS.Models
                     Text = this.Speaker,
                     Cursor = Cursors.Arrow,
                     TextDecorations = TextDecorations.Underline,
+                    ToolTip = url,
                     Tag = new Uri(url),
                 };
 
