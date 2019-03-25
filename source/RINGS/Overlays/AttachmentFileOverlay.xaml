@@ -57,6 +57,7 @@
       <TextBox
         Margin="0 3 0 0"
         AcceptsReturn="True"
+        TextWrapping="Wrap"
         Padding="2"
         Height="120"
         VerticalScrollBarVisibility="Auto"
