@@ -270,4 +270,14 @@
     * FFLogsリンクが正しく生成されず404エラーになる場合がある不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>1.1.2.4711</version>
+    <channel>Stable</channel>
+    <timestamp>2019-03-25T11:02:48.7397256+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.1.2.4711-Stable/RINGS_v1_1_2_4711_Stable.zip</uri>
+    <description>
+    * 添付ファイル送信時のテキストボックスが折り返しなしになっていた不具合を修正した
+    </description>
+  </note>
 </release_notes>
