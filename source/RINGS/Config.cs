@@ -432,6 +432,15 @@ namespace RINGS
             set => this.SetProperty(ref this.chatLogPollingInterval, value);
         }
 
+        private double duplicateLogDue = 300.0d;
+
+        [JsonProperty(PropertyName = "duplicate_log_due")]
+        public double DuplicateLogDue
+        {
+            get => this.duplicateLogDue;
+            set => this.SetProperty(ref this.duplicateLogDue, value);
+        }
+
         private ThreadPriority chatLogSubscriberThreadPriority = ThreadPriority.BelowNormal;
 
         [JsonProperty(PropertyName = "chatlog_subscriber_threadpriority")]
