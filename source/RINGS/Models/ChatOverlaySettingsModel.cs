@@ -449,8 +449,11 @@ namespace RINGS.Models
         }
 
         [JsonIgnore]
-        public static readonly IEnumerable<EnumContainer<FilterTypes>> FilterTypeList =
+        private static readonly IEnumerable<EnumContainer<FilterTypes>> FilterTypeMasterList =
             EnumConverter.ToEnumerableContainer<FilterTypes>();
+
+        [JsonIgnore]
+        public IEnumerable<EnumContainer<FilterTypes>> FilterTypeList => FilterTypeMasterList;
 
         private void RefreshFilterRegex()
         {

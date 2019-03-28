@@ -158,15 +158,14 @@ namespace RINGS.Models
             }
         }
 
-        private string[] duplicateCheckBuffer = new string[4];
+        private string[] duplicateCheckBuffer = new string[8];
         private volatile int duplicateCheckIndex = 0;
         private DateTime duplicateCheckTimestamp = DateTime.MinValue;
-        private static readonly double DuplicateDueSeconds = 0.25d;
 
         private bool IsDuplicate(
             ChatLogModel chatLog)
         {
-            if ((DateTime.Now - this.duplicateCheckTimestamp).TotalSeconds > DuplicateDueSeconds)
+            if ((DateTime.Now - this.duplicateCheckTimestamp).TotalMilliseconds > Config.Instance.DuplicateLogDue)
             {
                 for (int i = 0; i < this.duplicateCheckBuffer.Length; i++)
                 {

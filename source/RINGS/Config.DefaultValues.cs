@@ -29,6 +29,7 @@ namespace RINGS
             { nameof(IsUseBuiltInBrowser), false },
             { nameof(BuiltinBrowserSize), 80.0d },
             { nameof(ChatLogPollingInterval), 20.0d },
+            { nameof(DuplicateLogDue), 300.0d },
             { nameof(ChatLogSubscriberThreadPriority), ThreadPriority.BelowNormal },
             { nameof(ChatLogScrollBarWidth), 6.0d },
             { nameof(FileDirectory), Environment.GetFolderPath(Environment.SpecialFolder.Desktop) },

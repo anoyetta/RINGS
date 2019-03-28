@@ -405,12 +405,12 @@
                           </Grid.ColumnDefinitions>
                           <TextBox
                             Grid.Column="0"
-                            Text="{Binding Keyword, Mode=OneWay}" />
+                            Text="{Binding Keyword, Mode=TwoWay}" />
                           <ComboBox
                             Grid.Column="1"
                             Margin="2 0 0 0"
                             Width="90"
-                            ItemsSource="{x:Static model:FilterModel.FilterTypeList}"
+                            ItemsSource="{Binding FilterTypeList, Mode=OneWay}"
                             DisplayMemberPath="Display"
                             SelectedValuePath="Value"
                             SelectedValue="{Binding FilterType, Mode=TwoWay}" />
