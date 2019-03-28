@@ -38,7 +38,7 @@ namespace RINGS.Common
         public static readonly string StandardEmotes = "001D";
         public static readonly string CustomEmotes = "001C";
 
-        public static readonly string NPC = "0043";
+        public static readonly string NPC = "003D";
         public static readonly string NPCAnnounce = "0044";
 
         public static readonly string SystemMessage = "0039";

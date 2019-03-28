@@ -292,4 +292,14 @@
     * チャットログの重複を除外する受付時間を変更できるようにした
     </description>
   </note>
+
+  <note>
+    <version>1.1.4.5023</version>
+    <channel>Stable</channel>
+    <timestamp>2019-03-28T23:07:19.5255505+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.1.4.5023-Stable/RINGS_v1_1_4_5023_Stable.zip</uri>
+    <description>
+    * NPC のチャットチャンネルを表示できなかった不具合を修正した
+    </description>
+  </note>
 </release_notes>
