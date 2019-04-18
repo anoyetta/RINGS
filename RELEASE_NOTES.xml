@@ -309,7 +309,7 @@
     <timestamp>2019-04-18T11:29:21.8110857+09:00</timestamp>
     <uri>https://github.com/anoyetta/RINGS/releases/download/v1.1.5.4111-Stable/RINGS_v1_1_5_4111_Stable.zip</uri>
     <description>
-    * ワールド名がキャラクター名に含まれている場合に正しく動作しない不具合を修正した
+    * ワールド名がキャラクター名に含まれている場合に正しく動作しない不具合を修正した (Asura Edition)
     </description>
   </note>
 </release_notes>
