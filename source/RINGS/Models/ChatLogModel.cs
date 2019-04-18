@@ -722,10 +722,6 @@ namespace RINGS.Models
             $@"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+)(?<server>{string.Join("|", Servers.Names)})",
             RegexOptions.Compiled);
 
-        private static readonly Regex ServerNamePartRegex = new Regex(
-            $@"[a-zA-Z\-'\.]+(?<server>{string.Join(" | ", Servers.Names)})",
-            RegexOptions.Compiled);
-
         private static string FomartCharacterNames(
             string message)
         {
