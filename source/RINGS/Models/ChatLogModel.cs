@@ -609,6 +609,8 @@ namespace RINGS.Models
 
             log.ChatCode = xivLog.Code;
 
+            var currentProfName = Config.Instance.ActiveProfile?.CharacterName;
+
             var i = xivLog.Line.IndexOf(":");
             if (i >= 0)
             {
@@ -619,14 +621,14 @@ namespace RINGS.Models
                 speakerPart = RemoveSpecialChar(speakerPart);
 
                 // サーバ名部分を取り出して書式を整える
-                var server = Servers.Names.FirstOrDefault(x =>
-                    speakerPart.EndsWith(x));
-                if (!string.IsNullOrEmpty(server))
+                var match = CharacterNameWithServerRegex.Match(speakerPart);
+                if (match.Success)
                 {
-                    log.SpeakerServer = server;
-                    log.SpeakerCharacterName = speakerPart.Replace(server, string.Empty);
+                    var server = match.Groups["server"];
+                    log.SpeakerServer = server.ToString();
+                    log.SpeakerCharacterName = speakerPart.Remove(server.Index, server.Length);
 
-                    speakerPart = $"{log.SpeakerCharacterName}@{server}";
+                    speakerPart = $"{log.SpeakerCharacterName}@{log.SpeakerServer}";
                 }
                 else
                 {
@@ -650,7 +652,6 @@ namespace RINGS.Models
             }
             else
             {
-                var currentProfName = Config.Instance.ActiveProfile?.CharacterName;
                 if (!string.IsNullOrEmpty(currentProfName))
                 {
                     log.IsMe = log.OriginalSpeaker.Contains(currentProfName);
@@ -719,6 +720,10 @@ namespace RINGS.Models
 
         private static readonly Regex CharacterNameWithServerRegex = new Regex(
             $@"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+)(?<server>{string.Join("|", Servers.Names)})",
+            RegexOptions.Compiled);
+
+        private static readonly Regex ServerNamePartRegex = new Regex(
+            $@"[a-zA-Z\-'\.]+(?<server>{string.Join(" | ", Servers.Names)})",
             RegexOptions.Compiled);
 
         private static string FomartCharacterNames(

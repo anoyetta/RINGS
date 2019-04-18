@@ -15,6 +15,7 @@ using RINGS.Common;
 using RINGS.Controllers;
 using RINGS.Models;
 using RINGS.Views;
+using Sharlayan.Core;
 
 namespace RINGS.ViewModels
 {
@@ -201,15 +202,21 @@ namespace RINGS.ViewModels
                 return;
             }
 
-            var speaker = SharlayanController.Instance.CurrentPlayer?.Name ?? "RINGS";
+            var speaker =
+                SharlayanController.Instance.CurrentPlayer?.Name ??
+                Config.Instance.ActiveProfile?.CharacterName;
 
-            var model = new ChatLogModel()
+            speaker ??= "RINGS";
+
+            var xivlog = new ChatLogItem()
             {
-                ChatCode = this.TestChatCode,
-                OriginalSpeaker = speaker,
-                SpeakerType = SpeakerTypes.XIVPlayer,
-                Message = message,
+                Code = this.TestChatCode,
+                Line = $"{speaker}:{message}",
             };
+
+            var model = ChatLogModel.FromXIVLog(
+                xivlog,
+                new[] { speaker });
 
             var alias = Config.Instance.ActiveProfile?.Alias ?? string.Empty;
 

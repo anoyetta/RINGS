@@ -31,7 +31,7 @@ $targetDirectories = @($targetClientDirectory)
 $depolyDirectory = ".\source\deploy"
 
 # tools
-$msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin\MSBuild.exe"
+$msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\MSBuild.exe"
 
 # バージョンを取得する
 ## ビルド番号を決定する
