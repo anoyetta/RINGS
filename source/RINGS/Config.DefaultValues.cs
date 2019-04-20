@@ -33,6 +33,7 @@ namespace RINGS
             { nameof(ChatLogSubscriberThreadPriority), ThreadPriority.BelowNormal },
             { nameof(ChatLogScrollBarWidth), 6.0d },
             { nameof(FileDirectory), Environment.GetFolderPath(Environment.SpecialFolder.Desktop) },
+            { nameof(ImageOpacity), 1.0d },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },

@@ -468,6 +468,15 @@ namespace RINGS
             set => this.SetProperty(ref this.fileDirectory, value);
         }
 
+        private double imageOpacity = 1.0d;
+
+        [JsonProperty(PropertyName = "image_opacity")]
+        public double ImageOpacity
+        {
+            get => this.imageOpacity;
+            set => this.SetProperty(ref this.imageOpacity, value);
+        }
+
         private readonly Dictionary<string, ChatOverlaySettingsModel> chatOverlaySettings = new Dictionary<string, ChatOverlaySettingsModel>();
 
         [JsonProperty(PropertyName = "chat_overlays", DefaultValueHandling = DefaultValueHandling.Include)]
