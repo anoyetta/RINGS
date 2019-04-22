@@ -33,7 +33,8 @@
                 <Hyperlink>
                   <InlineUIContainer>
                   <Image
-                    Source="https://www.jma-net.go.jp/sat/data/web89/parts89/image/vis_201706201100-00.png" />
+                    Source="https://www.jma-net.go.jp/sat/data/web89/parts89/image/vis_201706201100-00.png"
+                    Opacity="0.5" />
                   </InlineUIContainer>
                 </Hyperlink>
               </TextBlock>
@@ -47,7 +48,8 @@
                 <Hyperlink>
                   <InlineUIContainer>
                   <Image
-                    Source="https://www.jma-net.go.jp/sat/data/web89/parts89/image/vis_201706201100-00.png" />
+                    Source="https://www.jma-net.go.jp/sat/data/web89/parts89/image/vis_201706201100-00.png"
+                    Opacity="1" />
                   </InlineUIContainer>
                 </Hyperlink>
               </TextBlock>
