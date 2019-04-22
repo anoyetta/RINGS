@@ -124,7 +124,8 @@ namespace RINGS.Models
 
                     var inline = new InlineUIContainer(new Image()
                     {
-                        Source = bitmap
+                        Source = bitmap,
+                        Opacity = Config.Instance.ImageOpacity,
                     });
 
                     var hyperlink = new Hyperlink(inline)

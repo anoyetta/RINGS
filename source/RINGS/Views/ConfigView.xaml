@@ -117,6 +117,18 @@
           </Grid>
         </metro:MetroHeader>
 
+        <metro:MetroHeader Header="イメージの Opacity" Margin="0 15 0 0">
+          <metro:NumericUpDown
+            Margin="0 5 0 0"
+            Width="100"
+            HorizontalAlignment="Left"
+            StringFormat="N2"
+            Interval="0.01"
+            Maximum="1"
+            Minimum="0.01"
+            Value="{Binding Config.ImageOpacity, Mode=TwoWay}" />
+        </metro:MetroHeader>
+
         <metro:MetroHeader Header="チャットログの購読間隔 (ms)" Margin="0 15 0 0">
           <metro:NumericUpDown
             Margin="0 5 0 0"
@@ -126,15 +138,6 @@
             Maximum="999"
             Minimum="1"
             Value="{Binding Config.ChatLogPollingInterval, Mode=TwoWay}" />
-        </metro:MetroHeader>
-
-        <metro:MetroHeader Header="イメージの Opacity" Margin="0 15 0 0">
-          <metro:NumericUpDown
-            HorizontalAlignment="Left"
-            StringFormat="N2"
-            Interval="0.01"
-            Width="100"
-            Value="{Binding Model.ImageOpacity, Mode=TwoWay}" />
         </metro:MetroHeader>
 
         <metro:MetroHeader Header="チャットログの購読スレッドの優先度" Margin="{DynamicResource ContentMargin}">
