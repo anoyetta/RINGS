@@ -322,4 +322,14 @@
     * 画像を表示するときのopacityを指定できるようにした
     </description>
   </note>
+
+  <note>
+    <version>1.1.7.#BuildNo#</version>
+    <channel>Stable</channel>
+    <timestamp>#Timestamp#</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <description>
+    * lockファイルの作成場所を変更した
+    </description>
+  </note>
 </release_notes>

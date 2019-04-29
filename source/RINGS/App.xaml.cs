@@ -201,7 +201,12 @@ namespace RINGS
             }
         }
 
-        private static readonly string LockFileName = @".\RINGS.lock";
+        private static readonly string LockFileName = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "anoyetta",
+            "RINGS",
+            "RINGS.lock");
+
         private FileStream lockFileStream;
 
         private bool LockDuplicateStart()
@@ -210,6 +215,12 @@ namespace RINGS
 
             try
             {
+                var dir = Path.GetDirectoryName(LockFileName);
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
                 try
                 {
                     if (File.Exists(LockFileName))
