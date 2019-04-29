@@ -324,10 +324,10 @@
   </note>
 
   <note>
-    <version>1.1.7.#BuildNo#</version>
+    <version>1.1.7.5214</version>
     <channel>Stable</channel>
-    <timestamp>#Timestamp#</timestamp>
-    <uri>https://github.com/anoyetta/RINGS/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <timestamp>2019-04-29T14:38:17.2158881+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.1.7.5214-Stable/RINGS_v1_1_7_5214_Stable.zip</uri>
     <description>
     * lockファイルの作成場所を変更した
     </description>
