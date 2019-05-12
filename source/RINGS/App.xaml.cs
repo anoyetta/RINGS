@@ -5,6 +5,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using aframe;
 using aframe.Updater;
@@ -47,6 +48,8 @@ namespace RINGS
             }
 
             AppLogger.Init("RINGSLogger");
+
+            RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
             SplashOverlay.Instance.ShowSplash();
 
