@@ -332,4 +332,14 @@
     * lockファイルの作成場所を変更した
     </description>
   </note>
+
+  <note>
+    <version>1.1.8.3716</version>
+    <channel>Stable</channel>
+    <timestamp>2019-05-13T16:44:37.8641307+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.1.8.3716-Stable/RINGS_v1_1_8_3716_Stable.zip</uri>
+    <description>
+    * レンダリングをCPUに限定した
+    </description>
+  </note>
 </release_notes>
