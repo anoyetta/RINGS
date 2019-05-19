@@ -197,6 +197,13 @@
                 <metro:MetroHeader Header="オプション" Margin="{DynamicResource ContentMargin}">
                   <StackPanel>
                     <metro:ToggleSwitch
+                      Margin="0 0 0 0"
+                      VerticalAlignment="Center"
+                      Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                      IsChecked="{Binding Model.IsShowTimestamp, Mode=TwoWay}"
+                      Content="発言のタイムスタンプを表示する" />
+                    <metro:ToggleSwitch
+                      Margin="0 8 0 0"
                       VerticalAlignment="Center"
                       Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
                       IsChecked="{Binding Model.IsAutoHide, Mode=TwoWay}"
