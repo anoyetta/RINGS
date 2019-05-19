@@ -342,4 +342,15 @@
     * レンダリングをCPUに限定した
     </description>
   </note>
+
+  <note>
+    <version>1.2.0.4311</version>
+    <channel>Statble</channel>
+    <timestamp>2019-05-19T11:04:13.2506237+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.2.0.4311-Statble/RINGS_v1_2_0_4311_Statble.zip</uri>
+    <description>
+    * 複数のオーバーレイを使用したときに初期のオーバーレイにチャットログが表示されない場合がある不具合を修正した
+    * 発言のタイムスタンプを表示するオプションを搭載した
+    </description>
+  </note>
 </release_notes>

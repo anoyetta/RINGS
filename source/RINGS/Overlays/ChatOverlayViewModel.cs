@@ -37,7 +37,9 @@ namespace RINGS.Overlays
             Interval = TimeSpan.FromSeconds(1.0),
         };
 
-        public ChatOverlayViewModel() : this(Config.DefaultChatOverlayName)
+        private static readonly string DesignModeOverlayName = "DESIGN-MODE";
+
+        public ChatOverlayViewModel() : this(DesignModeOverlayName)
         {
         }
 
@@ -224,7 +226,8 @@ namespace RINGS.Overlays
             get => this.name;
             set
             {
-                if (this.name != value)
+                if (!string.IsNullOrEmpty(this.name) &&
+                    this.name != value)
                 {
                     this.UnsubscribeOverlaySettings();
                 }

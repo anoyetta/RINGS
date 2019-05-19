@@ -200,6 +200,24 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.isAutoActivatePage, value);
         }
 
+        private bool isShowTimestamp = false;
+
+        [JsonProperty(PropertyName = "is_show_timestamp")]
+        public bool IsShowTimestamp
+        {
+            get => this.isShowTimestamp;
+            set => this.SetProperty(ref this.isShowTimestamp, value);
+        }
+
+        private string timestampFormat = "[HH:mm]";
+
+        [JsonProperty(PropertyName = "timestamp_format")]
+        public string TimestampFormat
+        {
+            get => this.timestampFormat;
+            set => this.SetProperty(ref this.timestampFormat, value);
+        }
+
         private readonly SuspendableObservableCollection<ChatPageSettingsModel> chatPages = new SuspendableObservableCollection<ChatPageSettingsModel>();
 
         [JsonProperty(PropertyName = "chat_pages", DefaultValueHandling = DefaultValueHandling.Include)]

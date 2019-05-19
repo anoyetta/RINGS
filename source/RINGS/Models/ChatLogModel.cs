@@ -36,6 +36,17 @@ namespace RINGS.Models
 
             var para1 = new Paragraph() { Margin = ZeroMargin };
 
+            if (this.ParentOverlaySettings != null &&
+                this.ParentOverlaySettings.IsShowTimestamp)
+            {
+                para1.Inlines.Add(new Run(this.Timestamp.ToString(this.ParentOverlaySettings.TimestampFormat) + " ")
+                {
+                    FontSize = this.ParentOverlaySettings.Font.Size * 0.9,
+                    BaselineAlignment = BaselineAlignment.Center,
+                    Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#a4a4a4")),
+                });
+            }
+
             if (this.IsExistChatCodeIndicator)
             {
                 para1.Inlines.Add(this.ParentOverlaySettings != null ?
