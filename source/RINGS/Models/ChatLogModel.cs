@@ -728,11 +728,13 @@ namespace RINGS.Models
 
         private static readonly Regex SpeakerRegex = new Regex(
             @"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+@?[a-zA-Z]*) \((?<alias>.+)\)",
-            RegexOptions.Compiled);
+            RegexOptions.Compiled |
+            RegexOptions.IgnoreCase);
 
         private static readonly Regex CharacterNameWithServerRegex = new Regex(
             $@"(?<name>[a-zA-Z\-'\.]+ [a-zA-Z\-'\.]+)(?<server>{string.Join("|", Servers.Names)})",
-            RegexOptions.Compiled);
+            RegexOptions.Compiled |
+            RegexOptions.IgnoreCase);
 
         private static string FomartCharacterNames(
             string message)

@@ -477,6 +477,15 @@ namespace RINGS
             set => this.SetProperty(ref this.imageOpacity, value);
         }
 
+        private int chatLogBufferSize = 1024;
+
+        [JsonProperty(PropertyName = "chatlog_buffer_size")]
+        public int ChatLogBufferSize
+        {
+            get => this.chatLogBufferSize;
+            set => this.SetProperty(ref this.chatLogBufferSize, value);
+        }
+
         private readonly Dictionary<string, ChatOverlaySettingsModel> chatOverlaySettings = new Dictionary<string, ChatOverlaySettingsModel>();
 
         [JsonProperty(PropertyName = "chat_overlays", DefaultValueHandling = DefaultValueHandling.Include)]

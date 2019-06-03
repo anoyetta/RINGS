@@ -191,8 +191,6 @@
               Loaded="ScrollViewer_Loaded">
 
               <ItemsControl
-                VirtualizingPanel.IsVirtualizing="True"
-                VirtualizingPanel.VirtualizationMode="Recycling"
                 Focusable="False"
                 IsTabStop="False"
                 BorderThickness="0"
@@ -209,7 +207,7 @@
 
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>
-                    <VirtualizingStackPanel VerticalAlignment="Bottom"  Orientation="Vertical" />
+                    <StackPanel VerticalAlignment="Bottom"  Orientation="Vertical" />
                   </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
