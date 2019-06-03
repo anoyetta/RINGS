@@ -29,6 +29,23 @@ namespace aframe
             }
         }
 
+        public bool IsSuppressNotification
+        {
+            get => this._suppressNotification;
+            set
+            {
+                if (this._suppressNotification != value)
+                {
+                    this._suppressNotification = value;
+
+                    if (!this._suppressNotification)
+                    {
+                        this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                    }
+                }
+            }
+        }
+
         public void AddRange(
             IEnumerable<T> elements,
             bool clear = false)

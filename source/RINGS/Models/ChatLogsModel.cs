@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading;
 using aframe;
 using Prism.Mvvm;
 using RINGS.Common;
@@ -128,6 +129,19 @@ namespace RINGS.Models
                 log.ParentOverlaySettings = this.ParentOverlaySettings;
                 log.ParentPageSettings = this.ParentPageSettings;
                 this.Buffer.Add(log);
+
+                if ((this.Buffer.Count % 128) == 0)
+                {
+                    try
+                    {
+                        this.Buffer.IsSuppressNotification = true;
+                        this.Garbage();
+                    }
+                    finally
+                    {
+                        this.Buffer.IsSuppressNotification = false;
+                    }
+                }
             }
         }
 
@@ -136,16 +150,30 @@ namespace RINGS.Models
         {
             lock (this.Buffer)
             {
-                foreach (var log in logs)
+                try
                 {
-                    if (this.IsDuplicate(log))
+                    this.Buffer.IsSuppressNotification = true;
+
+                    foreach (var log in logs)
                     {
-                        return;
+                        if (this.IsDuplicate(log))
+                        {
+                            return;
+                        }
+
+                        log.ParentOverlaySettings = this.ParentOverlaySettings;
+                        log.ParentPageSettings = this.ParentPageSettings;
+                        this.Buffer.Add(log);
                     }
 
-                    log.ParentOverlaySettings = this.ParentOverlaySettings;
-                    log.ParentPageSettings = this.ParentPageSettings;
-                    this.Buffer.Add(log);
+                    if ((this.Buffer.Count % 128) == 0)
+                    {
+                        this.Garbage();
+                    }
+                }
+                finally
+                {
+                    this.Buffer.IsSuppressNotification = false;
                 }
             }
         }
@@ -224,14 +252,18 @@ namespace RINGS.Models
         {
             lock (this.Buffer)
             {
-                if (this.Buffer.Count <= BufferSize)
+                var bufferSize = Config.Instance.ChatLogBufferSize;
+
+                if (this.Buffer.Count <= bufferSize)
                 {
                     return;
                 }
 
-                for (int i = 0; i < BufferSize; i++)
+                var garbageCount = (this.Buffer.Count - bufferSize) + (bufferSize / 10);
+                for (int i = 0; i < garbageCount; i++)
                 {
                     this.Buffer.RemoveAt(0);
+                    Thread.Yield();
                 }
             }
         }

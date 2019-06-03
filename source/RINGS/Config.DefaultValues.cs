@@ -34,6 +34,7 @@ namespace RINGS
             { nameof(ChatLogScrollBarWidth), 6.0d },
             { nameof(FileDirectory), Environment.GetFolderPath(Environment.SpecialFolder.Desktop) },
             { nameof(ImageOpacity), 1.0d },
+            { nameof(ChatLogBufferSize), 1024 },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },
