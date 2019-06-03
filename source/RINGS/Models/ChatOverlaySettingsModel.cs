@@ -200,6 +200,15 @@ namespace RINGS.Models
             set => this.SetProperty(ref this.isAutoActivatePage, value);
         }
 
+        private bool isNotAutoHide = false;
+
+        [JsonProperty(PropertyName = "not_auto_hide")]
+        public bool IsNotAutoHide
+        {
+            get => this.isNotAutoHide;
+            set => this.SetProperty(ref this.isNotAutoHide, value);
+        }
+
         private bool isShowTimestamp = false;
 
         [JsonProperty(PropertyName = "is_show_timestamp")]
