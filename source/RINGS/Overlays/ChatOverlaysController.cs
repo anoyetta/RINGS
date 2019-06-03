@@ -133,9 +133,12 @@ namespace RINGS.Overlays
 
             foreach (var overlay in overlays)
             {
-                if (overlay.ViewModel.ChatOverlaySettings?.IsEnabled ?? false)
+                var isEnabled = overlay.ViewModel.ChatOverlaySettings?.IsEnabled ?? false;
+                var isNotAutoHide = overlay.ViewModel.ChatOverlaySettings?.IsNotAutoHide ?? false;
+
+                if (isEnabled)
                 {
-                    overlay.OverlayVisible = IsFFXIVActive;
+                    overlay.OverlayVisible = isNotAutoHide ? true : IsFFXIVActive;
                 }
             }
 

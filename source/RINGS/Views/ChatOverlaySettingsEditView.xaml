@@ -230,6 +230,12 @@
                       Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
                       IsChecked="{Binding Model.IsAutoActivatePage, Mode=TwoWay}"
                       Content="最後に発言のあったタブをアクティブにする" />
+                    <metro:ToggleSwitch
+                      Margin="0 8 0 0"
+                      VerticalAlignment="Center"
+                      Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                      IsChecked="{Binding Model.IsNotAutoHide, Mode=TwoWay}"
+                      Content="非アクティブ時に隠さない" />
                   </StackPanel>
                 </metro:MetroHeader>
               </StackPanel>
