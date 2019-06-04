@@ -150,30 +150,29 @@ namespace RINGS.Models
         {
             lock (this.Buffer)
             {
-                try
+                foreach (var log in logs)
                 {
-                    this.Buffer.IsSuppressNotification = true;
-
-                    foreach (var log in logs)
+                    if (this.IsDuplicate(log))
                     {
-                        if (this.IsDuplicate(log))
-                        {
-                            return;
-                        }
-
-                        log.ParentOverlaySettings = this.ParentOverlaySettings;
-                        log.ParentPageSettings = this.ParentPageSettings;
-                        this.Buffer.Add(log);
+                        return;
                     }
 
-                    if ((this.Buffer.Count % 128) == 0)
+                    log.ParentOverlaySettings = this.ParentOverlaySettings;
+                    log.ParentPageSettings = this.ParentPageSettings;
+                    this.Buffer.Add(log);
+                }
+
+                if ((this.Buffer.Count % 128) == 0)
+                {
+                    try
                     {
+                        this.Buffer.IsSuppressNotification = true;
                         this.Garbage();
                     }
-                }
-                finally
-                {
-                    this.Buffer.IsSuppressNotification = false;
+                    finally
+                    {
+                        this.Buffer.IsSuppressNotification = false;
+                    }
                 }
             }
         }
