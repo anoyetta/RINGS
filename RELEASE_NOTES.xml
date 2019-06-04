@@ -365,4 +365,14 @@
     * 非アクティブ時に隠さないオプションを追加した
     </description>
   </note>
+
+  <note>
+    <version>1.2.2.#BuildNo#</version>
+    <channel>Stable</channel>
+    <timestamp>#Timestamp#</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <description>
+    * PC名にハイフンが含まれるときチャットを拾えない不具合を修正した
+    </description>
+  </note>
 </release_notes>

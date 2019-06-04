@@ -666,7 +666,7 @@ namespace RINGS.Models
             {
                 if (!string.IsNullOrEmpty(currentProfName))
                 {
-                    log.IsMe = log.OriginalSpeaker.Contains(currentProfName);
+                    log.IsMe = log.OriginalSpeaker.ContainsIgnoreCase(currentProfName);
                 }
             }
 

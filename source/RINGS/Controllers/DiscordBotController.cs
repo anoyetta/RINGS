@@ -252,7 +252,10 @@ namespace RINGS.Controllers
 
             var model = ChatLogModel.FromDiscordLog(arg);
             model.ChatCode = ch.ChatCode;
-            model.IsMe = model.OriginalSpeaker == SharlayanController.Instance.CurrentPlayer?.Name;
+            model.IsMe = string.Equals(
+                model.OriginalSpeaker,
+                SharlayanController.Instance.CurrentPlayer?.Name,
+                StringComparison.OrdinalIgnoreCase);
 
             if (!model.IsMe ||
                 model.DiscordLog.Attachments.Any())
