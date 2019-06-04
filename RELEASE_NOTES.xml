@@ -367,10 +367,10 @@
   </note>
 
   <note>
-    <version>1.2.2.#BuildNo#</version>
+    <version>1.2.2.2919</version>
     <channel>Stable</channel>
-    <timestamp>#Timestamp#</timestamp>
-    <uri>https://github.com/anoyetta/RINGS/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <timestamp>2019-06-04T19:48:59.7683766+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.2.2.2919-Stable/RINGS_v1_2_2_2919_Stable.zip</uri>
     <description>
     * PC名にハイフンが含まれるときチャットを拾えない不具合を修正した
     </description>
