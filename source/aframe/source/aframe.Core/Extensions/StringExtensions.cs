@@ -21,5 +21,18 @@ namespace aframe
         public static string ToKatakana(
             this string s)
             => Strings.StrConv(s, VbStrConv.Katakana, JPLocaleID);
+
+        public static bool ContainsIgnoreCase(
+            this string source,
+            string value)
+            => Contains(source, value, StringComparison.InvariantCultureIgnoreCase);
+
+        public static bool Contains(
+            this string source,
+            string value,
+            StringComparison comprarison)
+        {
+            return source.IndexOf(value, comprarison) >= 0;
+        }
     }
 }

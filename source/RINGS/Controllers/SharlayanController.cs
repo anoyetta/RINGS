@@ -209,7 +209,11 @@ namespace RINGS.Controllers
 
                     var prof = Config.Instance.CharacterProfileList?.FirstOrDefault(x =>
                         x.IsEnabled &&
-                        x.CharacterName == this.currentPlayer?.Name);
+                        string.Equals(
+                            x.CharacterName,
+                            this.currentPlayer?.Name,
+                            StringComparison.OrdinalIgnoreCase));
+
                     if (prof != null)
                     {
                         Config.Instance.CharacterProfileList.Walk(x => x.IsActive = false);
@@ -274,7 +278,10 @@ namespace RINGS.Controllers
                             !string.IsNullOrEmpty(this.currentPlayer.Name))
                         {
                             if (!string.IsNullOrEmpty(previousPlayerName) &&
-                                previousPlayerName != this.currentPlayer.Name)
+                                !string.Equals(
+                                    previousPlayerName,
+                                    this.currentPlayer.Name,
+                                    StringComparison.OrdinalIgnoreCase))
                             {
                                 this.previousArrayIndex = 0;
                                 this.previousOffset = 0;
