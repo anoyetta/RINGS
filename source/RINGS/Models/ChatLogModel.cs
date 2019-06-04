@@ -660,7 +660,7 @@ namespace RINGS.Models
             if (currentPlayerNames != null)
             {
                 log.IsMe = currentPlayerNames.Any(x =>
-                    log.OriginalSpeaker.Contains(x));
+                    log.OriginalSpeaker.ContainsIgnoreCase(x));
             }
             else
             {
