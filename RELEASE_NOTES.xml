@@ -385,4 +385,14 @@
     * 発言毎にオーバーレイが再描画されてしまう不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>1.2.4.3321</version>
+    <channel>Stable</channel>
+    <timestamp>2019-06-08T21:30:44.0222816+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.2.4.3321-Stable/RINGS_v1_2_4_3321_Stable.zip</uri>
+    <description>
+    * チャットログの一部の行が残ってしまう場合がある不具合を修正した
+    </description>
+  </note>
 </release_notes>

@@ -162,7 +162,8 @@ namespace RINGS.Models
                     this.Buffer.Add(log);
                 }
 
-                if ((this.Buffer.Count % 128) == 0)
+                if (this.Buffer.Count > Config.Instance.ChatLogBufferSize &&
+                    (this.Buffer.Count % 128) == 0)
                 {
                     try
                     {
