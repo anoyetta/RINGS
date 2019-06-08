@@ -183,6 +183,8 @@
         <TabControl.ContentTemplate>
           <DataTemplate>
             <ScrollViewer
+              VirtualizingPanel.IsVirtualizing="True"
+              VirtualizingPanel.VirtualizationMode="Recycling"
               fw:ScrollViewerHelper.AutoScroll="True"
               Focusable="False"
               IsTabStop="False"
@@ -207,7 +209,7 @@
 
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>
-                    <StackPanel VerticalAlignment="Bottom"  Orientation="Vertical" />
+                    <VirtualizingStackPanel VerticalAlignment="Bottom"  Orientation="Vertical" />
                   </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
