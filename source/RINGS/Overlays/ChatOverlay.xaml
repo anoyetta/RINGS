@@ -183,7 +183,7 @@
         <TabControl.ContentTemplate>
           <DataTemplate>
             <ScrollViewer
-              VirtualizingPanel.IsVirtualizing="True"
+              VirtualizingPanel.IsVirtualizing="False"
               VirtualizingPanel.VirtualizationMode="Recycling"
               fw:ScrollViewerHelper.AutoScroll="True"
               Focusable="False"
