@@ -205,9 +205,7 @@ namespace RINGS
         }
 
         private static readonly string LockFileName = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "anoyetta",
-            "RINGS",
+            Path.GetTempPath(),
             "RINGS.lock");
 
         private FileStream lockFileStream;
