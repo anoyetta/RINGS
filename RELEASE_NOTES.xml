@@ -395,4 +395,14 @@
     * チャットログの一部の行が残ってしまう場合がある不具合を修正した
     </description>
   </note>
+
+  <note>
+    <version>1.2.5.4217</version>
+    <channel>Stable</channel>
+    <timestamp>2019-06-17T17:47:31.9701391+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.2.5.4217-Stable/RINGS_v1_2_5_4217_Stable.zip</uri>
+    <description>
+    * [Minor] ロックファイルの生成場所を変更した
+    </description>
+  </note>
 </release_notes>
