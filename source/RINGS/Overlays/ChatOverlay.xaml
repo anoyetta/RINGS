@@ -43,7 +43,7 @@
     <Style TargetType="TabItem" />
   </Window.Resources>
 
-  <Grid Margin="9 9 9 0">
+  <Grid Margin="0">
     <Grid.LayoutTransform>
       <ScaleTransform
         ScaleX="{Binding ChatOverlaySettings.Scale, Mode=OneWay}"
@@ -119,6 +119,7 @@
       <Border
         x:Name="BackgroundBorder"
         Panel.ZIndex="-1"
+        BorderBrush="{Binding ChatOverlaySettings.BackgroundBrush, Mode=OneWay}"
         Background="{Binding ChatOverlaySettings.BackgroundBrush, Mode=OneWay}"
         CornerRadius="6">
         <Border.Effect>
@@ -127,7 +128,7 @@
             Color="{Binding ChatOberlaySettings.BackgroundBrush.Color, Mode=OneWay}"
             Direction="0"
             ShadowDepth="0"
-            BlurRadius="8" />
+            BlurRadius="1" />
         </Border.Effect>
       </Border>
 
@@ -323,7 +324,7 @@
           Color="{Binding ChatOberlaySettings.BackgroundBrush.Color, Mode=OneWay}"
           Direction="0"
           ShadowDepth="0"
-          BlurRadius="8" />
+          BlurRadius="1" />
       </Border.Effect>
 
       <StackPanel Orientation="Horizontal">
