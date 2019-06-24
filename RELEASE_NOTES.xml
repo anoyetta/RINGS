@@ -405,4 +405,15 @@
     * [Minor] ロックファイルの生成場所を変更した
     </description>
   </note>
+
+  <note>
+    <version>1.2.6.4913</version>
+    <channel>Stable</channel>
+    <timestamp>2019-06-24T13:48:09.6260166+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.2.6.4913-Stable/RINGS_v1_2_6_4913_Stable.zip</uri>
+    <description>
+    * [Minor] オーバーレイのレイアウト、マージンを調整した
+    * [Minor] 書式設定後のチャットログをキャッシュするようにした
+    </description>
+  </note>
 </release_notes>
