@@ -422,12 +422,7 @@ namespace RINGS.Models
             }
         }
 
-        private FlowDocument chatDocument;
-
-        public FlowDocument ChatDocument => this.chatDocument ??= this.CreateChatDocument();
-
-        public void ClearFlowDocument()
-            => this.chatDocument = null;
+        public FlowDocument ChatDocument => this.CreateChatDocument();
 
         public int ID { get; private set; }
 

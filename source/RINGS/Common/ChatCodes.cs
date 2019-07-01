@@ -69,6 +69,7 @@ namespace RINGS.Common
             { Linkshell6, ("Linkshell 6", "LS6") },
             { Linkshell7, ("Linkshell 7", "LS7") },
             { Linkshell8, ("Linkshell 8", "LS8") },
+
             { CrossWorldLinkshell1, ("Cross World Linkshell 1", "CWLS1") },
             { CrossWorldLinkshell2, ("Cross World Linkshell 2", "CWLS2") },
             { CrossWorldLinkshell3, ("Cross World Linkshell 3", "CWLS3") },
