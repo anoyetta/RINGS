@@ -477,13 +477,111 @@ namespace RINGS.Models
                 IsDummy = true,
                 ParentOverlaySettings = this.ParentOverlaySettings,
                 ParentPageSettings = this.ParentPageSettings,
-                ChatCode = ChatCodes.CrossWorldLinkshell,
+                ChatCode = ChatCodes.CrossWorldLinkshell1,
                 OriginalSpeaker = "Naoki Yoshida",
                 SpeakerCharacterName = "Naoki Yoshida",
                 SpeakerServer = "Chocobo",
                 SpeakerAlias = "Yoshi-P",
                 SpeakerType = SpeakerTypes.XIVPlayer,
-                Message = "CWLSの皆さん、こんにちは。"
+                Message = "CWLS1の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                IsDummy = true,
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.CrossWorldLinkshell2,
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerCharacterName = "Naoki Yoshida",
+                SpeakerServer = "Chocobo",
+                SpeakerAlias = "Yoshi-P",
+                SpeakerType = SpeakerTypes.XIVPlayer,
+                Message = "CWLS2の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                IsDummy = true,
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.CrossWorldLinkshell3,
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerCharacterName = "Naoki Yoshida",
+                SpeakerServer = "Chocobo",
+                SpeakerAlias = "Yoshi-P",
+                SpeakerType = SpeakerTypes.XIVPlayer,
+                Message = "CWLS3の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                IsDummy = true,
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.CrossWorldLinkshell4,
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerCharacterName = "Naoki Yoshida",
+                SpeakerServer = "Chocobo",
+                SpeakerAlias = "Yoshi-P",
+                SpeakerType = SpeakerTypes.XIVPlayer,
+                Message = "CWLS4の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                IsDummy = true,
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.CrossWorldLinkshell5,
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerCharacterName = "Naoki Yoshida",
+                SpeakerServer = "Chocobo",
+                SpeakerAlias = "Yoshi-P",
+                SpeakerType = SpeakerTypes.XIVPlayer,
+                Message = "CWLS5の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                IsDummy = true,
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.CrossWorldLinkshell6,
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerCharacterName = "Naoki Yoshida",
+                SpeakerServer = "Chocobo",
+                SpeakerAlias = "Yoshi-P",
+                SpeakerType = SpeakerTypes.XIVPlayer,
+                Message = "CWLS6の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                IsDummy = true,
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.CrossWorldLinkshell7,
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerCharacterName = "Naoki Yoshida",
+                SpeakerServer = "Chocobo",
+                SpeakerAlias = "Yoshi-P",
+                SpeakerType = SpeakerTypes.XIVPlayer,
+                Message = "CWLS7の皆さん、こんにちは。"
+            });
+
+            buffer.Add(new ChatLogModel()
+            {
+                IsDummy = true,
+                ParentOverlaySettings = this.ParentOverlaySettings,
+                ParentPageSettings = this.ParentPageSettings,
+                ChatCode = ChatCodes.CrossWorldLinkshell8,
+                OriginalSpeaker = "Naoki Yoshida",
+                SpeakerCharacterName = "Naoki Yoshida",
+                SpeakerServer = "Chocobo",
+                SpeakerAlias = "Yoshi-P",
+                SpeakerType = SpeakerTypes.XIVPlayer,
+                Message = "CWLS8の皆さん、こんにちは。"
             });
 
             buffer.Add(new ChatLogModel()
