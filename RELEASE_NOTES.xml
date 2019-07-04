@@ -448,4 +448,14 @@
     * [Minor] sharlayan のresourcesをキャッシュしないようにした
     </description>
   </note>
+
+  <note>
+    <version>1.4.0.3100</version>
+    <channel>Stable</channel>
+    <timestamp>2019-07-05T00:42:26.7118307+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.0.3100-Stable/RINGS_v1_4_0_3100_Stable.zip</uri>
+    <description>
+    * [Major] チャットを Boyomichan プロトコル互換TCPサーバーに送信する機能を追加した
+    </description>
+  </note>
 </release_notes>

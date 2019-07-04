@@ -175,7 +175,7 @@
       </TabItem>
 
       <!-- Log Colors -->
-      <TabItem Header="Log Colors" Padding="15 0" metro:ControlsHelper.HeaderFontSize="24">
+      <TabItem Header="Channels" Padding="15 0" metro:ControlsHelper.HeaderFontSize="24">
         <ScrollViewer
           Focusable="False"
           IsTabStop="False"
@@ -267,6 +267,17 @@
                           StringFormat="N2"
                           Value="{Binding ShadowOpacity, Mode=TwoWay}" />
                       </DockPanel>
+
+                      <DockPanel Margin="0 5 0 0">
+                        <Label Content="TTS"  VerticalAlignment="Center" />
+                        <metro:ToggleSwitch
+                          Margin="0 2 -3 0"
+                          HorizontalAlignment="Right"
+                          IsChecked="{Binding IsTTSEnabled, Mode=TwoWay}"
+                          Background="{Binding ColorBrush, Mode=OneWay}"
+                          Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                          Content="" />
+                      </DockPanel>
                     </StackPanel>
                   </metro:MetroHeader>
                 </Border>
@@ -276,6 +287,96 @@
         </ScrollViewer>
       </TabItem>
       <!-- Log Colors end -->
+      <!-- TTS -->
+      <TabItem Header="TTS" Padding="15 0" metro:ControlsHelper.HeaderFontSize="24">
+        <StackPanel
+          Margin="10">
+          <metro:ToggleSwitch
+            Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+            HorizontalAlignment="Left"
+            IsChecked="{Binding Config.IsTTSEnabled, Mode=TwoWay}"
+            Content="TTSを使用する" />
+
+          <metro:MetroHeader Header="Boyomi サーバー IPアドレス" Margin="0 15 0 0">
+            <TextBox
+              HorizontalAlignment="Left"
+              Width="100"
+              Text="{Binding Config.TTSServerAddress, Mode=TwoWay}"
+              MaxLength="20" />
+          </metro:MetroHeader>
+
+          <metro:MetroHeader Header="Boyomi サーバー ポート" Margin="0 15 0 0">
+            <metro:NumericUpDown
+              HorizontalAlignment="Left"
+              Interval="1"
+              Minimum="1"
+              Maximum="65535"
+              Width="100"
+              Value="{Binding Config.TTSServerPort, Mode=TwoWay}"
+              ToolTip="50001:Boyomichan Default, 50002:Hojoring Default" />
+          </metro:MetroHeader>
+
+          <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+            <metro:MetroHeader Header="Volume">
+              <StackPanel>
+                <Slider
+                  Margin="0 5 0 0"
+                  HorizontalAlignment="Center"
+                  Orientation="Vertical"
+                  Width="30"
+                  Height="100"
+                  Value="{Binding Config.TTSVolume, Mode=TwoWay}"
+                  Minimum="0"
+                  Maximum="100"
+                  LargeChange="1"
+                  SmallChange="1"
+                  TickFrequency="5"
+                  TickPlacement="Both"
+                  metro:SliderHelper.ChangeValueBy="LargeChange"
+                  metro:SliderHelper.EnableMouseWheel="MouseHover"
+                  Style="{DynamicResource MahApps.Metro.Styles.Slider.Win10}" />
+                <TextBlock
+                  HorizontalAlignment="Center"
+                  Text="{Binding Config.TTSVolume, Mode=OneWay}" />
+              </StackPanel>
+            </metro:MetroHeader>
+
+            <metro:MetroHeader Header="Speed" Margin="10 0 0 0">
+              <StackPanel>
+                <Slider
+                  Margin="0 5 0 0"
+                  HorizontalAlignment="Center"
+                  Orientation="Vertical"
+                  Width="30"
+                  Height="100"
+                  Value="{Binding Config.TTSSpeed, Mode=TwoWay}"
+                  Minimum="0"
+                  Maximum="100"
+                  LargeChange="1"
+                  SmallChange="1"
+                  TickFrequency="5"
+                  TickPlacement="Both"
+                  metro:SliderHelper.ChangeValueBy="LargeChange"
+                  metro:SliderHelper.EnableMouseWheel="MouseHover"
+                  Style="{DynamicResource MahApps.Metro.Styles.Slider.Win10}" />
+                <TextBlock
+                  HorizontalAlignment="Center"
+                  Text="{Binding Config.TTSSpeed, Mode=OneWay}" />
+              </StackPanel>
+            </metro:MetroHeader>
+          </StackPanel>
+
+          <Button
+            Margin="0 15 0 0"
+            Content="TEST"
+            Width="50"
+            HorizontalAlignment="Left"
+            BorderThickness="0"
+            Background="Transparent"
+            Command="{Binding TestTTSCommand, Mode=OneWay}" />
+        </StackPanel>
+      </TabItem>
+      <!-- TTS end -->
     </TabControl>
   </Grid>
 </UserControl>

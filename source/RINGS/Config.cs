@@ -646,6 +646,55 @@ namespace RINGS
                 },
             }.Concat(this.DiscordBotList);
 
+        #region TTS Settings
+
+        private bool isTTSEnabled;
+
+        [JsonProperty(PropertyName = "tts_enabled")]
+        public bool IsTTSEnabled
+        {
+            get => this.isTTSEnabled;
+            set => this.SetProperty(ref this.isTTSEnabled, value);
+        }
+
+        private string ttsServerAddress;
+
+        [JsonProperty(PropertyName = "tts_server_address")]
+        public string TTSServerAddress
+        {
+            get => this.ttsServerAddress;
+            set => this.SetProperty(ref this.ttsServerAddress, value);
+        }
+
+        private int ttsServerPort;
+
+        [JsonProperty(PropertyName = "tts_server_port")]
+        public int TTSServerPort
+        {
+            get => this.ttsServerPort;
+            set => this.SetProperty(ref this.ttsServerPort, value);
+        }
+
+        private int ttsSpeed;
+
+        [JsonProperty(PropertyName = "tts_speed")]
+        public int TTSSpeed
+        {
+            get => this.ttsSpeed;
+            set => this.SetProperty(ref this.ttsSpeed, value);
+        }
+
+        private int ttsVolume;
+
+        [JsonProperty(PropertyName = "tts_volume")]
+        public int TTSVolume
+        {
+            get => this.ttsVolume;
+            set => this.SetProperty(ref this.ttsVolume, value);
+        }
+
+        #endregion TTS Settings
+
         #endregion Data
     }
 }

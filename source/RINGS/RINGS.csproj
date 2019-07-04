@@ -79,6 +79,7 @@
     <Compile Include="Common\PCNameStyles.cs" />
     <Compile Include="Common\Servers.cs" />
     <Compile Include="Common\SpeakerTypes.cs" />
+    <Compile Include="Controllers\BoyomiClient.cs" />
     <Compile Include="Controllers\DiscordBotController.cs" />
     <Compile Include="Controllers\SharlayanController.cs" />
     <Compile Include="Models\ChannelLinkerModel.cs" />
