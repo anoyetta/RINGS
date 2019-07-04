@@ -22,7 +22,14 @@ namespace RINGS.Common
         public static readonly string Linkshell7 = "0016";
         public static readonly string Linkshell8 = "0017";
 
-        public static readonly string CrossWorldLinkshell = "0025";
+        public static readonly string CrossWorldLinkshell1 = "0025";
+        public static readonly string CrossWorldLinkshell2 = "0065";
+        public static readonly string CrossWorldLinkshell3 = "0066";
+        public static readonly string CrossWorldLinkshell4 = "0067";
+        public static readonly string CrossWorldLinkshell5 = "0068";
+        public static readonly string CrossWorldLinkshell6 = "0069";
+        public static readonly string CrossWorldLinkshell7 = "006A";
+        public static readonly string CrossWorldLinkshell8 = "006B";
 
         public static readonly string FreeCompany = "0018";
         public static readonly string FreeCompanyAnnounce = "0245";
@@ -62,7 +69,15 @@ namespace RINGS.Common
             { Linkshell6, ("Linkshell 6", "LS6") },
             { Linkshell7, ("Linkshell 7", "LS7") },
             { Linkshell8, ("Linkshell 8", "LS8") },
-            { CrossWorldLinkshell, ("Cross World Linkshell", "CWLS") },
+
+            { CrossWorldLinkshell1, ("Cross World Linkshell 1", "CWLS1") },
+            { CrossWorldLinkshell2, ("Cross World Linkshell 2", "CWLS2") },
+            { CrossWorldLinkshell3, ("Cross World Linkshell 3", "CWLS3") },
+            { CrossWorldLinkshell4, ("Cross World Linkshell 4", "CWLS4") },
+            { CrossWorldLinkshell5, ("Cross World Linkshell 5", "CWLS5") },
+            { CrossWorldLinkshell6, ("Cross World Linkshell 6", "CWLS6") },
+            { CrossWorldLinkshell7, ("Cross World Linkshell 7", "CWLS7") },
+            { CrossWorldLinkshell8, ("Cross World Linkshell 8", "CWLS8") },
 
             { FreeCompany, ("Free Company", "FC") },
             { FreeCompanyAnnounce, ("Free Company - Announce", "FC") },
@@ -89,7 +104,7 @@ namespace RINGS.Common
         {
             Say, Yell, Shout, Party, Alliance, TellOut, TellIn,
             Linkshell1, Linkshell2, Linkshell3, Linkshell4, Linkshell5, Linkshell6, Linkshell7, Linkshell8,
-            CrossWorldLinkshell,
+            CrossWorldLinkshell1, CrossWorldLinkshell2, CrossWorldLinkshell3, CrossWorldLinkshell4, CrossWorldLinkshell5, CrossWorldLinkshell6, CrossWorldLinkshell7, CrossWorldLinkshell8,
             FreeCompany, FreeCompanyAnnounce, FreeCompanyLogInOut,
             PvPTeam, PvPTeamAnnounce, PvPTeamLogInOut,
             Beginners, BeginnersAnnounce,
@@ -106,12 +121,12 @@ namespace RINGS.Common
         public static readonly IEnumerable<string> Linkshells = new[]
         {
             Linkshell1, Linkshell2, Linkshell3, Linkshell4, Linkshell5, Linkshell6, Linkshell7, Linkshell8,
-            CrossWorldLinkshell,
+            CrossWorldLinkshell1, CrossWorldLinkshell2, CrossWorldLinkshell3, CrossWorldLinkshell4, CrossWorldLinkshell5, CrossWorldLinkshell6, CrossWorldLinkshell7, CrossWorldLinkshell8,
         };
 
         public static readonly IEnumerable<string> LinkableChannels = new[]
         {
-            CrossWorldLinkshell,
+            CrossWorldLinkshell1, CrossWorldLinkshell2, CrossWorldLinkshell3, CrossWorldLinkshell4, CrossWorldLinkshell5, CrossWorldLinkshell6, CrossWorldLinkshell7, CrossWorldLinkshell8,
             FreeCompany,
             Linkshell1, Linkshell2, Linkshell3, Linkshell4, Linkshell5, Linkshell6, Linkshell7, Linkshell8,
         };

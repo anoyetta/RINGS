@@ -31,7 +31,13 @@ namespace aframe.Models
                 this.Title.Value = x.GetTitle();
                 this.Version.Value = x.GetVersion().ToString();
                 this.ReleaseChannel.Value = x.GetReleaseChannels();
-                this.Timestamp.Value = new FileInfo(x.Location).CreationTime;
+
+                if (!string.IsNullOrEmpty(x.Location) &&
+                    File.Exists(x.Location))
+                {
+                    this.Timestamp.Value = new FileInfo(x.Location).CreationTime;
+                }
+
                 this.Copyright.Value = x.GetCopyright();
             });
         }

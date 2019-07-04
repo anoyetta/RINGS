@@ -108,9 +108,20 @@ foreach ($d in $targetDirectories) {
     }
 }
 
-# pdb を削除する
 foreach ($d in $targetDirectories) {
-    Remove-Item -Force (Join-Path $d "bin\Release\*.pdb")
+    # pdb を削除する
+    # Remove-Item -Force (Join-Path $d "bin\Release\*.pdb")
+
+    # app.config を削除する
+    $targets = @(
+        (Join-Path $d "bin\Release\RINGS.exe.config"), 
+        (Join-Path $d "bin\Release\aframe.Updater.exe.config"))
+
+    foreach ($t in $targets) {
+        if (Test-Path $t) {
+            Remove-Item -Force $t
+        }
+    }
 }
 
 '-> Deploy'
