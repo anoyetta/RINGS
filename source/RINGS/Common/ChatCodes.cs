@@ -23,13 +23,13 @@ namespace RINGS.Common
         public static readonly string Linkshell8 = "0017";
 
         public static readonly string CrossWorldLinkshell1 = "0025";
-        public static readonly string CrossWorldLinkshell2 = "0026";
-        public static readonly string CrossWorldLinkshell3 = "0027";
-        public static readonly string CrossWorldLinkshell4 = "0028";
-        public static readonly string CrossWorldLinkshell5 = "0029";
-        public static readonly string CrossWorldLinkshell6 = "002A";
-        public static readonly string CrossWorldLinkshell7 = "002B";
-        public static readonly string CrossWorldLinkshell8 = "002C";
+        public static readonly string CrossWorldLinkshell2 = "0065";
+        public static readonly string CrossWorldLinkshell3 = "0066";
+        public static readonly string CrossWorldLinkshell4 = "0067";
+        public static readonly string CrossWorldLinkshell5 = "0068";
+        public static readonly string CrossWorldLinkshell6 = "0069";
+        public static readonly string CrossWorldLinkshell7 = "006A";
+        public static readonly string CrossWorldLinkshell8 = "006B";
 
         public static readonly string FreeCompany = "0018";
         public static readonly string FreeCompanyAnnounce = "0245";
