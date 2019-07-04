@@ -5,6 +5,7 @@ using aframe;
 using MahApps.Metro.Controls.Dialogs;
 using Prism.Commands;
 using Prism.Mvvm;
+using RINGS.Controllers;
 using RINGS.Models;
 using RINGS.Overlays;
 using RINGS.Views;
@@ -90,6 +91,14 @@ namespace RINGS.ViewModels
 
             ChatOverlaysController.Instance.RefreshOverlays(true);
         }
+
+        private DelegateCommand testTTSCommand;
+
+        public DelegateCommand TestTTSCommand =>
+            this.testTTSCommand ?? (this.testTTSCommand = new DelegateCommand(this.ExecuteTestTTSCommand));
+
+        private async void ExecuteTestTTSCommand()
+            => await BoyomiClient.Instance.SendAsync("本日は晴天なり。本日は晴天なり。");
 
         #endregion Commands
     }

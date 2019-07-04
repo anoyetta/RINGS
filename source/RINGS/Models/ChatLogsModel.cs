@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using aframe;
 using Prism.Mvvm;
 using RINGS.Common;
+using RINGS.Controllers;
 
 namespace RINGS.Models
 {
@@ -145,7 +147,7 @@ namespace RINGS.Models
             }
         }
 
-        public void AddRange(
+        public async void AddRange(
             IEnumerable<ChatLogModel> logs)
         {
             lock (this.Buffer)
@@ -175,6 +177,21 @@ namespace RINGS.Models
                         this.Buffer.IsSuppressNotification = false;
                     }
                 }
+            }
+
+            // TTSを送る
+            if (Config.Instance.IsTTSEnabled)
+            {
+                await Task.Run(() =>
+                {
+                    foreach (var log in logs.Where(x =>
+                        !x.IsDummy &&
+                        !x.IsMe &&
+                        x.ChannelSettings.IsTTSEnabled))
+                    {
+                        BoyomiClient.Instance.Send(log.Message);
+                    }
+                });
             }
         }
 

@@ -676,5 +676,14 @@ namespace RINGS.Models
                     color => this.ShadowColor = color)));
 
         #endregion Shadow Color
+
+        private bool isTTSEnabled;
+
+        [JsonProperty(PropertyName = "tts_enabled")]
+        public bool IsTTSEnabled
+        {
+            get => this.isTTSEnabled;
+            set => this.SetProperty(ref this.isTTSEnabled, value);
+        }
     }
 }

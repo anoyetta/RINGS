@@ -35,6 +35,8 @@ namespace RINGS
             { nameof(FileDirectory), Environment.GetFolderPath(Environment.SpecialFolder.Desktop) },
             { nameof(ImageOpacity), 1.0d },
             { nameof(ChatLogBufferSize), 1024 },
+            { nameof(TTSServerAddress), "127.0.0.1" },
+            { nameof(TTSServerPort), 50002 },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },
