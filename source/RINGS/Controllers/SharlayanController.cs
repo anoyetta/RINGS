@@ -136,9 +136,10 @@ namespace RINGS.Controllers
                             new ProcessModel
                             {
                                 Process = ffxiv,
-                                IsWin64 = true
+                                IsWin64 = true,
                             },
-                            language);
+                            gameLanguage: language,
+                            useLocalCache: false);
 
                         this.handledProcessID = ffxiv.Id;
                         this.previousArrayIndex = 0;
