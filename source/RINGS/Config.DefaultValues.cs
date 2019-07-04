@@ -37,6 +37,8 @@ namespace RINGS
             { nameof(ChatLogBufferSize), 1024 },
             { nameof(TTSServerAddress), "127.0.0.1" },
             { nameof(TTSServerPort), 50002 },
+            { nameof(TTSSpeed), 50 },
+            { nameof(TTSVolume), 50 },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },

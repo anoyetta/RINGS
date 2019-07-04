@@ -675,6 +675,24 @@ namespace RINGS
             set => this.SetProperty(ref this.ttsServerPort, value);
         }
 
+        private int ttsSpeed;
+
+        [JsonProperty(PropertyName = "tts_speed")]
+        public int TTSSpeed
+        {
+            get => this.ttsSpeed;
+            set => this.SetProperty(ref this.ttsSpeed, value);
+        }
+
+        private int ttsVolume;
+
+        [JsonProperty(PropertyName = "tts_volume")]
+        public int TTSVolume
+        {
+            get => this.ttsVolume;
+            set => this.SetProperty(ref this.ttsVolume, value);
+        }
+
         #endregion TTS Settings
 
         #endregion Data

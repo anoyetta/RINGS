@@ -316,6 +316,56 @@
               ToolTip="50001:Boyomichan Default, 50002:Hojoring Default" />
           </metro:MetroHeader>
 
+          <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+            <metro:MetroHeader Header="Volume">
+              <StackPanel>
+                <Slider
+                  Margin="0 5 0 0"
+                  HorizontalAlignment="Center"
+                  Orientation="Vertical"
+                  Width="30"
+                  Height="100"
+                  Value="{Binding Config.TTSVolume, Mode=TwoWay}"
+                  Minimum="0"
+                  Maximum="100"
+                  LargeChange="1"
+                  SmallChange="1"
+                  TickFrequency="5"
+                  TickPlacement="Both"
+                  metro:SliderHelper.ChangeValueBy="LargeChange"
+                  metro:SliderHelper.EnableMouseWheel="MouseHover"
+                  Style="{DynamicResource MahApps.Metro.Styles.Slider.Win10}" />
+                <TextBlock
+                  HorizontalAlignment="Center"
+                  Text="{Binding Config.TTSVolume, Mode=OneWay}" />
+              </StackPanel>
+            </metro:MetroHeader>
+
+            <metro:MetroHeader Header="Speed" Margin="10 0 0 0">
+              <StackPanel>
+                <Slider
+                  Margin="0 5 0 0"
+                  HorizontalAlignment="Center"
+                  Orientation="Vertical"
+                  Width="30"
+                  Height="100"
+                  Value="{Binding Config.TTSSpeed, Mode=TwoWay}"
+                  Minimum="0"
+                  Maximum="100"
+                  LargeChange="1"
+                  SmallChange="1"
+                  TickFrequency="5"
+                  TickPlacement="Both"
+                  metro:SliderHelper.ChangeValueBy="LargeChange"
+                  metro:SliderHelper.EnableMouseWheel="MouseHover"
+                  Style="{DynamicResource MahApps.Metro.Styles.Slider.Win10}" />
+                <TextBlock
+                  HorizontalAlignment="Center"
+                  Text="{Binding Config.TTSSpeed, Mode=OneWay}" />
+              </StackPanel>
+            </metro:MetroHeader>
+          </StackPanel>
+
           <Button
             Margin="0 15 0 0"
             Content="TEST"

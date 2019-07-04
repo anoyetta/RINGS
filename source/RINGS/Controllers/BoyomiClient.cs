@@ -69,9 +69,9 @@ namespace RINGS.Controllers
                     var messageAsBytes = Encoding.UTF8.GetBytes(tts);
 
                     bw.Write(BoyomiCommand);
-                    bw.Write(BoyomiSpeed);
+                    bw.Write((short)Config.Instance.TTSSpeed);
                     bw.Write(BoyomiTone);
-                    bw.Write(BoyomiVolume);
+                    bw.Write((short)Config.Instance.TTSVolume);
                     bw.Write(BoyomiVoice);
                     bw.Write(BoyomiTextEncoding);
                     bw.Write(messageAsBytes.Length);
