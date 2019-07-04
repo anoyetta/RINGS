@@ -62,22 +62,25 @@ namespace RINGS.Controllers
 
             try
             {
-                using (var tcp = new TcpClient(server, port))
-                using (var ns = tcp.GetStream())
-                using (var bw = new BinaryWriter(ns))
+                lock (this)
                 {
-                    var messageAsBytes = Encoding.UTF8.GetBytes(tts);
+                    using (var tcp = new TcpClient(server, port))
+                    using (var ns = tcp.GetStream())
+                    using (var bw = new BinaryWriter(ns))
+                    {
+                        var messageAsBytes = Encoding.UTF8.GetBytes(tts);
 
-                    bw.Write(BoyomiCommand);
-                    bw.Write((short)Config.Instance.TTSSpeed);
-                    bw.Write(BoyomiTone);
-                    bw.Write((short)Config.Instance.TTSVolume);
-                    bw.Write(BoyomiVoice);
-                    bw.Write(BoyomiTextEncoding);
-                    bw.Write(messageAsBytes.Length);
-                    bw.Write(messageAsBytes);
+                        bw.Write(BoyomiCommand);
+                        bw.Write((short)Config.Instance.TTSSpeed);
+                        bw.Write(BoyomiTone);
+                        bw.Write((short)Config.Instance.TTSVolume);
+                        bw.Write(BoyomiVoice);
+                        bw.Write(BoyomiTextEncoding);
+                        bw.Write(messageAsBytes.Length);
+                        bw.Write(messageAsBytes);
 
-                    bw.Flush();
+                        bw.Flush();
+                    }
                 }
             }
             catch (Exception ex)
