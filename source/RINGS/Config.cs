@@ -693,6 +693,15 @@ namespace RINGS
             set => this.SetProperty(ref this.ttsVolume, value);
         }
 
+        private bool isTTSIgnoreSelf;
+
+        [JsonProperty(PropertyName = "tts_ignore_self")]
+        public bool IsTTSIgnoreSelf
+        {
+            get => this.isTTSIgnoreSelf;
+            set => this.SetProperty(ref this.isTTSIgnoreSelf, value);
+        }
+
         #endregion TTS Settings
 
         #endregion Data

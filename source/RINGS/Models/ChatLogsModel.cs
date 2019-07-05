@@ -186,10 +186,19 @@ namespace RINGS.Models
                 {
                     foreach (var log in logs.Where(x =>
                         !x.IsDummy &&
-                        !x.IsMe &&
                         x.ChannelSettings.IsTTSEnabled))
                     {
-                        BoyomiClient.Instance.Send(log.Message);
+                        if (Config.Instance.IsTTSIgnoreSelf)
+                        {
+                            if (!log.IsMe)
+                            {
+                                BoyomiClient.Instance.Send(log.Message);
+                            }
+                        }
+                        else
+                        {
+                            BoyomiClient.Instance.Send(log.Message);
+                        }
                     }
                 });
             }

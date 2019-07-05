@@ -296,6 +296,12 @@
             HorizontalAlignment="Left"
             IsChecked="{Binding Config.IsTTSEnabled, Mode=TwoWay}"
             Content="TTSを使用する" />
+          <metro:ToggleSwitch
+            Margin="0 10 0 0"
+            Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+            HorizontalAlignment="Left"
+            IsChecked="{Binding Config.IsTTSIgnoreSelf, Mode=TwoWay}"
+            Content="自分の発言は通知しない" />
 
           <metro:MetroHeader Header="Boyomi サーバー IPアドレス" Margin="0 15 0 0">
             <TextBox
