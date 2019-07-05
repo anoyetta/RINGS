@@ -458,4 +458,14 @@
     * [Major] チャットを Boyomichan プロトコル互換TCPサーバーに送信する機能を追加した
     </description>
   </note>
+
+  <note>
+    <version>1.4.1.3116</version>
+    <channel>Stable</channel>
+    <timestamp>2019-07-05T16:06:45.9572950+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.1.3116-Stable/RINGS_v1_4_1_3116_Stable.zip</uri>
+    <description>
+    * [Minor] 自身の発言をTTSに送らないオプションを追加した
+    </description>
+  </note>
 </release_notes>

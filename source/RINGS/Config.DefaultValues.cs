@@ -39,6 +39,7 @@ namespace RINGS
             { nameof(TTSServerPort), 50002 },
             { nameof(TTSSpeed), 50 },
             { nameof(TTSVolume), 50 },
+            { nameof(IsTTSIgnoreSelf), true },
 
             { nameof(ChatOverlaySettings), CreateDefaultChatOverlaySettings() },
             { nameof(ChatChannelsSettings), CreateDefaultChatChannelsSettings() },
