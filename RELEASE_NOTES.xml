@@ -468,4 +468,14 @@
     * [Minor] 自身の発言をTTSに送らないオプションを追加した
     </description>
   </note>
+
+  <note>
+    <version>1.4.2.#BuildNo#</version>
+    <channel>Stable</channel>
+    <timestamp>#Timestamp#</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <description>
+    * [Minor] TTSをTCPサーバーへ送るときにまとめてストリームに書き込むように変更した
+    </description>
+  </note>
 </release_notes>
