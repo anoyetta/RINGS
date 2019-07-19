@@ -66,7 +66,8 @@ namespace RINGS.Controllers
                 {
                     using (var tcp = new TcpClient(server, port))
                     using (var ns = tcp.GetStream())
-                    using (var bw = new BinaryWriter(ns))
+                    using (var buffer = new MemoryStream())
+                    using (var bw = new BinaryWriter(buffer))
                     {
                         var messageAsBytes = Encoding.UTF8.GetBytes(tts);
 
@@ -78,8 +79,10 @@ namespace RINGS.Controllers
                         bw.Write(BoyomiTextEncoding);
                         bw.Write(messageAsBytes.Length);
                         bw.Write(messageAsBytes);
-
                         bw.Flush();
+
+                        ns.Write(buffer.ToArray(), 0, (int)buffer.Length);
+                        ns.Flush();
                     }
                 }
             }
