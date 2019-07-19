@@ -470,10 +470,10 @@
   </note>
 
   <note>
-    <version>1.4.2.#BuildNo#</version>
+    <version>1.4.2.4512</version>
     <channel>Stable</channel>
-    <timestamp>#Timestamp#</timestamp>
-    <uri>https://github.com/anoyetta/RINGS/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <timestamp>2019-07-19T12:40:13.3267677+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.2.4512-Stable/RINGS_v1_4_2_4512_Stable.zip</uri>
     <description>
     * [Minor] TTSをTCPサーバーへ送るときにまとめてストリームに書き込むように変更した
     </description>
