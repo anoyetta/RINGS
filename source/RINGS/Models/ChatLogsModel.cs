@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using aframe;
 using Prism.Mvvm;
 using RINGS.Common;
@@ -147,7 +146,7 @@ namespace RINGS.Models
             }
         }
 
-        public async void AddRange(
+        public void AddRange(
             IEnumerable<ChatLogModel> logs)
         {
             lock (this.Buffer)
@@ -161,6 +160,24 @@ namespace RINGS.Models
 
                     log.ParentOverlaySettings = this.ParentOverlaySettings;
                     log.ParentPageSettings = this.ParentPageSettings;
+
+                    if (Config.Instance.IsTTSEnabled &&
+                        !log.IsDummy &&
+                        log.ChannelSettings.IsTTSEnabled)
+                    {
+                        if (Config.Instance.IsTTSIgnoreSelf)
+                        {
+                            if (!log.IsMe)
+                            {
+                                BoyomiClient.Instance.Enqueue(log.Message);
+                            }
+                        }
+                        else
+                        {
+                            BoyomiClient.Instance.Enqueue(log.Message);
+                        }
+                    }
+
                     this.Buffer.Add(log);
                 }
 
@@ -177,30 +194,6 @@ namespace RINGS.Models
                         this.Buffer.IsSuppressNotification = false;
                     }
                 }
-            }
-
-            // TTSを送る
-            if (Config.Instance.IsTTSEnabled)
-            {
-                await Task.Run(() =>
-                {
-                    foreach (var log in logs.Where(x =>
-                        !x.IsDummy &&
-                        x.ChannelSettings.IsTTSEnabled))
-                    {
-                        if (Config.Instance.IsTTSIgnoreSelf)
-                        {
-                            if (!log.IsMe)
-                            {
-                                BoyomiClient.Instance.Send(log.Message);
-                            }
-                        }
-                        else
-                        {
-                            BoyomiClient.Instance.Send(log.Message);
-                        }
-                    }
-                });
             }
         }
 

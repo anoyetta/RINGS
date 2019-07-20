@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using aframe;
 
 namespace RINGS.Controllers
@@ -32,11 +33,46 @@ namespace RINGS.Controllers
 
         #endregion Constants
 
-        public async Task SendAsync(
-            string tts)
-            => await Task.Run(() => this.Send(tts));
+        private readonly ConcurrentQueue<string> TTSQueue = new ConcurrentQueue<string>();
 
-        public void Send(
+        public void Enqueue(string tts)
+        {
+            this.StartSendTTSTask();
+            this.TTSQueue.Enqueue(tts);
+        }
+
+        private volatile Thread sendTTSThread;
+
+        private void StartSendTTSTask()
+        {
+            if (this.sendTTSThread != null)
+            {
+                return;
+            }
+
+            this.sendTTSThread = new Thread(() =>
+            {
+                while (true)
+                {
+                    while (this.TTSQueue.TryDequeue(out string tts))
+                    {
+                        this.Send(tts);
+                        Thread.Yield();
+                    }
+
+                    Thread.Sleep(100);
+                }
+            })
+            {
+                Priority = ThreadPriority.Lowest,
+                IsBackground = true,
+            };
+
+            this.sendTTSThread.Start();
+            Thread.Sleep(10);
+        }
+
+        private void Send(
             string tts)
         {
             var server = Config.Instance.TTSServerAddress;
