@@ -30,6 +30,27 @@ namespace RINGS.Models
         private static readonly Thickness ZeroMargin = new Thickness();
         private static readonly double AttachmentImageWidthRatio = 0.9d;
 
+        private static readonly Dictionary<Color, SolidColorBrush> BrushStore = new Dictionary<Color, SolidColorBrush>(32);
+
+        private static SolidColorBrush GetBrush(
+            Color color)
+        {
+            var brush = default(SolidColorBrush);
+
+            if (BrushStore.ContainsKey(color))
+            {
+                brush = BrushStore[color];
+            }
+            else
+            {
+                brush = new SolidColorBrush(color);
+                brush.Freeze();
+                BrushStore[color] = brush;
+            }
+
+            return brush;
+        }
+
         private FlowDocument CreateChatDocument()
         {
             var doc = new FlowDocument();
@@ -43,7 +64,7 @@ namespace RINGS.Models
                 {
                     FontSize = this.ParentOverlaySettings.Font.Size * 0.9,
                     BaselineAlignment = BaselineAlignment.Center,
-                    Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#a4a4a4")),
+                    Foreground = GetBrush((Color)ColorConverter.ConvertFromString("#a4a4a4")),
                 });
             }
 
@@ -78,8 +99,8 @@ namespace RINGS.Models
                 return doc;
             }
 
-            var headerBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fff1cf"));
-            var hyperLinkBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#f8e58c"));
+            var headerBrush = GetBrush((Color)ColorConverter.ConvertFromString("#fff1cf"));
+            var hyperLinkBrush = GetBrush((Color)ColorConverter.ConvertFromString("#f8e58c"));
             headerBrush.Freeze();
             hyperLinkBrush.Freeze();
 

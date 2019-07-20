@@ -95,10 +95,8 @@ namespace RINGS.ViewModels
         private DelegateCommand testTTSCommand;
 
         public DelegateCommand TestTTSCommand =>
-            this.testTTSCommand ?? (this.testTTSCommand = new DelegateCommand(this.ExecuteTestTTSCommand));
-
-        private async void ExecuteTestTTSCommand()
-            => await BoyomiClient.Instance.SendAsync("本日は晴天なり。本日は晴天なり。");
+            this.testTTSCommand ?? (this.testTTSCommand = new DelegateCommand(
+                () => BoyomiClient.Instance.Enqueue("本日は晴天なり。本日は晴天なり。")));
 
         #endregion Commands
     }
