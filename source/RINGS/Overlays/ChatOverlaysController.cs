@@ -138,7 +138,14 @@ namespace RINGS.Overlays
 
                 if (isEnabled)
                 {
-                    overlay.OverlayVisible = isNotAutoHide ? true : IsFFXIVActive;
+                    if (IsFFXIVRunning)
+                    {
+                        overlay.OverlayVisible = isNotAutoHide ? true : IsFFXIVActive;
+                    }
+                    else
+                    {
+                        overlay.OverlayVisible = false;
+                    }
                 }
             }
 
@@ -171,6 +178,7 @@ namespace RINGS.Overlays
             }
         }
 
+        private static volatile bool IsFFXIVRunning;
         private static volatile bool IsFFXIVActive;
 
         private static void RefreshFFXIVIsActive()
@@ -186,6 +194,7 @@ namespace RINGS.Overlays
                 if (pid == SharlayanController.Instance.HandledProcessID)
                 {
                     IsFFXIVActive = true;
+                    IsFFXIVRunning = true;
                     return;
                 }
 
@@ -204,10 +213,18 @@ namespace RINGS.Overlays
                         fileName.ToLower() == currentProcessFileName.ToLower())
                     {
                         IsFFXIVActive = true;
+                        IsFFXIVRunning = true;
                     }
                     else
                     {
                         IsFFXIVActive = false;
+
+                        p = Process.GetProcesses()
+                            .FirstOrDefault(x =>
+                                x.ProcessName == "ffxiv" ||
+                                x.ProcessName == "ffxiv_dx11");
+
+                        IsFFXIVRunning = p != null;
                     }
                 }
             }
