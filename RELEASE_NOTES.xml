@@ -496,6 +496,7 @@
     <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.4.5613-Stable/RINGS_v1_4_4_5613_Stable.zip</uri>
     <description>
     * [Minor] FFXIVを実行していないときはオーバーレイを隠すようにした
+    * [Minor] FFXIVを実行していないときにアプリケーションをシャットダウンするオプションを追加した
     </description>
   </note>
 </release_notes>
