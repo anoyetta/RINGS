@@ -405,6 +405,15 @@ namespace RINGS
             set => this.SetProperty(ref this.isMinimizeStartup, value);
         }
 
+        private bool isShutdownWhenMissingFFXIV;
+
+        [JsonProperty(PropertyName = "is_shutdown_when_missing_ffxiv")]
+        public bool IsShutdownWhenMissingFFXIV
+        {
+            get => this.isShutdownWhenMissingFFXIV;
+            set => this.SetProperty(ref this.isShutdownWhenMissingFFXIV, value);
+        }
+
         private bool isUseBuiltInBrowser = true;
 
         [JsonProperty(PropertyName = "use_builtin_browser", DefaultValueHandling = DefaultValueHandling.Include)]

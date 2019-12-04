@@ -149,6 +149,27 @@ namespace RINGS.Overlays
                 }
             }
 
+            if (!IsFFXIVRunning &&
+                Config.Instance.IsShutdownWhenMissingFFXIV)
+            {
+                lock (this)
+                {
+                    if (ffxivShutdownTimestamp < DateTime.MaxValue)
+                    {
+                        if ((DateTime.Now - ffxivShutdownTimestamp) > TimeSpan.FromMinutes(10))
+                        {
+                            ffxivShutdownTimestamp = DateTime.MaxValue;
+
+                            WPFHelper.Dispatcher.InvokeAsync(async () =>
+                            {
+                                await Task.Delay(TimeSpan.FromSeconds(10));
+                                (App.Current.MainWindow as MainWindow)?.ToEnd();
+                            });
+                        }
+                    }
+                }
+            }
+
             this.counter++;
         }
 
@@ -178,6 +199,7 @@ namespace RINGS.Overlays
             }
         }
 
+        private static DateTime ffxivShutdownTimestamp = DateTime.MaxValue;
         private static volatile bool IsFFXIVRunning;
         private static volatile bool IsFFXIVActive;
 
@@ -195,6 +217,7 @@ namespace RINGS.Overlays
                 {
                     IsFFXIVActive = true;
                     IsFFXIVRunning = true;
+                    ffxivShutdownTimestamp = DateTime.MaxValue;
                     return;
                 }
 
@@ -214,17 +237,27 @@ namespace RINGS.Overlays
                     {
                         IsFFXIVActive = true;
                         IsFFXIVRunning = true;
+                        ffxivShutdownTimestamp = DateTime.MaxValue;
                     }
                     else
                     {
-                        IsFFXIVActive = false;
-
                         p = Process.GetProcesses()
                             .FirstOrDefault(x =>
                                 x.ProcessName == "ffxiv" ||
                                 x.ProcessName == "ffxiv_dx11");
 
-                        IsFFXIVRunning = p != null;
+                        IsFFXIVActive = false;
+
+                        var isRunning = p != null;
+                        if (IsFFXIVRunning != isRunning)
+                        {
+                            IsFFXIVRunning = isRunning;
+
+                            if (!isRunning)
+                            {
+                                ffxivShutdownTimestamp = DateTime.Now;
+                            }
+                        }
                     }
                 }
             }

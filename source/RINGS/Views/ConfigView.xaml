@@ -79,6 +79,14 @@
           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
           Margin="{DynamicResource ContentMargin}"
           HorizontalAlignment="Left"
+          IsChecked="{Binding Config.IsShutdownWhenMissingFFXIV, Mode=TwoWay}"
+          Content="FFXIV が実行されていないとき自動的に終了する"
+          ToolTip="FFXIV の終了から10分後に RINGS を自動終了します。" />
+
+        <metro:ToggleSwitch
+          Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+          Margin="{DynamicResource ContentMargin}"
+          HorizontalAlignment="Left"
           IsChecked="{Binding Config.IsMinimizeStartup, Mode=TwoWay}"
           Content="最小化状態で起動する" />
 
