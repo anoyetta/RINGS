@@ -2,7 +2,7 @@
 <release_notes>
   <name>RINGS</name>
 
-  <!-- 
+  <!--
     #Placeholder#
 
     BuildNo         : ビルド番号
@@ -486,6 +486,17 @@
     <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.3.4611-Stable/RINGS_v1_4_3_4611_Stable.zip</uri>
     <description>
     * [Minor] ログが同時に大量に発生したときに描画およびTTSへの送信が遅延する不具合を修正した
+    </description>
+  </note>
+
+  <note>
+    <version>1.4.4.5613</version>
+    <channel>Stable</channel>
+    <timestamp>2019-11-26T13:08:06.9990209+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.4.5613-Stable/RINGS_v1_4_4_5613_Stable.zip</uri>
+    <description>
+    * [Minor] FFXIVを実行していないときはオーバーレイを隠すようにした
+    * [Minor] FFXIVを実行していないときにアプリケーションをシャットダウンするオプションを追加した
     </description>
   </note>
 </release_notes>

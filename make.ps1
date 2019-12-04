@@ -32,6 +32,9 @@ $depolyDirectory = ".\source\deploy"
 
 # tools
 $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\MSBuild.exe"
+if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\MSBuild\Current\Bin\MSBuild.exe") {
+    $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\MSBuild\Current\Bin\MSBuild.exe"
+}
 
 # バージョンを取得する
 ## ビルド番号を決定する
@@ -41,7 +44,7 @@ $buildNo = GetBuildNo($timestamp)
 ## リリースノートを取得する
 if ($isDebug) {
     if (Test-Path .\RELEASE_NOTES.bak) {
-        Copy-Item -Force .\RELEASE_NOTES.bak .\RELEASE_NOTES.xml 
+        Copy-Item -Force .\RELEASE_NOTES.bak .\RELEASE_NOTES.xml
     }
 }
 $releaseNotesXML = [xml] (Get-Content .\RELEASE_NOTES.xml -Encoding utf8)
@@ -114,7 +117,7 @@ foreach ($d in $targetDirectories) {
 
     # app.config を削除する
     $targets = @(
-        (Join-Path $d "bin\Release\RINGS.exe.config"), 
+        (Join-Path $d "bin\Release\RINGS.exe.config"),
         (Join-Path $d "bin\Release\aframe.Updater.exe.config"))
 
     foreach ($t in $targets) {

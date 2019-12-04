@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using aframe;
@@ -132,6 +134,7 @@ namespace RINGS.Controllers
                     if (!MemoryHandler.Instance.IsAttached ||
                         this.handledProcessID != ffxiv.Id)
                     {
+                        ClearLocalCaches();
                         MemoryHandler.Instance.SetProcess(
                             new ProcessModel
                             {
@@ -139,7 +142,7 @@ namespace RINGS.Controllers
                                 IsWin64 = true,
                             },
                             gameLanguage: language,
-                            useLocalCache: false);
+                            useLocalCache: true);
 
                         this.handledProcessID = ffxiv.Id;
                         this.previousArrayIndex = 0;
@@ -163,6 +166,28 @@ namespace RINGS.Controllers
                 finally
                 {
                     this.isWorking = false;
+                }
+            }
+        }
+
+        private static readonly string[] LocalCacheFiles = new[]
+        {
+            "actions.json",
+            "signatures-x64.json",
+            "statuses.json",
+            "structures-x64.json",
+            "zones.json"
+        };
+
+        private static void ClearLocalCaches()
+        {
+            var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            foreach (var f in LocalCacheFiles)
+            {
+                var file = Path.Combine(dir, f);
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
                 }
             }
         }

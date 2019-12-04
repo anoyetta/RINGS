@@ -26,6 +26,7 @@ namespace RINGS
             { nameof(H), 640 },
             { nameof(IsStartupWithWindows), false },
             { nameof(IsMinimizeStartup), false },
+            { nameof(IsShutdownWhenMissingFFXIV), false },
             { nameof(IsUseBuiltInBrowser), false },
             { nameof(BuiltinBrowserSize), 80.0d },
             { nameof(ChatLogPollingInterval), 20.0d },

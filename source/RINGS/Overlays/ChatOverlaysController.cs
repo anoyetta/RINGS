@@ -138,7 +138,35 @@ namespace RINGS.Overlays
 
                 if (isEnabled)
                 {
-                    overlay.OverlayVisible = isNotAutoHide ? true : IsFFXIVActive;
+                    if (IsFFXIVRunning)
+                    {
+                        overlay.OverlayVisible = isNotAutoHide ? true : IsFFXIVActive;
+                    }
+                    else
+                    {
+                        overlay.OverlayVisible = false;
+                    }
+                }
+            }
+
+            if (!IsFFXIVRunning &&
+                Config.Instance.IsShutdownWhenMissingFFXIV)
+            {
+                lock (this)
+                {
+                    if (ffxivShutdownTimestamp < DateTime.MaxValue)
+                    {
+                        if ((DateTime.Now - ffxivShutdownTimestamp) > TimeSpan.FromMinutes(10))
+                        {
+                            ffxivShutdownTimestamp = DateTime.MaxValue;
+
+                            WPFHelper.Dispatcher.InvokeAsync(async () =>
+                            {
+                                await Task.Delay(TimeSpan.FromSeconds(10));
+                                (App.Current.MainWindow as MainWindow)?.ToEnd();
+                            });
+                        }
+                    }
                 }
             }
 
@@ -171,6 +199,8 @@ namespace RINGS.Overlays
             }
         }
 
+        private static DateTime ffxivShutdownTimestamp = DateTime.MaxValue;
+        private static volatile bool IsFFXIVRunning;
         private static volatile bool IsFFXIVActive;
 
         private static void RefreshFFXIVIsActive()
@@ -186,6 +216,8 @@ namespace RINGS.Overlays
                 if (pid == SharlayanController.Instance.HandledProcessID)
                 {
                     IsFFXIVActive = true;
+                    IsFFXIVRunning = true;
+                    ffxivShutdownTimestamp = DateTime.MaxValue;
                     return;
                 }
 
@@ -204,10 +236,28 @@ namespace RINGS.Overlays
                         fileName.ToLower() == currentProcessFileName.ToLower())
                     {
                         IsFFXIVActive = true;
+                        IsFFXIVRunning = true;
+                        ffxivShutdownTimestamp = DateTime.MaxValue;
                     }
                     else
                     {
+                        p = Process.GetProcesses()
+                            .FirstOrDefault(x =>
+                                x.ProcessName == "ffxiv" ||
+                                x.ProcessName == "ffxiv_dx11");
+
                         IsFFXIVActive = false;
+
+                        var isRunning = p != null;
+                        if (IsFFXIVRunning != isRunning)
+                        {
+                            IsFFXIVRunning = isRunning;
+
+                            if (!isRunning)
+                            {
+                                ffxivShutdownTimestamp = DateTime.Now;
+                            }
+                        }
                     }
                 }
             }
