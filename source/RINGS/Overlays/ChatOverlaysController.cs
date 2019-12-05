@@ -163,7 +163,11 @@ namespace RINGS.Overlays
                             WPFHelper.Dispatcher.InvokeAsync(async () =>
                             {
                                 await Task.Delay(TimeSpan.FromSeconds(10));
-                                (App.Current.MainWindow as MainWindow)?.ToEnd();
+
+                                if (!IsFFXIVRunning)
+                                {
+                                    (App.Current.MainWindow as MainWindow)?.ToEnd();
+                                }
                             });
                         }
                     }
