@@ -501,10 +501,20 @@
   </note>
 
   <note>
-    <version>1.4.4.#BuildNo#</version>
+    <version>1.4.4.3615</version>
     <channel>Stable</channel>
-    <timestamp>#Timestamp#</timestamp>
-    <uri>https://github.com/anoyetta/RINGS/releases/download/#Tag#/#ArchiveFileName#</uri>
+    <timestamp>2019-12-05T15:38:04.7590190+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.4.3615-Stable/RINGS_v1_4_4_3615_Stable.zip</uri>
+    <description>
+    * [Minor] アプリケーションのシャットダウン時の判定におけるバグを修正した
+    </description>
+  </note>
+
+  <note>
+    <version>1.4.5.3615</version>
+    <channel>Stable</channel>
+    <timestamp>2019-12-05T15:39:58.0414250+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.5.3615-Stable/RINGS_v1_4_5_3615_Stable.zip</uri>
     <description>
     * [Minor] アプリケーションのシャットダウン時の判定におけるバグを修正した
     </description>
