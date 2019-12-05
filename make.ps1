@@ -113,7 +113,7 @@ foreach ($d in $targetDirectories) {
 
 foreach ($d in $targetDirectories) {
     # pdb を削除する
-    # Remove-Item -Force (Join-Path $d "bin\Release\*.pdb")
+    Remove-Item -Force (Join-Path $d "bin\Release\*.pdb")
 
     # app.config を削除する
     $targets = @(
