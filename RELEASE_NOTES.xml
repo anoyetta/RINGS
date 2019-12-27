@@ -519,4 +519,14 @@
     * [Minor] アプリケーションのシャットダウン時の判定におけるバグを修正した
     </description>
   </note>
+
+  <note>
+    <version>1.4.6.5900</version>
+    <channel>Stable</channel>
+    <timestamp>2019-12-28T00:46:25.3971882+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.6.5900-Stable/RINGS_v1_4_6_5900_Stable.zip</uri>
+    <description>
+    * [Minor] 常に管理者権限で起動するようにした
+    </description>
+  </note>
 </release_notes>
