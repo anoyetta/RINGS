@@ -30,6 +30,8 @@ namespace RINGS.Overlays
 
         public Action MinimizeCallback { get; set; }
 
+        public Action ScrollToEndCallback { get; set; }
+
         public bool IsForceMinimized { get; set; }
 
         private readonly DispatcherTimer HideTimer = new DispatcherTimer(DispatcherPriority.ContextIdle)
@@ -169,6 +171,8 @@ namespace RINGS.Overlays
             {
                 this.ChangeActivePageCallback?.Invoke(e.ParentPage.Name);
             }
+
+            this.ScrollToEndCallback?.Invoke();
         }
 
         private volatile bool previousIsAutoHide;

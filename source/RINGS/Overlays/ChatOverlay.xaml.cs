@@ -64,6 +64,14 @@ namespace RINGS.Overlays
                 }
             };
 
+            this.ViewModel.ScrollToEndCallback = () =>
+                WPFHelper.Dispatcher.Invoke(() => this.currentScrollViewer?.ScrollToEnd());
+
+            this.ChatPagesTabControl.SelectionChanged += (_, __) =>
+            {
+                this.currentScrollViewer?.ScrollToEnd();
+            };
+
             this.TitleLabel.MouseLeftButtonDown += (_, __) =>
             {
                 if (!this.ViewModel.ChatOverlaySettings.IsLock)
@@ -195,11 +203,14 @@ namespace RINGS.Overlays
             */
         }
 
+        private ScrollViewer currentScrollViewer;
+
         private void ScrollViewer_Loaded(
             object sender,
             RoutedEventArgs e)
         {
             var scrollViewer = sender as ScrollViewer;
+            this.currentScrollViewer = scrollViewer;
 
             var obj = scrollViewer.Template.FindName("PART_VerticalScrollBar", scrollViewer);
             if (obj != null &&
