@@ -208,34 +208,52 @@ namespace RINGS.ViewModels
 
             speaker ??= "RINGS";
 
-            var xivlog = new ChatLogItem()
+            if (message.StartsWith("#test"))
             {
-                Code = this.TestChatCode,
-                Line = $"{speaker}:{message}",
-            };
+                for (int i = 0; i < 1000; i++)
+                {
+                    sendLog(speaker, $"Test Message {i + 1}");
+                }
+            }
+            else
+            {
+                sendLog(speaker, message);
+            }
 
-            var model = ChatLogModel.FromXIVLog(
-                xivlog,
-                new[] { speaker });
-
-            var alias = Config.Instance.ActiveProfile?.Alias ?? string.Empty;
-
-            ChatLogsModel.AddToBuffers(model);
-            DiscordBotController.Instance.SendMessage(
-                model.ChatCode,
-                speaker,
-                alias,
-                model.Message);
-
-            ChatLogger.Write(
-                model.ChannelShortName,
-                speaker,
-                alias,
-                model.Message);
             ChatLogger.Flush();
 
             this.TestMessage = string.Empty;
             this.RaisePropertyChanged(nameof(this.TestMessage));
+
+            void sendLog(
+                string speaker,
+                string text)
+            {
+                var xivlog = new ChatLogItem()
+                {
+                    Code = this.TestChatCode,
+                    Line = $"{speaker}:{text}",
+                };
+
+                var model = ChatLogModel.FromXIVLog(
+                    xivlog,
+                    new[] { speaker });
+
+                var alias = Config.Instance.ActiveProfile?.Alias ?? string.Empty;
+
+                ChatLogsModel.AddToBuffers(model);
+                DiscordBotController.Instance.SendMessage(
+                    model.ChatCode,
+                    speaker,
+                    alias,
+                    model.Message);
+
+                ChatLogger.Write(
+                    model.ChannelShortName,
+                    speaker,
+                    alias,
+                    model.Message);
+            }
         }
     }
 }

@@ -32,6 +32,10 @@ namespace RINGS.Models
 
         private static readonly Dictionary<Color, SolidColorBrush> BrushStore = new Dictionary<Color, SolidColorBrush>(32);
 
+        private readonly SolidColorBrush TimestampBrush = GetBrush((Color)ColorConverter.ConvertFromString("#a4a4a4"));
+        private readonly SolidColorBrush HeaderBrush = GetBrush((Color)ColorConverter.ConvertFromString("#fff1cf"));
+        private readonly SolidColorBrush HyperlinkBrush = GetBrush((Color)ColorConverter.ConvertFromString("#f8e58c"));
+
         private static SolidColorBrush GetBrush(
             Color color)
         {
@@ -51,8 +55,16 @@ namespace RINGS.Models
             return brush;
         }
 
+#if DEBUG
+        private static long chatLogSeq;
+#endif
+
         private FlowDocument CreateChatDocument()
         {
+#if DEBUG
+            chatLogSeq++;
+            Debug.WriteLine($"CreateChatDocument() Seq {chatLogSeq}");
+#endif
             var doc = new FlowDocument();
 
             var para1 = new Paragraph() { Margin = ZeroMargin };
@@ -64,7 +76,7 @@ namespace RINGS.Models
                 {
                     FontSize = this.ParentOverlaySettings.Font.Size * 0.9,
                     BaselineAlignment = BaselineAlignment.Center,
-                    Foreground = GetBrush((Color)ColorConverter.ConvertFromString("#a4a4a4")),
+                    Foreground = this.TimestampBrush,
                 });
             }
 
@@ -99,10 +111,8 @@ namespace RINGS.Models
                 return doc;
             }
 
-            var headerBrush = GetBrush((Color)ColorConverter.ConvertFromString("#fff1cf"));
-            var hyperLinkBrush = GetBrush((Color)ColorConverter.ConvertFromString("#f8e58c"));
-            headerBrush.Freeze();
-            hyperLinkBrush.Freeze();
+            var headerBrush = this.HeaderBrush;
+            var hyperLinkBrush = this.HyperlinkBrush;
 
             var fontSize = this.ParentOverlaySettings != null ?
                 this.ParentOverlaySettings.Font.Size * 1.0 :

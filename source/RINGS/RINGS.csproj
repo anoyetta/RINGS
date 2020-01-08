@@ -106,6 +106,7 @@
     <Compile Include="Overlays\SplashOverlay.xaml.cs">
       <DependentUpon>SplashOverlay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Overlays\TabControlEx.cs" />
     <Compile Include="Overlays\WebViewHelperOverlay.xaml.cs">
       <DependentUpon>WebViewHelperOverlay.xaml</DependentUpon>
     </Compile>
