@@ -264,6 +264,8 @@ namespace RINGS.Overlays
                         }
                     }
                 }
+
+                Thread.Sleep(TimeSpan.FromSeconds(7));
             }
             catch (Win32Exception)
             {

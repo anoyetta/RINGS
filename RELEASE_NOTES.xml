@@ -529,4 +529,14 @@
     * [Minor] 常に管理者権限で起動するようにした
     </description>
   </note>
+
+  <note>
+    <version>1.4.7.3116</version>
+    <channel>Stable</channel>
+    <timestamp>2020-01-10T16:53:58.3676172+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.7.3116-Stable/RINGS_v1_4_7_3116_Stable.zip</uri>
+    <description>
+    * [Minor] fixed #26 チャットログの描画について仮想化を有効にした
+    </description>
+  </note>
 </release_notes>

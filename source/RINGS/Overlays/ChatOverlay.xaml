@@ -39,8 +39,6 @@
   </Window.DataContext>
 
   <Window.Resources>
-    <Style TargetType="TabControl" />
-    <Style TargetType="TabItem" />
   </Window.Resources>
 
   <Grid Margin="0">
@@ -133,7 +131,7 @@
       </Border>
 
       <!-- Pages -->
-      <TabControl
+      <local:TabControlEx
         x:Name="ChatPagesTabControl"
         BorderThickness="0"
         Background="Transparent"
@@ -142,7 +140,7 @@
         Opacity="{Binding ElementName=BackgroundBorder, Path=Opacity, Mode=OneWay}"
         ItemsSource="{Binding ChatOverlaySettings.ChatPages, Mode=OneWay}">
 
-        <TabControl.Resources>
+        <local:TabControlEx.Resources>
           <Style TargetType="{x:Type TabItem}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Template">
@@ -173,15 +171,15 @@
               </Setter.Value>
             </Setter>
           </Style>
-        </TabControl.Resources>
+        </local:TabControlEx.Resources>
 
-        <TabControl.ItemTemplate>
+        <local:TabControlEx.ItemTemplate>
           <DataTemplate>
             <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="14" />
           </DataTemplate>
-        </TabControl.ItemTemplate>
+        </local:TabControlEx.ItemTemplate>
 
-        <TabControl.ContentTemplate>
+        <local:TabControlEx.ContentTemplate>
           <DataTemplate>
             <ItemsControl
               VirtualizingStackPanel.IsVirtualizing="True"
@@ -315,8 +313,8 @@
               </ItemsControl.Template>
             </ItemsControl>
           </DataTemplate>
-        </TabControl.ContentTemplate>
-      </TabControl>
+        </local:TabControlEx.ContentTemplate>
+      </local:TabControlEx>
     </Grid>
 
     <Border
