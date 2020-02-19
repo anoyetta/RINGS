@@ -539,4 +539,14 @@
     * [Minor] fixed #26 チャットログの描画について仮想化を有効にした
     </description>
   </note>
+
+  <note>
+    <version>1.4.8.4114</version>
+    <channel>Stable</channel>
+    <timestamp>2020-02-19T14:09:06.1809976+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.8.4114-Stable/RINGS_v1_4_8_4114_Stable.zip</uri>
+    <description>
+     * [Minor] sharlayan が正しく動作していないときでもそれなりに動作するような対応を搭載した
+    </description>
+  </note>
 </release_notes>

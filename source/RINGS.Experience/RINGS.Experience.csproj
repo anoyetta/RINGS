@@ -54,13 +54,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Discord.Net">
-      <Version>1.0.2</Version>
+      <Version>2.1.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Sharlayan">
-      <Version>5.0.4</Version>
+      <Version>5.0.5</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

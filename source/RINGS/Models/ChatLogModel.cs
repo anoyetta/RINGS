@@ -654,11 +654,20 @@ namespace RINGS.Models
 
             var currentProfName = Config.Instance.ActiveProfile?.CharacterName;
 
+            var speakerSafix = string.Empty;
             var i = xivLog.Line.IndexOf(":");
+
+            if (i < 0)
+            {
+                // sharlayan がパッチに対応していないときの回避策
+                i = xivLog.Line.IndexOf(".");
+                speakerSafix = ".";
+            }
+
             if (i >= 0)
             {
                 // 話者の部分を取り出す
-                var speakerPart = xivLog.Line.Substring(0, i);
+                var speakerPart = $"{xivLog.Line.Substring(0, i)}{speakerSafix}";
 
                 // 話者から特殊文字を除去する
                 speakerPart = RemoveSpecialChar(speakerPart);
