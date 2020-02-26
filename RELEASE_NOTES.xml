@@ -549,4 +549,14 @@
      * [Minor] sharlayan が正しく動作していないときでもそれなりに動作するような対応を搭載した
     </description>
   </note>
+
+  <note>
+    <version>1.4.9.4811</version>
+    <channel>Stable</channel>
+    <timestamp>2020-02-26T11:26:11.7088270+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.9.4811-Stable/RINGS_v1_4_9_4811_Stable.zip</uri>
+    <description>
+     * [Minor] sharlayan のローカルキャッシュのクリアを修正した
+    </description>
+  </note>
 </release_notes>
