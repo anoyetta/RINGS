@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using aframe;
@@ -181,7 +180,7 @@ namespace RINGS.Controllers
 
         private static void ClearLocalCaches()
         {
-            var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var dir = Directory.GetCurrentDirectory();
             foreach (var f in LocalCacheFiles)
             {
                 var file = Path.Combine(dir, f);
