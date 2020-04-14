@@ -569,4 +569,14 @@
      * [Minor] sharlayan からのログの出力を追加した
     </description>
   </note>
+
+  <note>
+    <version>1.4.11.3818</version>
+    <channel>Stable</channel>
+    <timestamp>2020-04-14T18:09:06.2698014+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.11.3818-Stable/RINGS_v1_4_11_3818_Stable.zip</uri>
+    <description>
+     * [Minor] 話者の切り出し方法を修正した
+    </description>
+  </note>
 </release_notes>

@@ -344,7 +344,9 @@ namespace RINGS.Controllers
                         var models = targetLogs
                             .Select(x =>
                             {
+#if DEBUG
                                 ChatLogger.WriteRaw(x.Raw);
+#endif
                                 return ChatLogModel.FromXIVLog(x, this.currentPlayerNames);
                             })
                             .ToArray();
