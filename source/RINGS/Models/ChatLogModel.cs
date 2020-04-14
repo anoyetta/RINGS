@@ -640,6 +640,12 @@ namespace RINGS.Models
         public override string ToString() =>
             $"{this.chatCode}:{this.speaker}:{this.message}";
 
+        private static readonly string SpeakerDelimiter = "\u001f";
+
+        private static readonly Regex SpeackerRegex = new Regex(
+            @":(?<speaker>[a-zA-Z\s\.\-']+):",
+            RegexOptions.Compiled);
+
         public static ChatLogModel FromXIVLog(
             ChatLogItem xivLog,
             string[] currentPlayerNames)
@@ -654,26 +660,27 @@ namespace RINGS.Models
 
             var currentProfName = Config.Instance.ActiveProfile?.CharacterName;
 
-            var speakerSafix = string.Empty;
-            var i = xivLog.Line.IndexOf(":");
+            var chatLogLine = xivLog.Line;
 
-            if (i < 0)
+            var replacedRaw = xivLog.Raw.Replace(SpeakerDelimiter, ":");
+            var match = SpeackerRegex.Match(replacedRaw);
+            if (match.Success)
             {
-                // sharlayan がパッチに対応していないときの回避策
-                speakerSafix = ".";
-                i = xivLog.Line.IndexOf(speakerSafix);
+                var name = match.Groups["speaker"].Value;
+                chatLogLine = chatLogLine.Replace(name, $"{name}:");
             }
 
+            var i = chatLogLine.IndexOf(":");
             if (i >= 0)
             {
                 // 話者の部分を取り出す
-                var speakerPart = $"{xivLog.Line.Substring(0, i)}{speakerSafix}";
+                var speakerPart = chatLogLine.Substring(0, i);
 
                 // 話者から特殊文字を除去する
                 speakerPart = RemoveSpecialChar(speakerPart);
 
                 // サーバ名部分を取り出して書式を整える
-                var match = CharacterNameWithServerRegex.Match(speakerPart);
+                match = CharacterNameWithServerRegex.Match(speakerPart);
                 if (match.Success)
                 {
                     var server = match.Groups["server"];
@@ -689,12 +696,12 @@ namespace RINGS.Models
                 }
 
                 log.OriginalSpeaker = speakerPart;
-                log.Message = xivLog.Line.Substring(i + 1);
+                log.Message = chatLogLine.Substring(i + 1);
             }
             else
             {
                 log.OriginalSpeaker = string.Empty;
-                log.Message = xivLog.Line;
+                log.Message = chatLogLine;
             }
 
             if (currentPlayerNames != null)
