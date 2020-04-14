@@ -559,4 +559,14 @@
      * [Minor] sharlayan のローカルキャッシュのクリアを修正した
     </description>
   </note>
+
+  <note>
+    <version>1.4.10.3814</version>
+    <channel>Stable</channel>
+    <timestamp>2020-04-14T14:31:31.1375768+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.10.3814-Stable/RINGS_v1_4_10_3814_Stable.zip</uri>
+    <description>
+     * [Minor] sharlayan からのログの出力を追加した
+    </description>
+  </note>
 </release_notes>

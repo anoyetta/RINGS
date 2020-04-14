@@ -9,6 +9,12 @@ namespace RINGS.Common
     {
         private static readonly Lazy<Logger> LazyLogger = new Lazy<Logger>(() => LogManager.GetLogger("RINGSChatLogger"));
 
+        public static void WriteRaw(
+            string raw)
+        {
+            LazyLogger.Value.Trace(raw);
+        }
+
         public static void Write(
             string channel,
             string speaker,

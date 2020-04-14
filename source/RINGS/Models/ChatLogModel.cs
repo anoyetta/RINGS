@@ -660,8 +660,8 @@ namespace RINGS.Models
             if (i < 0)
             {
                 // sharlayan がパッチに対応していないときの回避策
-                i = xivLog.Line.IndexOf(".");
                 speakerSafix = ".";
+                i = xivLog.Line.IndexOf(speakerSafix);
             }
 
             if (i >= 0)
