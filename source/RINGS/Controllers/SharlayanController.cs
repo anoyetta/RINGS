@@ -342,7 +342,11 @@ namespace RINGS.Controllers
                     if (isExistLogs)
                     {
                         var models = targetLogs
-                            .Select(x => ChatLogModel.FromXIVLog(x, this.currentPlayerNames))
+                            .Select(x =>
+                            {
+                                ChatLogger.WriteRaw(x.Raw);
+                                return ChatLogModel.FromXIVLog(x, this.currentPlayerNames);
+                            })
                             .ToArray();
 
                         WPFHelper.Dispatcher.Invoke(() =>
