@@ -579,4 +579,14 @@
      * [Minor] 話者の切り出し方法を修正した
     </description>
   </note>
+
+  <note>
+    <version>1.4.12.3823</version>
+    <channel>Beta</channel>
+    <timestamp>2020-04-14T23:45:18.5644355+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.12.3823-Beta/RINGS_v1_4_12_3823_Beta.zip</uri>
+    <description>
+     * [Minor] 話者の切り出し方法を修正した
+    </description>
+  </note>
 </release_notes>

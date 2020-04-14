@@ -640,10 +640,8 @@ namespace RINGS.Models
         public override string ToString() =>
             $"{this.chatCode}:{this.speaker}:{this.message}";
 
-        private static readonly string SpeakerDelimiter = "\u001f";
-
-        private static readonly Regex SpeackerRegex = new Regex(
-            @":(?<speaker>[a-zA-Z\s\.\-']+):",
+        private static readonly Regex MessageRegex = new Regex(
+            @".*\u001f(?<message>[^\u001f]*)$",
             RegexOptions.Compiled);
 
         public static ChatLogModel FromXIVLog(
@@ -662,12 +660,11 @@ namespace RINGS.Models
 
             var chatLogLine = xivLog.Line;
 
-            var replacedRaw = xivLog.Raw.Replace(SpeakerDelimiter, ":");
-            var match = SpeackerRegex.Match(replacedRaw);
+            var match = MessageRegex.Match(xivLog.Raw);
             if (match.Success)
             {
-                var name = match.Groups["speaker"].Value;
-                chatLogLine = chatLogLine.Replace(name, $"{name}:");
+                var message = match.Groups["message"].Value;
+                chatLogLine = chatLogLine.Replace(message, $":{message}");
             }
 
             var i = chatLogLine.IndexOf(":");
@@ -803,6 +800,9 @@ namespace RINGS.Models
 
         private static readonly Regex[] SpecialCharRegexList = new[]
         {
+            // Unicodeの記号
+            new Regex("[\u0000-\u001F]", RegexOptions.Compiled),
+
             // Unicodeのその他の記号(Miscellaneous Symbols)
             new Regex("[\u2600-\u26FF]", RegexOptions.Compiled),
 
