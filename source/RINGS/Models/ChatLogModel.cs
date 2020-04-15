@@ -641,7 +641,7 @@ namespace RINGS.Models
             $"{this.chatCode}:{this.speaker}:{this.message}";
 
         private static readonly Regex MessageRegex = new Regex(
-            @".*\u001f(?<message>[^\u001f]*)$",
+            @".*\u001f(?<message>[^\u001f]+)$",
             RegexOptions.Compiled);
 
         public static ChatLogModel FromXIVLog(

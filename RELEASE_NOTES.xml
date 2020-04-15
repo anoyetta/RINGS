@@ -589,4 +589,14 @@
      * [Minor] 話者の切り出し方法を修正した
     </description>
   </note>
+
+  <note>
+    <version>1.4.12.3916</version>
+    <channel>Stable</channel>
+    <timestamp>2020-04-15T16:15:39.7418053+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.4.12.3916-Stable/RINGS_v1_4_12_3916_Stable.zip</uri>
+    <description>
+     * [Minor] デバッグ用の生チャットログの出力を切り替えられるようにした
+    </description>
+  </note>
 </release_notes>

@@ -24,12 +24,13 @@
   TextElement.FontWeight="Regular"
   Focusable="False"
   IsTabStop="False"
-  d:DesignHeight="450" d:DesignWidth="800"
+  d:DesignHeight="600" d:DesignWidth="800"
   d:DataContext="{d:DesignInstance {x:Type vm:ConfigViewModel}, IsDesignTimeCreatable=True}"
   prism:ViewModelLocator.AutoWireViewModel="True">
 
   <UserControl.Resources>
     <Thickness x:Key="ContentMargin">0 15 0 0</Thickness>
+    <Thickness x:Key="ContentParagraphMargin">0 20 0 0</Thickness>
   </UserControl.Resources>
 
   <Grid>
@@ -156,6 +157,13 @@
             ItemsSource="{Binding ThreadPriorityList, Mode=OneWay}"
             SelectedItem="{Binding Config.ChatLogSubscriberThreadPriority, Mode=TwoWay}" />
         </metro:MetroHeader>
+
+        <metro:ToggleSwitch
+          Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+          Margin="{DynamicResource ContentParagraphMargin}"
+          HorizontalAlignment="Left"
+          IsChecked="{Binding Config.IsEnabledChatRawLog, Mode=TwoWay}"
+          Content="チャットのデバッグログを有効にする" />
       </StackPanel>
     </ScrollViewer>
   </Grid>
