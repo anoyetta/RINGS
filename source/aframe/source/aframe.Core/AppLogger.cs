@@ -199,7 +199,7 @@ namespace aframe
 
             if (File.Exists(configFileName))
             {
-                LogManager.Configuration = new XmlLoggingConfiguration(configFileName, true);
+                LogManager.Configuration = new XmlLoggingConfiguration(configFileName);
                 return;
             }
 
@@ -221,7 +221,7 @@ namespace aframe
                 var file = Path.Combine(dir, Path.GetFileName(configFileName));
                 if (File.Exists(file))
                 {
-                    LogManager.Configuration = new XmlLoggingConfiguration(file, true);
+                    LogManager.Configuration = new XmlLoggingConfiguration(file);
                     return;
                 }
             }
