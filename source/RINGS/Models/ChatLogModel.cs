@@ -648,6 +648,8 @@ namespace RINGS.Models
             ChatLogItem xivLog,
             string[] currentPlayerNames)
         {
+            var match = default(Match);
+
             var log = new ChatLogModel()
             {
                 XIVLog = xivLog,
@@ -661,12 +663,21 @@ namespace RINGS.Models
             var chatLogLine = RemoveSpecialChar(xivLog.Line);
             var chatLogLineRaw = RemoveSpecialChar(xivLog.Raw);
 
-            var match = MessageRegex.Match(chatLogLineRaw);
+            var delimiterIndex = chatLogLineRaw.LastIndexOf("\u001f");
+            if (delimiterIndex > -1)
+            {
+                var message = chatLogLineRaw.Substring(delimiterIndex + 1);
+                chatLogLine = chatLogLine.Replace(message, $":{message}");
+            }
+
+#if false
+            match = MessageRegex.Match(chatLogLineRaw);
             if (match.Success)
             {
                 var message = match.Groups["message"].Value;
                 chatLogLine = chatLogLine.Replace(message, $":{message}");
             }
+#endif
 
             var i = chatLogLine.IndexOf(":");
             if (i >= 0)
