@@ -640,9 +640,7 @@ namespace RINGS.Models
         public override string ToString() =>
             $"{this.chatCode}:{this.speaker}:{this.message}";
 
-        private static readonly Regex MessageRegex = new Regex(
-            @".*\u001f(?<message>[^\u001f]+)$",
-            RegexOptions.Compiled);
+        private static readonly HashSet<string> SpeakerHashes = new HashSet<string>(1024);
 
         public static ChatLogModel FromXIVLog(
             ChatLogItem xivLog,
@@ -670,20 +668,32 @@ namespace RINGS.Models
                 chatLogLine = chatLogLine.Replace(message, $":{message}");
             }
 
-#if false
-            match = MessageRegex.Match(chatLogLineRaw);
-            if (match.Success)
-            {
-                var message = match.Groups["message"].Value;
-                chatLogLine = chatLogLine.Replace(message, $":{message}");
-            }
-#endif
-
+            // メッセージを置換できていなければ話者辞書による置換を試みる
             var i = chatLogLine.IndexOf(":");
+            if (i < 0)
+            {
+                var speaker = SpeakerHashes.FirstOrDefault(x => chatLogLine.StartsWith(x));
+                if (!string.IsNullOrEmpty(speaker))
+                {
+                    if (chatLogLine.Length > speaker.Length)
+                    {
+                        chatLogLine = $"{speaker}:{chatLogLine.Substring(speaker.Length)}";
+                    }
+                    else
+                    {
+                        chatLogLine = $"{speaker}:";
+                    }
+                }
+            }
+
+            i = chatLogLine.IndexOf(":");
             if (i >= 0)
             {
                 // 話者の部分を取り出す
                 var speakerPart = chatLogLine.Substring(0, i);
+
+                // ハッシュセットに記録する
+                SpeakerHashes.Add(speakerPart);
 
                 // サーバ名部分を取り出して書式を整える
                 match = CharacterNameWithServerRegex.Match(speakerPart);
