@@ -262,8 +262,8 @@
       <!-- Items -->
       <metro:HamburgerMenu.ItemsSource>
         <metro:HamburgerMenuItemCollection>
-          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Home}" Label="ホーム" Tag="{Binding HomeView, Mode=OneWay}" />
-          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=MessageText}" Label="チャットオーバーレイ" Tag="{Binding ChatOverlaySettingsView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:MaterialDesign Kind=Home}" Label="ホーム" Tag="{Binding HomeView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:MaterialLight Kind=MessageText}" Label="チャットオーバーレイ" Tag="{Binding ChatOverlaySettingsView, Mode=OneWay}" />
           <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=LinkVariant}" Label="チャットリンク" Tag="{Binding ChatLinkSettingsView, Mode=OneWay}" />
           <metro:HamburgerMenuIconItem Icon="{iconPacks:FontAwesome Kind=DiscordBrands}" Label="DISCORD Bot" Tag="{Binding DiscordBotSettingsView, Mode=OneWay}" />
         </metro:HamburgerMenuItemCollection>
@@ -272,9 +272,9 @@
       <!-- Options -->
       <metro:HamburgerMenu.OptionsItemsSource>
         <metro:HamburgerMenuItemCollection>
-          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Settings}" Label="設定" Tag="{Binding ConfigView, Mode=OneWay}" />
-          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Help}" Label="ヘルプ" Tag="{Binding HelpView, Mode=OneWay}" />
-          <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=ExitToApp}" Label="終了" Command="{Binding ExitCommand, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:MaterialDesign Kind=Settings}" Label="設定" Tag="{Binding ConfigView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:MaterialDesign Kind=Help}" Label="ヘルプ" Tag="{Binding HelpView, Mode=OneWay}" />
+          <metro:HamburgerMenuIconItem Icon="{iconPacks:MaterialDesign Kind=ExitToApp}" Label="終了" Command="{Binding ExitCommand, Mode=OneWay}" />
         </metro:HamburgerMenuItemCollection>
       </metro:HamburgerMenu.OptionsItemsSource>
     </metro:HamburgerMenu>
