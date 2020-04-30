@@ -640,14 +640,14 @@ namespace RINGS.Models
         public override string ToString() =>
             $"{this.chatCode}:{this.speaker}:{this.message}";
 
-        private static readonly Regex MessageRegex = new Regex(
-            @".*\u001f(?<message>[^\u001f]*)$",
-            RegexOptions.Compiled);
+        private static readonly HashSet<string> SpeakerHashes = new HashSet<string>(1024);
 
         public static ChatLogModel FromXIVLog(
             ChatLogItem xivLog,
             string[] currentPlayerNames)
         {
+            var match = default(Match);
+
             var log = new ChatLogModel()
             {
                 XIVLog = xivLog,
@@ -658,23 +658,42 @@ namespace RINGS.Models
 
             var currentProfName = Config.Instance.ActiveProfile?.CharacterName;
 
-            var chatLogLine = xivLog.Line;
+            var chatLogLine = RemoveSpecialChar(xivLog.Line);
+            var chatLogLineRaw = RemoveSpecialChar(xivLog.Raw);
 
-            var match = MessageRegex.Match(xivLog.Raw);
-            if (match.Success)
+            var delimiterIndex = chatLogLineRaw.LastIndexOf("\u001f");
+            if (delimiterIndex > -1)
             {
-                var message = match.Groups["message"].Value;
+                var message = chatLogLineRaw.Substring(delimiterIndex + 1);
                 chatLogLine = chatLogLine.Replace(message, $":{message}");
             }
 
+            // メッセージを置換できていなければ話者辞書による置換を試みる
             var i = chatLogLine.IndexOf(":");
+            if (i < 0)
+            {
+                var speaker = SpeakerHashes.FirstOrDefault(x => chatLogLine.StartsWith(x));
+                if (!string.IsNullOrEmpty(speaker))
+                {
+                    if (chatLogLine.Length > speaker.Length)
+                    {
+                        chatLogLine = $"{speaker}:{chatLogLine.Substring(speaker.Length)}";
+                    }
+                    else
+                    {
+                        chatLogLine = $"{speaker}:";
+                    }
+                }
+            }
+
+            i = chatLogLine.IndexOf(":");
             if (i >= 0)
             {
                 // 話者の部分を取り出す
                 var speakerPart = chatLogLine.Substring(0, i);
 
-                // 話者から特殊文字を除去する
-                speakerPart = RemoveSpecialChar(speakerPart);
+                // ハッシュセットに記録する
+                SpeakerHashes.Add(speakerPart);
 
                 // サーバ名部分を取り出して書式を整える
                 match = CharacterNameWithServerRegex.Match(speakerPart);
@@ -801,7 +820,10 @@ namespace RINGS.Models
         private static readonly Regex[] SpecialCharRegexList = new[]
         {
             // Unicodeの記号
-            new Regex("[\u0000-\u001F]", RegexOptions.Compiled),
+            new Regex("[\u0000-\u001E]", RegexOptions.Compiled),
+
+            // Unicodeの記号
+            new Regex("[\u0080-\u009F]", RegexOptions.Compiled),
 
             // Unicodeのその他の記号(Miscellaneous Symbols)
             new Regex("[\u2600-\u26FF]", RegexOptions.Compiled),

@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RINGS", "RINGS\RINGS.csproj", "{2EB16DA7-C74A-4C69-8074-54E787BD2FD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RINGS.Experience", "RINGS.Experience\RINGS.Experience.csproj", "{C8DC3024-2F21-4354-A542-E1C1217910E2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aframe", "aframe", "{A77AAB68-01C3-4B73-A8F4-FF4CF6BF4C0A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aframe.Core", "aframe\source\aframe.Core\aframe.Core.csproj", "{1E602601-AEA4-47CD-8F44-6C5E1D7387A5}"
@@ -23,10 +21,6 @@ Global
 		{2EB16DA7-C74A-4C69-8074-54E787BD2FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EB16DA7-C74A-4C69-8074-54E787BD2FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EB16DA7-C74A-4C69-8074-54E787BD2FD3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8DC3024-2F21-4354-A542-E1C1217910E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8DC3024-2F21-4354-A542-E1C1217910E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8DC3024-2F21-4354-A542-E1C1217910E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8DC3024-2F21-4354-A542-E1C1217910E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1E602601-AEA4-47CD-8F44-6C5E1D7387A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1E602601-AEA4-47CD-8F44-6C5E1D7387A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E602601-AEA4-47CD-8F44-6C5E1D7387A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,7 +38,7 @@ Global
 		{38E4D044-78F5-453E-A52C-96F6B201C8B8} = {A77AAB68-01C3-4B73-A8F4-FF4CF6BF4C0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		        SolutionGuid = {6DB687F3-53BD-492C-9222-981FEE364903}
 		SolutionGuid = {A089AAA5-ABEE-49ED-BE99-41C1BA138A53}
+		        SolutionGuid = {6DB687F3-53BD-492C-9222-981FEE364903}
 	EndGlobalSection
 EndGlobal

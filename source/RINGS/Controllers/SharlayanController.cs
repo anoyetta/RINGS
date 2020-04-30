@@ -341,12 +341,16 @@ namespace RINGS.Controllers
 
                     if (isExistLogs)
                     {
+                        var isEnabledRawLog = Config.Instance.IsEnabledChatRawLog;
+
                         var models = targetLogs
                             .Select(x =>
                             {
-#if DEBUG
-                                ChatLogger.WriteRaw(x.Raw);
-#endif
+                                if (isEnabledRawLog)
+                                {
+                                    ChatLogger.WriteRaw(x.Raw);
+                                }
+
                                 return ChatLogModel.FromXIVLog(x, this.currentPlayerNames);
                             })
                             .ToArray();

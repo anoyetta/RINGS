@@ -423,6 +423,15 @@ namespace RINGS
             set => this.SetProperty(ref this.isUseBuiltInBrowser, value);
         }
 
+        private bool isEnabledChatRawLog = false;
+
+        [JsonProperty(PropertyName = "is_enabled_chat_raw_log", DefaultValueHandling = DefaultValueHandling.Include)]
+        public bool IsEnabledChatRawLog
+        {
+            get => this.isEnabledChatRawLog;
+            set => this.SetProperty(ref this.isEnabledChatRawLog, value);
+        }
+
         private double builtinBrowserSize = 80.0d;
 
         [JsonProperty(PropertyName = "builtin_browser_size", DefaultValueHandling = DefaultValueHandling.Include)]
