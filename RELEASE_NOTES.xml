@@ -609,4 +609,14 @@
      * [Minor] チャットログの話者の分解の精度を改善した
     </description>
   </note>
+
+  <note>
+    <version>1.5.0.3911</version>
+    <channel>Stable</channel>
+    <timestamp>2021-09-09T11:13:28.5913948+09:00</timestamp>
+    <uri>https://github.com/anoyetta/RINGS/releases/download/v1.5.0.3911-Stable/RINGS_v1_5_0_3911_Stable.zip</uri>
+    <description>
+      * [Major] Sharlayanを最新バージョンに更新した
+    </description>
+  </note>
 </release_notes>

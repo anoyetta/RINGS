@@ -1,3 +1,11 @@
+using aframe;
+using Gma.System.MouseKeyHook;
+using RINGS.Common;
+using RINGS.Models;
+using Sharlayan;
+using Sharlayan.Core;
+using Sharlayan.Enums;
+using Sharlayan.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,13 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using aframe;
-using Gma.System.MouseKeyHook;
-using RINGS.Common;
-using RINGS.Models;
-using Sharlayan;
-using Sharlayan.Core;
-using Sharlayan.Models;
 
 namespace RINGS.Controllers
 {
@@ -35,17 +36,18 @@ namespace RINGS.Controllers
 
         private Thread subscribeFFXIVProcessThread;
         private Thread subscribeChatLogThread;
+        private MemoryHandler _memoryHandler;
         private int handledProcessID;
         private int previousArrayIndex = 0;
         private int previousOffset = 0;
-        private CurrentPlayer currentPlayer;
+        private ActorItem currentPlayer;
         private string[] currentPlayerNames;
 
         public int HandledProcessID => this.handledProcessID;
 
         public bool IsAttached => this.handledProcessID != 0;
 
-        public CurrentPlayer CurrentPlayer => this.currentPlayer;
+        public ActorItem CurrentPlayer => this.currentPlayer;
 
         public async Task StartAsync() => await Task.Run(() =>
         {
@@ -98,7 +100,7 @@ namespace RINGS.Controllers
 
         private void SubscribeFFXIVProcess()
         {
-            var language = "Japanese";
+            var language = GameLanguage.Japanese;
 
             Thread.Sleep(TimeSpan.FromSeconds(DetectProcessInterval));
             AppLogger.Write("FFXIV process subscriber started.");
@@ -130,18 +132,28 @@ namespace RINGS.Controllers
 
                     var ffxiv = processes[0];
 
-                    if (!MemoryHandler.Instance.IsAttached ||
+                    if (this._memoryHandler == null ||
                         this.handledProcessID != ffxiv.Id)
                     {
                         ClearLocalCaches();
-                        MemoryHandler.Instance.SetProcess(
-                            new ProcessModel
+
+                        var config = new SharlayanConfiguration()
+                        {
+                            ProcessModel = new ProcessModel()
                             {
-                                Process = ffxiv,
-                                IsWin64 = true,
+                                Process = ffxiv
                             },
-                            gameLanguage: language,
-                            useLocalCache: true);
+                            GameLanguage = language,
+                            GameRegion = language switch
+                            {
+                                GameLanguage.Korean => GameRegion.Korea,
+                                GameLanguage.Chinese => GameRegion.China,
+                                _ => GameRegion.Global
+                            },
+                            UseLocalCache = true,
+                        };
+
+                        this._memoryHandler = SharlayanMemoryManager.Instance.AddHandler(config);
 
                         this.handledProcessID = ffxiv.Id;
                         this.previousArrayIndex = 0;
@@ -171,11 +183,11 @@ namespace RINGS.Controllers
 
         private static readonly string[] LocalCacheFiles = new[]
         {
-            "actions.json",
-            "signatures-x64.json",
-            "statuses.json",
-            "structures-x64.json",
-            "zones.json"
+            "actions*.json",
+            "signatures*.json",
+            "statuses*.json",
+            "structures*.json",
+            "zones*.json",
         };
 
         private static void ClearLocalCaches()
@@ -183,30 +195,33 @@ namespace RINGS.Controllers
             var dir = Directory.GetCurrentDirectory();
             foreach (var f in LocalCacheFiles)
             {
-                var file = Path.Combine(dir, f);
-                if (File.Exists(file))
+                foreach (var file in Directory.EnumerateFiles(dir, f))
                 {
-                    File.Delete(file);
+                    if (File.Exists(file))
+                    {
+                        File.Delete(file);
+                    }
                 }
             }
         }
 
         private void RefreshActiveProfile()
         {
-            if (!Reader.CanGetPlayerInfo())
+            if (this._memoryHandler == null)
+            {
+                return;
+            }
+
+            var result = this._memoryHandler.Reader.GetCurrentPlayer();
+            if (result == null ||
+                result.PlayerInfo == null ||
+                result.Entity == null)
             {
                 this.ClearActiveProfile();
                 return;
             }
 
-            var result = Reader.GetCurrentPlayer();
-            if (result == null)
-            {
-                this.ClearActiveProfile();
-                return;
-            }
-
-            var newPlayer = result.CurrentPlayer;
+            var newPlayer = result.Entity;
             if (newPlayer != null &&
                 !string.IsNullOrEmpty(newPlayer.Name) &&
                 this.currentPlayer?.Name != newPlayer.Name)
@@ -282,7 +297,7 @@ namespace RINGS.Controllers
                     }
 
                     if (!this.IsAttached ||
-                        !Reader.CanGetChatLog())
+                        !this._memoryHandler.Reader.CanGetChatLog())
                     {
                         interval = TimeSpan.FromSeconds(DetectProcessInterval);
                         continue;
@@ -315,7 +330,7 @@ namespace RINGS.Controllers
                             previousPlayerName = this.CurrentPlayer.Name;
                         }
 
-                        var result = Reader.GetChatLog(this.previousArrayIndex, this.previousOffset);
+                        var result = this._memoryHandler.Reader.GetChatLog(this.previousArrayIndex, this.previousOffset);
                         if (result == null)
                         {
                             continue;
