@@ -131,15 +131,15 @@
           HorizontalAlignment="Left"
           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
           Content="Enabled"
-          IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
+          IsOn="{Binding IsEnabled, Mode=TwoWay}" />
 
         <metro:ToggleSwitch
           Margin="0 8 0 0"
           HorizontalAlignment="Left"
           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
           Content="アクティブプロファイルとして固定する"
-          IsChecked="{Binding IsFixedActivate, Mode=TwoWay}"
-          CheckChangedCommand="{Binding FixedChangeCommand, Mode=OneWay}" />
+          IsOn="{Binding IsFixedActivate, Mode=TwoWay}"
+          OnCommand="{Binding FixedChangeCommand, Mode=OneWay}" />
       </StackPanel>
 
       <metro:MetroHeader Header="チャンネルリンク" Margin="0 20 0 0" Grid.Row="1">
@@ -175,7 +175,7 @@
                     VerticalAlignment="Center"
                     Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
                     Content="{Binding ChannelName, Mode=OneWay}"
-                    IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
+                    IsOn="{Binding IsEnabled, Mode=TwoWay}" />
 
                   <ComboBox
                     Grid.Column="1"

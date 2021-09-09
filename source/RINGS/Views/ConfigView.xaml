@@ -73,14 +73,14 @@
           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
           Margin="0 25 0 0"
           HorizontalAlignment="Left"
-          IsChecked="{Binding Config.IsStartupWithWindows, Mode=TwoWay}"
+          IsOn="{Binding Config.IsStartupWithWindows, Mode=TwoWay}"
           Content="Windows のスタート時に起動する" />
 
         <metro:ToggleSwitch
           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
           Margin="{DynamicResource ContentMargin}"
           HorizontalAlignment="Left"
-          IsChecked="{Binding Config.IsShutdownWhenMissingFFXIV, Mode=TwoWay}"
+          IsOn="{Binding Config.IsShutdownWhenMissingFFXIV, Mode=TwoWay}"
           Content="FFXIV が実行されていないとき自動的に終了する"
           ToolTip="FFXIV の終了から10分後に RINGS を自動終了します。" />
 
@@ -88,14 +88,14 @@
           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
           Margin="{DynamicResource ContentMargin}"
           HorizontalAlignment="Left"
-          IsChecked="{Binding Config.IsMinimizeStartup, Mode=TwoWay}"
+          IsOn="{Binding Config.IsMinimizeStartup, Mode=TwoWay}"
           Content="最小化状態で起動する" />
 
         <metro:ToggleSwitch
           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
           Margin="{DynamicResource ContentMargin}"
           HorizontalAlignment="Left"
-          IsChecked="{Binding Config.IsUseBuiltInBrowser, Mode=TwoWay}"
+          IsOn="{Binding Config.IsUseBuiltInBrowser, Mode=TwoWay}"
           Content="リンクをビルトインブラウザで開く" />
 
         <metro:MetroHeader Header="ビルトインブラウザのサイズ" Margin="{DynamicResource ContentMargin}" Visibility="{Binding Config.IsUseBuiltInBrowser, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
@@ -162,7 +162,7 @@
           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
           Margin="{DynamicResource ContentParagraphMargin}"
           HorizontalAlignment="Left"
-          IsChecked="{Binding Config.IsEnabledChatRawLog, Mode=TwoWay}"
+          IsOn="{Binding Config.IsEnabledChatRawLog, Mode=TwoWay}"
           Content="チャットのデバッグログを有効にする" />
       </StackPanel>
     </ScrollViewer>

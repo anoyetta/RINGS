@@ -31,7 +31,7 @@
 
   <Grid>
     <TabControl Focusable="False">
-      <TabItem Header="Overlay" Padding="15 0" metro:ControlsHelper.HeaderFontSize="24">
+      <TabItem Header="Overlay" Padding="15 0">
         <Grid>
           <Grid x:Name="ParentContent">
             <ScrollViewer
@@ -140,7 +140,7 @@
                             Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
                             Margin="0 10 -4 0"
                             Content=""
-                            IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                            IsOn="{Binding IsEnabled, Mode=TwoWay}"
                             ToolTip="オーバーレイはFFXIVまたはRINGSがアクティブのとき表示されます" />
                         </DockPanel>
                       </Grid>
@@ -175,7 +175,7 @@
       </TabItem>
 
       <!-- Log Colors -->
-      <TabItem Header="Channels" Padding="15 0" metro:ControlsHelper.HeaderFontSize="24">
+      <TabItem Header="Channels" Padding="15 0">
         <ScrollViewer
           Focusable="False"
           IsTabStop="False"
@@ -226,7 +226,7 @@
                         <metro:ToggleSwitch
                           Margin="0 2 -3 0"
                           HorizontalAlignment="Right"
-                          IsChecked="{Binding IsEnabledShadow, Mode=TwoWay}"
+                          IsOn="{Binding IsEnabledShadow, Mode=TwoWay}"
                           Background="{Binding ColorBrush, Mode=OneWay}"
                           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
                           Content="" />
@@ -273,7 +273,7 @@
                         <metro:ToggleSwitch
                           Margin="0 2 -3 0"
                           HorizontalAlignment="Right"
-                          IsChecked="{Binding IsTTSEnabled, Mode=TwoWay}"
+                          IsOn="{Binding IsTTSEnabled, Mode=TwoWay}"
                           Background="{Binding ColorBrush, Mode=OneWay}"
                           Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
                           Content="" />
@@ -288,19 +288,19 @@
       </TabItem>
       <!-- Log Colors end -->
       <!-- TTS -->
-      <TabItem Header="TTS" Padding="15 0" metro:ControlsHelper.HeaderFontSize="24">
+      <TabItem Header="TTS" Padding="15 0">
         <StackPanel
           Margin="10">
           <metro:ToggleSwitch
             Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
             HorizontalAlignment="Left"
-            IsChecked="{Binding Config.IsTTSEnabled, Mode=TwoWay}"
+            IsOn="{Binding Config.IsTTSEnabled, Mode=TwoWay}"
             Content="TTSを使用する" />
           <metro:ToggleSwitch
             Margin="0 10 0 0"
             Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
             HorizontalAlignment="Left"
-            IsChecked="{Binding Config.IsTTSIgnoreSelf, Mode=TwoWay}"
+            IsOn="{Binding Config.IsTTSIgnoreSelf, Mode=TwoWay}"
             Content="自分の発言は通知しない" />
 
           <metro:MetroHeader Header="Boyomi サーバー IPアドレス" Margin="0 15 0 0">
